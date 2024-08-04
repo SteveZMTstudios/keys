@@ -34,10 +34,10 @@ c6feba3f7d12b3a3
 
 |Usage|Method|Status|Expired Date|
 |-----|-----|-----|-----|
-|**C**|rsa4096|<font color=Green>Normal</font>|none|
-|SE|rsa4096|<font color=Green>Normal</font>|2038-08-03|
-|S|rsa3072|<font color=Green>Normal</font>|2038-08-03|
-|A|rsa3072|<font color=Green>Normal</font>|2038-08-03|
+|**C**|rsa4096|✅Normal|none|
+|SE|rsa4096|✅Normal|2038-08-03|
+|S|rsa3072|✅Normal|2038-08-03|
+|A|rsa3072|✅Normal|2038-08-03|
 
 #### Public Keys
 
