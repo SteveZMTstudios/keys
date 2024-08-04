@@ -16,13 +16,13 @@ According to industry practice, the OpenPGP public key will also be exposed in t
 
 ```
 708396affbfbc317b8c51a9ec6feba3f7d12b3a3
-``
+```
 
 #### Key Info
 
 |Usage|Method|Status|Expired Date|
 |-----|-----|-----|-----|
 |**C**|rsa4096|✅Normal|none|
-|SE|rsa4096|||
-|||||
-|||||
+|SE|rsa4096||2038-08-03|
+|S|rsa3072||2038-08-03|
+|A|rsa3072||2038-08-03|
