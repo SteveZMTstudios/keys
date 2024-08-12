@@ -359,6 +359,7 @@ jhVe6SYiInli3qjATI/6ITfultdr8ih97RZ9wP2Th0cj4pXQZac=
 -----END PGP PUBLIC KEY BLOCK-----
 
 ```
-<details>
+
+</details>
 
 [keys on keyserver.ubuntu.com](https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x98fa1900a35bf9bb)
