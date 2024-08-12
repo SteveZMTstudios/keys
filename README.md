@@ -1,7 +1,12 @@
 # Steve ZMT's PGP keys
 Please [View in Github](https://github.com/stevezmtstudios/pgpkey#steve-zmts-pgp-keys)
 
-**English (US)** | [简体中文](https://stevezmtstudios.github.io/PGPkey/readme-zh_cn)
+**English (US)** | [简体中文 (百度翻译)](https://fanyi.baidu.com/mtpe-individual/transpage?query=https://stevezmtstudios.github.io/PGPkey&from=en&to=zh&source=url&render=1)
+
+> 致中文用户：
+> 为确保本页内容更新的及时性，我们使用百度翻译网页翻译框架作为本页的中文翻译替代。由于百度翻译对于技术术语不一定总是准确，因此当内容出现歧义时，您仍应当以英语网页为准。
+> 尤其是当您准备从网页中**复制公钥**来导入您的密钥管理器时。
+> 网页翻译框架并不总是能显示图片。
 
 This page is used to store messages about the PGP key from Steve ZMT and its current status.
 
