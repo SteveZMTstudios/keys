@@ -1,4 +1,6 @@
 # Steve ZMT's PGP keys
+Please [View in Github](https://github.com/stevezmtstudios/pgpkey#steve-zmts-pgp-keys)
+
 **English (US)** | [简体中文](https://stevezmtstudios.github.io/PGPkey/readme-zh_cn)
 
 This page is used to store messages about the PGP key from Steve ZMT and its current status.
@@ -10,13 +12,13 @@ According to industry practice, the OpenPGP public key will also be exposed in t
 
 > [!TIP]
 > If this key has been leaked or anything urgent happened, this alert will change. Till now, this key is normal.
-> If you need to contact me to check this gpg key, you can use my telegram account: <t.me/stevezmtstudios> Then you can confirm further.
+> If you need to contact me to check this gpg key, you can use my telegram account: <https://t.me/stevezmtstudios> Then you can confirm further.
 
 
-|Key|Fingerprint|Status|
+|Key|Summary(ID)|Status|
 |----|----|----|
-|Main|708396affbfbc317b8c51a9ec6feba3f7d12b3a3|🟢OK,Active|
-|Git Action|7166561356c0565e03303c6c98fa1900a35bf9bb|🟢OK,Active|
+|Main|c6fe ba3f 7d12 b3a3|🟢OK,Active|
+|Git Action|98fa 1900 a35b f9bb|🟢OK,Active|
 |\- |\-|🟡Unknown|
 
 
@@ -27,14 +29,16 @@ According to industry practice, the OpenPGP public key will also be exposed in t
 
 ...... 3 more
 
+#### Summary Information (ID)
+```
+c6feba3f7d12b3a3
+```
+
+
 #### Public Key Fingerprint
 
 ```
 708396affbfbc317b8c51a9ec6feba3f7d12b3a3
-```
-#### Summary Information
-```
-c6feba3f7d12b3a3
 ```
 
 #### Key Info
@@ -216,8 +220,145 @@ RbC/00vYSzE05aQFBKCh3sw1UWZ+cKopUDA/bUgQJPGn6HbiKRg636o7mfui6W5M
 #### User Info
 **SteveZMTstudios** \<98326195+SteveZMTstudios@users.noreply.github.com\>
 
+
+#### Summary Information (ID)
+```
+98fa1900a35bf9bb
+```
+
 #### Public Key Fingerprint
 ```
 7166561356c0565e03303c6c98fa1900a35bf9bb
 ```
 
+
+#### Key Info
+
+|Usage|Method|Status|Expired Date|
+|-----|-----|-----|-----|
+|**C**|rsa3072|✅Normal|none|
+|SE|rsa3072|🟢Normal|2038-08-09|
+|S|rsa3072|🟢Normal|2038-08-09|
+|A|rsa3072|🟢Normal|2038-08-09|
+|E|rsa3072|🟢Normal|2038-08-09|
+
+#### Public Keys
+
+<details>
+<summary>Full Public Keys Data</summary>
+
+```
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+=La1V
+-----END PGP PUBLIC KEY BLOCK-----
+
+```
+<details>
+
+[keys on keyserver.ubuntu.com](https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x98fa1900a35bf9bb)
