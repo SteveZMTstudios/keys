@@ -6,17 +6,24 @@ This page is used to store messages about the PGP key from Steve ZMT and its cur
 According to industry practice, the OpenPGP public key will also be exposed in the keyserver. However, you should pay attention to this page (https://si1vr.github.io/key) in real time because it may be revoked or cancelled in a timely manner.
 
 > [!NOTE]
-> Last updated at 2024-08-04.
+> Last updated at 2024-08-13.
 
 > [!TIP]
 > If this key has been leaked or anything urgent happened, this alert will change. Till now, this key is normal.
+> If you need to contact me to check this gpg key, you can use my telegram account: <t.me/stevezmtstudios> Then you can confirm further.
 
 
+|Key|Fingerprint|Status|
+|----|----|----|
+|Main|708396affbfbc317b8c51a9ec6feba3f7d12b3a3|🟢OK,Active|
+|Git Action|7166561356c0565e03303c6c98fa1900a35bf9bb|🟢OK,Active|
+|\- |\-|🟡Unknown|
 
-## Public Key Info
+
+## Public Key Info (Main)
 
 #### User Info
-**Steve ZMT** <zzhzcuid@outlook.com>
+**Steve ZMT** \<zzhzcuid@outlook.com\>
 
 ...... 3 more
 
@@ -35,9 +42,9 @@ c6feba3f7d12b3a3
 |Usage|Method|Status|Expired Date|
 |-----|-----|-----|-----|
 |**C**|rsa4096|✅Normal|none|
-|SE|rsa4096|✅Normal|2038-08-03|
-|S|rsa3072|✅Normal|2038-08-03|
-|A|rsa3072|✅Normal|2038-08-03|
+|SE|rsa4096|🟢Normal|2038-08-03|
+|S|rsa3072|🟢Normal|2038-08-03|
+|A|rsa3072|🟢Normal|2038-08-03|
 
 #### Public Keys
 
@@ -199,7 +206,18 @@ RbC/00vYSzE05aQFBKCh3sw1UWZ+cKopUDA/bUgQJPGn6HbiKRg636o7mfui6W5M
 
 </details>
 
+[keys on Github.com](https://github.com/stevezmtstudios.gpg)<pr>
 [keys on keyserver.ubuntu.com](https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc6feba3f7d12b3a3)<br>
 [keys on keys.openpgp.org](https://keys.openpgp.org/vks/v1/by-fingerprint/708396AFFBFBC317B8C51A9EC6FEBA3F7D12B3A3)
 
+
+## Public Key Info (Git Action)
+
+#### User Info
+**SteveZMTstudios** \<98326195+SteveZMTstudios@users.noreply.github.com\>
+
+#### Public Key Fingerprint
+```
+7166561356c0565e03303c6c98fa1900a35bf9bb
+```
 
