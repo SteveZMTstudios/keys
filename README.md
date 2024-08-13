@@ -215,7 +215,7 @@ RbC/00vYSzE05aQFBKCh3sw1UWZ+cKopUDA/bUgQJPGn6HbiKRg636o7mfui6W5M
 
 </details>
 
-[keys on Github.com](https://github.com/stevezmtstudios.gpg)<pr>
+[keys on Github.com](https://github.com/stevezmtstudios.gpg)<br>
 [keys on keyserver.ubuntu.com](https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc6feba3f7d12b3a3)<br>
 [keys on keys.openpgp.org](https://keys.openpgp.org/vks/v1/by-fingerprint/708396AFFBFBC317B8C51A9EC6FEBA3F7D12B3A3)
 
