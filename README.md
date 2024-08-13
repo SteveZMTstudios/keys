@@ -19,13 +19,15 @@ According to industry practice, the OpenPGP public key will also be exposed in t
 > If this key has been leaked or anything urgent happened, this alert will change. Till now, this key is normal.
 > If you need to contact me to check this gpg key, you can use my telegram account: <https://t.me/stevezmtstudios> Then you can confirm further.
 
-
+## Dashboard
 |Key|Summary(ID)|Status|
 |----|----|----|
-|Main|c6fe ba3f 7d12 b3a3|🟢OK,Active|
-|Git Action|98fa 1900 a35b f9bb|🟢OK,Active|
+|Main|c6fe ba3f 7d12 b3a3|🟢Active|
+|Git Action|98fa 1900 a35b f9bb|🟢Active|
 |\- |\-|🟡Unknown|
 
+
+---
 
 ## Public Key Info (Main)
 
@@ -219,6 +221,9 @@ RbC/00vYSzE05aQFBKCh3sw1UWZ+cKopUDA/bUgQJPGn6HbiKRg636o7mfui6W5M
 [keys on keyserver.ubuntu.com](https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc6feba3f7d12b3a3)<br>
 [keys on keys.openpgp.org](https://keys.openpgp.org/vks/v1/by-fingerprint/708396AFFBFBC317B8C51A9EC6FEBA3F7D12B3A3)
 
+
+
+---
 
 ## Public Key Info (Git Action)
 
