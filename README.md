@@ -23,7 +23,7 @@ According to industry practice, the OpenPGP public key will also be exposed in t
 
 |Key|Summary(ID)|Status|
 |----|----|----|
-|Main|c6fe ba3f 7d12 b3a3|🟢Active|
+|[Main](#public-key-info-main)|c6fe ba3f 7d12 b3a3|🟢Active|
 |Git Action|98fa 1900 a35b f9bb|🟡Inactive|
 | \- | \- |❔Unknown|
 
