@@ -20,11 +20,12 @@ According to industry practice, the OpenPGP public key will also be exposed in t
 > If you need to contact me to check this gpg key, you can use my telegram account: <https://t.me/stevezmtstudios> Then you can confirm further.
 
 ## Dashboard
+
 |Key|Summary(ID)|Status|
 |----|----|----|
 |Main|c6fe ba3f 7d12 b3a3|🟢Active|
 |Git Action|98fa 1900 a35b f9bb|🟢Active|
-|\- |\-|🟡Unknown|
+| \- | \- |🟡Unknown|
 
 
 ---
