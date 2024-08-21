@@ -13,7 +13,7 @@ This page is used to store messages about the PGP key from Steve ZMT and its cur
 According to industry practice, the OpenPGP public key will also be exposed in the keyserver. However, you should pay attention to this page (https://si1vr.github.io/key) in real time because it may be revoked or cancelled in a timely manner.
 
 > [!NOTE]
-> Last updated at 2024-08-13.
+> Last updated at 2024-08-21.
 
 > [!TIP]
 > If this key has been leaked or anything urgent happened, this alert will change. Till now, this key is normal.
@@ -24,7 +24,7 @@ According to industry practice, the OpenPGP public key will also be exposed in t
 |Key|Summary(ID)|Status|
 |----|----|----|
 |[Main](#public-key-info-main)|c6fe ba3f 7d12 b3a3|🟢Active|
-|Git Action|98fa 1900 a35b f9bb|🟡Inactive|
+|[Git Action](#public-key-info-git-action)|98fa 1900 a35b f9bb|🟡Inactive|
 | \- | \- |❔Unknown|
 
 
