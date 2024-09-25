@@ -15,8 +15,8 @@ According to industry practice, the OpenPGP public key will also be exposed in t
 > [!NOTE]
 > Last updated at 2024-08-21.
 
-> [!TIP]
-> If this key has been leaked or anything urgent happened, this alert will change. Till now, this key is normal.
+> [!WARNING]
+> I RESTORED MY DEVICE, SO MY KEY WAS LOST. I NEED TO FIND IT WITHIN SOME TIMES.
 > If you need to contact me to check this gpg key, you can use my telegram account: <https://t.me/stevezmtstudios> Then you can confirm further.
 
 ## Dashboard
