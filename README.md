@@ -13,7 +13,7 @@ This page is used to store messages about the PGP key from Steve ZMT and its cur
 According to industry practice, the OpenPGP public key will also be exposed in the keyserver. However, you should pay attention to this page (https://si1vr.github.io/key) in real time because it may be revoked or cancelled in a timely manner.
 
 > [!NOTE]
-> Last updated at 2024-08-21.
+> Last updated at 2024-10-27.
 
 > [!WARNING]
 > I RESTORED MY DEVICE, SO MY KEY WAS LOST. I NEED TO FIND IT WITHIN SOME TIMES.
@@ -23,14 +23,14 @@ According to industry practice, the OpenPGP public key will also be exposed in t
 
 |Key|Summary(ID)|Status|
 |----|----|----|
-|[Main](#public-key-info-main)|c6fe ba3f 7d12 b3a3|🟢Active|
+|[Main](#public-key-info-main)|c6fe ba3f 7d12 b3a3|🔴**Revoked**|
 |[Git Action](#public-key-info-git-action)|98fa 1900 a35b f9bb|🟡Inactive|
 | \- | \- |❔Unknown|
 
 
 ---
 
-## Public Key Info (Main)
+## Public Key Info (Main, 🔴Revoked)
 
 #### User Info
 **Steve ZMT** \<zzhzcuid@outlook.com\>
@@ -53,10 +53,10 @@ c6feba3f7d12b3a3
 
 |Usage|Method|Status|Expired Date|
 |-----|-----|-----|-----|
-|**C**|rsa4096|✅Normal|none|
-|SE|rsa4096|🟢Normal|2038-08-03|
-|S|rsa3072|🟢Normal|2038-08-03|
-|A|rsa3072|🟢Normal|2038-08-03|
+|**C**|rsa4096|❌Revoked|none|
+|SE|rsa4096|🔴Revoked|2038-08-03|
+|S|rsa3072|🔴Revoked|2038-08-03|
+|A|rsa3072|🔴Revoked|2038-08-03|
 
 #### Public Keys
 
