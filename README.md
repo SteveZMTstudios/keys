@@ -16,21 +16,192 @@ According to industry practice, the OpenPGP public key will also be exposed in t
 > Last updated at 2024-10-27.
 
 > [!WARNING]
-> I RESTORED MY DEVICE, SO MY KEY WAS LOST. I NEED TO FIND IT WITHIN SOME TIMES.
+> The key c6fe ba3f 7d12 b3a3 has been revoked. Please DO NOT USE IT ANYMORE.
 > If you need to contact me to check this gpg key, you can use my telegram account: <https://t.me/stevezmtstudios> Then you can confirm further.
 
 ## Dashboard
 
 |Key|Summary(ID)|Status|
 |----|----|----|
-|[Main](#public-key-info-main)|c6fe ba3f 7d12 b3a3|🔴**Revoked**|
+|[Main](#public-key-info-main)|3745 872A 9531 98FE|🟢Active|
+|[Main (Revoked)](#public-key-info-main-Revoked)|c6fe ba3f 7d12 b3a3|🔴**Revoked**|
 |[Git Action](#public-key-info-git-action)|98fa 1900 a35b f9bb|🟡Inactive|
 | \- | \- |❔Unknown|
 
 
 ---
 
-## Public Key Info (Main, 🔴Revoked)
+## Public Key Info (Main)
+
+#### User Info
+**Steve ZMT** \<stevezmt@foxmail.com\>
+
+...... 3 more
+
+#### Summary Information (ID)
+```
+3745872A953198FE
+```
+
+
+#### Public Key Fingerprint
+
+```
+C96BE2F8EDE82CF7214F62593745872A953198FE
+```
+
+#### Key Info
+
+|Usage|Method|Status|Expired Date|
+|-----|-----|-----|-----|
+|**SC**|rsa4096|✅Active|none|
+|E|rsa4096|🟢Active|2038-08-03|
+|A|rsa3072|🟢Active|2038-08-03|
+
+
+#### Public Keys
+
+<details>
+<summary>Full Public Keys Data</summary>
+
+```
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Comment: 用户标识:	Steve ZMT <stevezmt@foxmail.com>
+Comment: 又名:	Steve ZMT <zzhzcuid@outlook.com>
+Comment: 又名:	Steve ZMT <zmt548270@gmail.com>
+Comment: 又名:	Steve ZMT <imap_mail@163.com>
+Comment: 有效期自:	2024/10/27 15:56
+Comment: 有效期至:	2038/12/31 12:00
+Comment: 文件系统:	4,096 位 RSA(绝密密钥可用)
+Comment: 用途:	签名, 仅加密, Certifying User IDs, SSH 认证
+Comment: 指纹:	C96BE2F8EDE82CF7214F62593745872A953198FE
+
+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://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3745872A953198FbveUrwO4Vfusv
+RIDaIpVOaJJ5JfaPhL5RCrdhWAy3Gfc9FPlZd8agIgnN7tqG2VD5nqK6chUd122E
+Lq1BEZP5iKKi/kFZhnVrLhKO7GjOpBiApyOtKhyo30PeK6r9uqvNzxkpls+cihaF
+IfNqBAc9sF/zLiNUOUcSdtI3FkjBBY4F+Enk2fcedsI9uwFOtEq+SH1T4MYt9SPQ
+QAce3hGKQI4MAp7wFOasUAGRvkMplhHYI5lb/wId86+OEcymCu2YJOhQxYC3hMz4
+bSsj6wNqzu2JYwqkPKVPtBvXCPcnbc5fECMXKoc5ZmUcr432+SY2SgYuac9FvMxd
+XNYZ+PeXABEBAAGJAjwEGAEIACYWIQTJa+L47egs9yFPYlk3RYcqlTGY/gUCZx3y
+rwIbIAUJgceJAAAKCRA3RYcqlTGY/nOTEAC5vto3vToo+zg6xqhpXaKps88GitiY
+YE1Z2UZ5i47JHtY5J+mh5z6CVBEfHga6fkMhSnWFQIN4bjAKi2o8j/MCaTJK0N8A
+exXqsvGYCXvDUA2jrDLJ9aRSn7WP6znU63jY7YTt7pxvGZaTlVE1AsvSPUC5KaJD
+V1t8vYkeyvHQn09fbT9QILPQaTRGpzsEOjcz+c9XJ9zcud3U7Hf3MOommjr241og
+8O3JADGwsD2KGT5WijXGb4ilYij3TxHugsXvIR+zWEcjHrx7Ilc86rKm8f9LIN1d
+teC2dm5kFe9VTYtuMsQGAwT90IwjpWEAkUYj1u0Eafs63/CKwNrjN23o2XrN+IK0
+kFWUuNHnORHreq0fAaCo3/Ftii4jqLBbS0jGTdGdXRgaTc84clEarRl9LQ6nhA2R
+zcOYN67j3QUL56r8tIdi5UGposhK2CsPzR1DbmWNx9R9HMeg8zOAohJ4Pj3ep/Cs
+R2aMBaBnORAW7C868TwWazNihiY8iRB9S4J1158vbEz4hiH7vDN5brKgt6XrTUBM
+Rjww0H/DlETzi27WwwJsQonpLrKxG2PTa2xMBuvgsWCIkzTDi+E+FfKq5tKKFHDp
+mcFjvvrpbWLVMddG3ghkyVn3/Kbs0qSDdbzua0aXD1plt/f6/3BNj1opNI5ap/Li
+d9PvNbfRd+jTTw==
+=U+3A
+-----END PGP PUBLIC KEY BLOCK-----
+
+```
+
+</details>
+
+[keys on Github.com](https://github.com/stevezmtstudios.gpg)<br>
+[keys on keyserver.ubuntu.com](https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3745872A953198FE)<br>
+[keys on keys.openpgp.org](https://keys.openpgp.org/vks/v1/by-fingerprint/C96BE2F8EDE82CF7214F62593745872A953198FE)
+
+
+
+---
+
+
+## Public Key Info (Main, 🔴Revoked)\
+
+> [!CAUTION] The key c6fe ba3f 7d12 b3a3 has been revoked. Please DO NOT USE IT ANYMORE.
 
 #### User Info
 **Steve ZMT** \<zzhzcuid@outlook.com\>
@@ -218,7 +389,6 @@ RbC/00vYSzE05aQFBKCh3sw1UWZ+cKopUDA/bUgQJPGn6HbiKRg636o7mfui6W5M
 
 </details>
 
-[keys on Github.com](https://github.com/stevezmtstudios.gpg)<br>
 [keys on keyserver.ubuntu.com](https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc6feba3f7d12b3a3)<br>
 [keys on keys.openpgp.org](https://keys.openpgp.org/vks/v1/by-fingerprint/708396AFFBFBC317B8C51A9EC6FEBA3F7D12B3A3)
 
