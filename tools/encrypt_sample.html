@@ -720,6 +720,8 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
                     clearFileHandler();
                 }
                 hideResult();
+                errorMessage.style.display = 'none';
+                encryptBtn.removeAttribute('disabled');
             });
             
             dropArea.addEventListener('dragover', function(e) {
@@ -755,12 +757,16 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
             if (mode === 'text') {
                 textModeBtn.classList.add('mdui-color-primary');
                 fileModeBtn.classList.remove('mdui-color-primary');
+                textModeBtn.classList.add('mdui-btn-raised');
+                fileModeBtn.classList.remove('mdui-btn-raised');
                 plaintext.classList.remove('hidden');
                 dropArea.classList.add('hidden');
                 fileInfo.textContent = '';
             } else {
                 textModeBtn.classList.remove('mdui-color-primary');
                 fileModeBtn.classList.add('mdui-color-primary');
+                textModeBtn.classList.remove('mdui-btn-raised');
+                fileModeBtn.classList.add('mdui-btn-raised');
                 plaintext.classList.add('hidden');
                 dropArea.classList.remove('hidden');
             }
