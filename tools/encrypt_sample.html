@@ -761,6 +761,7 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
                 fileModeBtn.classList.remove('mdui-btn-raised');
                 plaintext.classList.remove('hidden');
                 dropArea.classList.add('hidden');
+                
                 fileInfo.textContent = '';
             } else {
                 textModeBtn.classList.remove('mdui-color-primary');
@@ -770,7 +771,8 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
                 plaintext.classList.add('hidden');
                 dropArea.classList.remove('hidden');
             }
-            
+            errorMessage.style.display = 'none'; // 隐藏错误信息
+            encryptBtn.removeAttribute('disabled');
             hideResult();
         }
         
@@ -858,6 +860,8 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
             selectedFile = null;
             fileInfo.textContent = '';
             fileInput.value = '';
+            errorMessage.style.display = 'none'; // 隐藏错误信息
+            encryptBtn.removeAttribute('disabled');
             hideResult();
         }
         
