@@ -245,15 +245,42 @@
     }
     </script>
 </head>
-<body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
+<body class="mdui-theme-primary-indigo mdui-theme-accent-ppink">
     <div class="mdui-appbar">
         <div class="mdui-toolbar mdui-color-theme">
             <a href="javascript:;" class="mdui-typo-headline">README</a>
             <div class="mdui-toolbar-spacer"></div>
+            <button class="mdui-btn mdui-btn-icon" mdui-menu="{target: '#menu'}">
+                <i class="mdui-icon material-icons">&#xe8e2;</i>
+            </button>
+            <ul class="mdui-menu ignore" id="menu">
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('chinese_simplified');" class="mdui-ripple">简体中文</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('chinese_traditional');">繁體中文</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('english');">English</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('korean');" class="mdui-ripple">한국어</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('japanese');">日本語</a>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="mdui-container mdui-typo">
         <iframe src="index.html" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
     </div>
 </body>
+<script src="https://cdn.staticfile.net/translate.js/3.12.0/translate.js"></script>
+<script>
+translate.language.setLocal('english');
+translate.selectLanguageTag.show = false; //不出现的select的选择语言
+translate.service.use('client.edge');
+translate.execute();//进行翻译 
+</script>
 </html>

@@ -245,23 +245,37 @@
     }
     </script>
 </head>
-<body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
+<body class="mdui-theme-primary-indigo mdui-theme-accent-ppink">
     <div class="mdui-appbar">
         <div class="mdui-toolbar mdui-color-theme">
             <a href="javascript:;" class="mdui-typo-headline">Steve ZMT's PGP keys</a>
             <div class="mdui-toolbar-spacer"></div>
+            <button class="mdui-btn mdui-btn-icon" mdui-menu="{target: '#menu'}">
+                <i class="mdui-icon material-icons">&#xe8e2;</i>
+            </button>
+            <ul class="mdui-menu ignore" id="menu">
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('chinese_simplified');" class="mdui-ripple">简体中文</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('chinese_traditional');">繁體中文</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('english');">English</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('korean');" class="mdui-ripple">한국어</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('japanese');">日本語</a>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="mdui-container mdui-typo">
         <h1>Steve ZMT's PGP keys</h1>
 <p>Please <a href="https://github.com/stevezmtstudios/pgpkey#steve-zmts-pgp-keys">View in Github</a></p>
-<p><strong>English (US)</strong> | <a href="https://fanyi.baidu.com/mtpe-individual/transpage?query=https://key.stevezmt.top&amp;from=en&amp;to=zh&amp;source=url&amp;render=1">简体中文 (百度翻译)</a></p>
-<blockquote>
-<p>致中文用户：<br/>
-为确保本页内容更新的及时性，我们使用百度翻译网页翻译框架作为本页的中文翻译替代。由于百度翻译对于技术术语不一定总是准确，因此当内容出现歧义时，您仍应当以英语网页为准。<br/>
-尤其是当您准备从网页中<strong>复制公钥</strong>来导入您的密钥管理器时。<br/>
-网页翻译框架并不总是能显示图片。</p>
-</blockquote>
+<p><strong>English (US)</strong> | <a class="mdui-ripple" href="javascript:translate.changeLanguage('chinese_simplified');">简体中文</a></p>
 <p>This page is used to store messages about the PGP key from Steve ZMT and its current status.</p>
 <p>According to industry practice, the OpenPGP public key will also be exposed in the keyserver. However, you should pay attention to this page (https://si1vr.github.io/key) in real time because it may be revoked or cancelled in a timely manner.</p>
 <blockquote>
@@ -946,4 +960,11 @@ DO NOT USE IT TO ENCRYPT ANY MESSAGE ALTHOUGH IT IS STILL VALID.</p>
 <p><a href="https://keyserver.ubuntu.com/pks/lookup?op=get&amp;search=0x98fa1900a35bf9bb">keys on keyserver.ubuntu.com</a></p>
     </div>
 </body>
+<script src="https://cdn.staticfile.net/translate.js/3.12.0/translate.js"></script>
+<script>
+translate.language.setLocal('english');
+translate.selectLanguageTag.show = false; //不出现的select的选择语言
+translate.service.use('client.edge');
+translate.execute();//进行翻译 
+</script>
 </html>
