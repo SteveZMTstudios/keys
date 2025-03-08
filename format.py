@@ -1,0 +1,333 @@
+import os
+try:
+    import markdown
+    from bs4 import BeautifulSoup
+    import glob
+except ModuleNotFoundError:
+    if os.name == 'posix':
+        os.system('sudo apt install python3-full python3-markdown')
+    os.system('pip install markdown beautifulsoup4')
+    import markdown
+    from bs4 import BeautifulSoup
+    import glob
+
+
+HTML_TEMPLATE = """<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+    <!-- MDUI CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/css/mdui.min.css">
+    <style>
+        body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; }}
+        
+        .mdui-container {{ max-width: 900px; padding: 2rem; }}
+        pre {{ background: #f6f8fa; padding: 16px; border-radius: 6px; position: relative; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; transition: all 0.3s; }}
+        
+        .mdui-theme-layout-dark pre {{ background: #1e1e1e; color: #f0f0f0; }}
+        
+        code {{ word-wrap: break-word; }}
+        .copy-btn {{ 
+            position: absolute; 
+            right: 4px; 
+            top: 4px; 
+            padding: 4px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            display: none; 
+            z-index: 100; 
+            transition: all 0.2s ease-in-out; 
+            background-color: rgba(246, 248, 250, 0.7);
+            color: #57606a;
+            min-width: 32px;
+            min-height: 32px;
+            box-shadow: none;
+        }}
+        
+        .mdui-theme-layout-dark .copy-btn {{ 
+            background-color: rgba(30, 30, 30, 0.7);
+            color: #9e9e9e;
+            border: none;
+        }}
+        
+        @media (hover: hover) {{
+            pre:hover .copy-btn {{ 
+                display: block; 
+                animation: fadeIn 0.3s; 
+            }}
+        }}
+        
+        @keyframes fadeIn {{
+            from {{ opacity: 0; transform: translateY(-5px); }}
+            to {{ opacity: 1; transform: translateY(0); }}
+        }}
+        
+        @media (max-width: 768px) {{
+            .copy-btn {{ display: block; opacity: 0.9; }}
+        }}
+        
+        .mdui-table {{ 
+            width: 100%; 
+            margin: 1em 0; 
+            border-collapse: collapse; 
+            transition: all 0.3s; 
+        }}
+        
+        .mdui-table-responsive {{ 
+            overflow-x: auto; 
+            margin-bottom: 1em; 
+        }}
+        
+        img {{ max-width: 100%; height: auto; transition: all 0.3s; }}
+        
+        blockquote {{ 
+            margin: 1em 0; 
+            padding: 0 1em; 
+            border-left: 0.25em solid; 
+            transition: all 0.3s; 
+        }}
+        
+        .mdui-theme-layout-dark blockquote {{ 
+            color: #9e9e9e; 
+            border-left-color: #555; 
+        }}
+        
+        .theme-switch {{ 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            z-index: 9999; 
+        }}
+        
+        * html .copy-btn {{ 
+            position: static; 
+            margin-top: -30px; 
+            margin-right: 5px; 
+            float: right; 
+        }}
+        
+        * html .theme-switch {{ 
+            position: absolute; 
+            bottom: auto; 
+            top: expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-60)); 
+        }}
+        
+        .mdui-container {{ 
+            animation: slideIn 0.5s ease; 
+        }}
+        
+        @keyframes slideIn {{
+            from {{ opacity: 0; transform: translateY(15px); }}
+            to {{ opacity: 1; transform: translateY(0); }}
+        }}
+        
+        h1, h2, h3, h4, h5, h6 {{ 
+            animation: slideInFromLeft 0.5s ease; 
+            transition: all 0.3s; 
+        }}
+        
+        @keyframes slideInFromLeft {{
+            from {{ opacity: 0; transform: translateX(-15px); }}
+            to {{ opacity: 1; transform: translateX(0); }}
+        }}
+        
+        @media (max-width: 320px) {{
+            .mdui-container {{ padding: 0.8rem; }}
+            h1, h2 {{ font-size: 1.2rem; }}
+            pre {{ padding: 8px; font-size: 0.8rem; }}
+        }}
+    </style>
+    <!-- MDUI JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/js/mdui.min.js"></script>
+    <script>
+    if (!window.XMLHttpRequest) {{ 
+        document.write('<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"><\\/script>'); 
+        document.write('<script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"><\\/script>'); 
+    }}
+    
+    function copyText(btn) {{
+        var pre = btn.parentNode;
+        var code = pre.querySelector('code');
+        var text = code.innerText || code.textContent;
+        
+        if (window.clipboardData && window.clipboardData.setData) {{
+            window.clipboardData.setData("Text", text);
+            showSnackbar('Copied to clipboard!');
+            return;
+        }}
+        
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed"; 
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.select();
+        
+        try {{
+            var successful = document.execCommand('copy');
+            if (successful) {{
+                showSnackbar('Copied to clipboard!');
+            }} else {{
+                showSnackbar('Failed to copy, please copy manually');
+            }}
+        }} catch (err) {{
+            console.error('Failed copy:', err);
+            showSnackbar('Failed to copy, please copy manually');
+        }}
+        
+        document.body.removeChild(textArea);
+    }}
+    
+    function showSnackbar(message) {{
+        if (typeof mdui !== 'undefined') {{
+            mdui.snackbar({{
+                message: message,
+                position: 'bottom',
+                timeout: 2000,
+                closeOnOutsideClick: true
+            }});
+        }} else {{
+            alert(message);
+        }}
+    }}
+
+    function toggleTheme() {{
+        var body = document.body;
+        if (body.classList.contains('mdui-theme-layout-dark')) {{
+            body.classList.remove('mdui-theme-layout-dark');
+        }} else {{
+            body.classList.add('mdui-theme-layout-dark');
+        }}
+    }}
+    
+    document.addEventListener('DOMContentLoaded', function() {{
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {{
+            /*document.body.classList.add('mdui-theme-layout-dark');*/
+        }}
+
+        if (window.matchMedia) {{
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function(e) {{
+                if (e.matches) {{
+                    document.body.classList.add('mdui-theme-layout-dark');
+                }} else {{
+                    document.body.classList.remove('mdui-theme-layout-dark');
+                }}
+            }});
+        }}
+        
+        var savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {{
+            document.body.classList.add('mdui-theme-layout-dark');
+        }}
+        
+        var tables = document.querySelectorAll('table:not(.mdui-table)');
+        tables.forEach(function(table) {{
+            table.classList.add('mdui-table');
+            var wrapper = document.createElement('div');
+            wrapper.className = 'mdui-table-responsive';
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        }});
+        
+        var pres = document.querySelectorAll('pre');
+        pres.forEach(function(pre) {{
+            pre.classList.add('mdui-shadow-1');
+        }});
+        
+        var btn = document.createElement('button');
+        btn.className = 'mdui-fab mdui-color-theme-accent mdui-ripple theme-switch';
+        btn.innerHTML = '<i class="mdui-icon material-icons">&#xe3a9;</i>';
+        btn.onclick = toggleTheme;
+        document.body.appendChild(btn);
+    }});
+    // fuck IE
+    if (window.attachEvent && !window.addEventListener) {{
+        window.attachEvent('onload', function() {{
+            var tables = document.getElementsByTagName('table');
+            for (var i = 0; i < tables.length; i++) {{
+                var table = tables[i];
+                var div = document.createElement('div');
+                div.style.overflowX = 'auto';
+                table.parentNode.insertBefore(div, table);
+                div.appendChild(table);
+            }}
+        }});
+    }}
+    </script>
+</head>
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
+    <div class="mdui-appbar">
+        <div class="mdui-toolbar mdui-color-theme">
+            <a href="javascript:;" class="mdui-typo-headline">{title}</a>
+            <div class="mdui-toolbar-spacer"></div>
+        </div>
+    </div>
+    <div class="mdui-container mdui-typo">
+        {content}
+    </div>
+</body>
+</html>
+"""
+
+def add_copy_buttons(soup):
+    for pre in soup.find_all('pre'):
+        button = soup.new_tag('button')
+        icon = soup.new_tag('i')
+        icon['class'] = 'mdui-icon material-icons'
+        icon.string = 'content_copy'
+        button.append(icon)
+        button['class'] = 'copy-btn mdui-btn mdui-btn-icon mdui-ripple'
+        button['onclick'] = 'copyText(this)'
+        pre.insert(0, button)
+    return soup
+
+def convert_markdown_file(input_path):
+    with open(input_path, 'r', encoding='utf-8') as f:
+        text = f.read()
+    
+    html = markdown.markdown(text, 
+                           extensions=['fenced_code', 
+                                     'tables', 
+                                     'nl2br',
+                                     'sane_lists',
+                                     'attr_list',
+                                     'def_list',
+                                     'admonition'])
+    
+    soup = BeautifulSoup(html, 'html.parser')
+    soup = add_copy_buttons(soup)
+    
+    title = os.path.basename(input_path).replace('.md', '')
+    
+    h1 = soup.find('h1')
+    title = h1.text if h1 else os.path.basename(input_path).replace('.md', '')
+    
+    full_html = HTML_TEMPLATE.format(
+        title=title,
+        content=str(soup)
+    )
+    
+    output_path = input_path.replace('.md', '.html')
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write(full_html)
+    
+    print(f'已转换: {input_path} -> {output_path}')
+
+def process_all_markdown_files(directory):
+    md_files = glob.glob(os.path.join(directory, '**/*.md'), recursive=True)
+    
+    for md_file in md_files:
+        try:
+            convert_markdown_file(md_file)
+        except Exception as e:
+            print(f'处理 {md_file} 时出错: {str(e)}')
+            raise e
+
+if __name__ == '__main__':
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    process_all_markdown_files(current_dir)
+    print('所有 Markdown 文件处理完成！')
