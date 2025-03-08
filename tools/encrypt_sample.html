@@ -137,7 +137,7 @@
             </div>
             <div id="fileInfo" class="mdui-typo-caption-opacity"></div>
         </div>
-        <p id="errorMessage" class="error-message">Oops, the file or messages are too big. it may crash your browser! Instead please use local encryption tool like Gpg4Win.</p>
+        <p id="errorMessage" class="error-message">Oops, the file or messages are too big! it may crash your browser! Instead please use local encryption tool like Gpg4Win.</p>
         <div class="mdui-btn-group">
             <button id="encryptBtn" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-primary">
                 <i class="mdui-icon material-icons">&#xe897;</i> Encrypt
@@ -687,28 +687,7 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
         var copyResultBtn = document.getElementById('copyResult');
         var downloadResultBtn = document.getElementById('downloadResult');
         
-        function checkFileSize(size) {
-            if (size > 2 * 1024 * 1024) { // 2MB in bytes
-                errorMessage.style.display = 'block';
-                encryptBtn.setAttribute('disabled', 'true');
-            } else {
-                errorMessage.style.display = 'none';
-                encryptBtn.removeAttribute('disabled');
-            }
-        }
-
-        fileInput.addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                checkFileSize(file.size);
-            }
-        });
-
-        textArea.addEventListener('input', function(event) {
-            const text = event.target.value;
-            const byteLength = new Blob([text]).size;
-            checkFileSize(byteLength);
-        });
+        
 
         function initialize() {
             console.log("Using hardcoded public key");
@@ -875,6 +854,29 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
             fileInput.value = '';
             hideResult();
         }
+        
+        function checkFileSize(size) {
+            if (size > 4 * 1024 * 1024) { // 4MB in bytes
+                errorMessage.style.display = 'block';
+                encryptBtn.setAttribute('disabled', 'true');
+            } else {
+                errorMessage.style.display = 'none';
+                encryptBtn.removeAttribute('disabled');
+            }
+        }
+
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                checkFileSize(file.size);
+            }
+        });
+
+        plaintext.addEventListener('input', function(event) {
+            const text = event.target.value;
+            const byteLength = new Blob([text]).size;
+            checkFileSize(byteLength);
+        });
         
         async function encryptText(text) {
             try {
