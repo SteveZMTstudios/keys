@@ -20,11 +20,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
     <!-- MDUI CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/css/mdui.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/mdui/1.0.2/css/mdui.min.css';">
     <style>
         body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; }}
         
         .mdui-container {{ max-width: 900px; padding: 2rem; }}
+        .mdui-container-with-appbar {{ padding-top: 4rem; }}
         pre {{ background: #f6f8fa; padding: 16px; border-radius: 6px; position: relative; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; transition: all 0.3s; }}
         
         .mdui-theme-layout-dark pre {{ background: #1e1e1e; color: #f0f0f0; }}
@@ -141,18 +142,68 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             pre {{ padding: 8px; font-size: 0.8rem; }}
         }}
     </style>
+    <!-- 添加polyfill以支持IE11 -->
+    <!--[if IE]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.2.8/es6-promise.auto.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://gcore.jsdelivr.net/npm/classlist-polyfill@1.2.0/src/index.min.js"></script>
+    <script src="https://gcore.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js"></script>
+    <![endif]-->
     <!-- MDUI JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/js/mdui.min.js"></script>
+    <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/mdui/1.0.2/js/mdui.min.js';"></script>
     <script>
-    if (!window.XMLHttpRequest) {{ 
-        document.write('<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"><\\/script>'); 
-        document.write('<script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"><\\/script>'); 
+    // fxxk ie
+    function isIE() {{
+        return window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
+    }}
+    
+    function detectBrowser() {{
+        var ua = window.navigator.userAgent;
+        var isIE = ua.indexOf('MSIE ') > -1 || ua.indexOf('Trident/') > -1;
+        var isOldEdge = ua.indexOf('Edge/') > -1;
+        var isChrome = ua.indexOf('Chrome/') > -1 && !isOldEdge;
+        var isFirefox = ua.indexOf('Firefox/') > -1;
+        
+        var isOldBrowser = isIE || (isOldEdge && ua.indexOf('Edge/') > 0 && parseInt(ua.split('Edge/')[1]) < 18);
+        
+        return {{
+            isOldBrowser: isOldBrowser,
+            isIE: isIE,
+            browserName: isIE ? 'Internet Explorer' : 
+                       isOldEdge ? 'Microsoft Edge Legacy' :
+                       isChrome ? 'Chrome' : 
+                       isFirefox ? 'Firefox' : 
+                       'Unknown Browser'
+        }};
+    }}
+    
+    // 显示浏览器不兼容提示
+    function showBrowserNotice() {{
+        var browserInfo = detectBrowser();
+        if (browserInfo.isOldBrowser) {{
+            try {{
+                if (typeof mdui !== 'undefined' && mdui.snackbar) {{
+                    mdui.snackbar({{
+                        message: 'Seems you are using unsupported ' + browserInfo.browserName + ', some features may not work properly.',
+                        buttonText: 'OK',
+                        position: 'bottom',
+                        timeout: 50000,
+                        closeOnOutsideClick: true
+                    }});
+                }} else {{
+                    // 如果mdui未加载，创建简单提示
+                    alert('You are using an unsupported ' + browserInfo.browserName + ', some features may not work properly.');
+                }}
+            }} catch (e) {{
+                console.error('show browser err :', e);
+            }}
+        }}
     }}
     
     function copyText(btn) {{
         var pre = btn.parentNode;
         var code = pre.querySelector('code');
-        var text = code.innerText || code.textContent;
+        var text = code ? (code.innerText || code.textContent) : '';
         
         if (window.clipboardData && window.clipboardData.setData) {{
             window.clipboardData.setData("Text", text);
@@ -183,7 +234,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }}
     
     function showSnackbar(message) {{
-        if (typeof mdui !== 'undefined') {{
+        if (typeof mdui !== 'undefined' && mdui.snackbar) {{
             mdui.snackbar({{
                 message: message,
                 position: 'bottom',
@@ -197,105 +248,162 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     function toggleTheme() {{
         var body = document.body;
-        if (body.classList.contains('mdui-theme-layout-dark')) {{
-            body.classList.remove('mdui-theme-layout-dark');
+        var hasClass = body.className.indexOf('mdui-theme-layout-dark') > -1;
+        
+        if (hasClass) {{
+            body.className = body.className.replace(/mdui-theme-layout-dark/g, '').trim();
+            localStorage.setItem('theme', 'light');
         }} else {{
-            body.classList.add('mdui-theme-layout-dark');
+            body.className = body.className + ' mdui-theme-layout-dark';
+            localStorage.setItem('theme', 'dark');
         }}
     }}
     
-    document.addEventListener('DOMContentLoaded', function() {{
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {{
-            /*document.body.classList.add('mdui-theme-layout-dark');*/
-        }}
-
-        if (window.matchMedia) {{
-            window.matchMedia('(prefers-color-scheme: dark)').addListener(function(e) {{
-                if (e.matches) {{
-                    document.body.classList.add('mdui-theme-layout-dark');
-                }} else {{
-                    document.body.classList.remove('mdui-theme-layout-dark');
-                }}
+    function ready(fn) {{
+        if (document.readyState !== 'loading') {{
+            fn();
+        }} else if (document.addEventListener) {{
+            document.addEventListener('DOMContentLoaded', fn);
+        }} else {{
+            document.attachEvent('onreadystatechange', function() {{
+                if (document.readyState !== 'loading') fn();
             }});
         }}
-        
+    }}
+    
+    ready(function() {{
         var savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {{
-            document.body.classList.add('mdui-theme-layout-dark');
+            document.body.className += ' mdui-theme-layout-dark';
         }}
         
-        var tables = document.querySelectorAll('table:not(.mdui-table)');
-        tables.forEach(function(table) {{
-            table.classList.add('mdui-table');
-            var wrapper = document.createElement('div');
-            wrapper.className = 'mdui-table-responsive';
-            table.parentNode.insertBefore(wrapper, table);
-            wrapper.appendChild(table);
-        }});
+        showBrowserNotice();
+        
+        var tables = document.querySelectorAll('table');
+        for (var i = 0; i < tables.length; i++) {{
+            var table = tables[i];
+            if (table.className.indexOf('mdui-table') === -1) {{
+                table.className += ' mdui-table';
+                var wrapper = document.createElement('div');
+                wrapper.className = 'mdui-table-responsive';
+                if (table.parentNode) {{
+                    table.parentNode.insertBefore(wrapper, table);
+                    wrapper.appendChild(table);
+                }}
+            }}
+        }}
         
         var pres = document.querySelectorAll('pre');
-        pres.forEach(function(pre) {{
-            pre.classList.add('mdui-shadow-1');
-        }});
+        for (var i = 0; i < pres.length; i++) {{
+            var pre = pres[i];
+            if (pre.className.indexOf('mdui-shadow-1') === -1) {{
+                pre.className += ' mdui-shadow-1';
+            }}
+        }}
         
         var btn = document.createElement('button');
         btn.className = 'mdui-fab mdui-color-theme-accent mdui-ripple theme-switch';
         btn.innerHTML = '<i class="mdui-icon material-icons">&#xe3a9;</i>';
         btn.onclick = toggleTheme;
         document.body.appendChild(btn);
-    }});
-    // fuck IE
-    if (window.attachEvent && !window.addEventListener) {{
-        window.attachEvent('onload', function() {{
-            var tables = document.getElementsByTagName('table');
-            for (var i = 0; i < tables.length; i++) {{
-                var table = tables[i];
-                var div = document.createElement('div');
-                div.style.overflowX = 'auto';
-                table.parentNode.insertBefore(div, table);
-                div.appendChild(table);
+        
+        try {{
+            // 确保MDUI组件被正确初始化
+            if (typeof mdui !== 'undefined') {{
+                mdui.mutation();
+                
+                if (mdui.Appbar) {{
+                    new mdui.Appbar('.mdui-appbar');
+                }}
             }}
-        }});
+        }} catch(e) {{
+            console.error('MDUI init err:', e);
+        }}
+
+        if (isIE()) {{
+            var copyBtns = document.querySelectorAll('.copy-btn');
+            for (var i = 0; i < copyBtns.length; i++) {{
+                copyBtns[i].style.display = 'block';
+            }}
+            
+            var appbar = document.querySelector('.mdui-appbar');
+            if (appbar) {{
+                appbar.style.position = 'fixed';
+                appbar.style.top = '0';
+                appbar.style.width = '100%';
+                appbar.style.zIndex = '1000';
+            }}
+        }}
+    }});
+    
+    if (window.matchMedia) {{
+        try {{
+            var darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            var darkModeHandler = function(e) {{
+                if (e.matches) {{
+                    document.body.className += ' mdui-theme-layout-dark';
+                }} else {{
+                    document.body.className = document.body.className.replace(/mdui-theme-layout-dark/g, '').trim();
+                }}
+            }};
+            
+            if (darkModeQuery.addListener) {{
+                darkModeQuery.addListener(darkModeHandler);
+            }} else if (darkModeQuery.addEventListener) {{
+                darkModeQuery.addEventListener('change', darkModeHandler);
+            }}
+        }} catch(e) {{
+            console.error('media query err:', e);
+        }}
     }}
     </script>
 </head>
 <body class="mdui-theme-primary-indigo mdui-theme-accent-ppink">
-    <div class="mdui-appbar">
+    <div class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide">
         <div class="mdui-toolbar mdui-color-theme">
             <a href="javascript:;" class="mdui-typo-headline">{title}</a>
             <div class="mdui-toolbar-spacer"></div>
             <button class="mdui-btn mdui-btn-icon" mdui-menu="{{target: '#menu'}}">
                 <i class="mdui-icon material-icons">&#xe8e2;</i>
             </button>
-            <ul class="mdui-menu ignore" id="menu">
+            <ul class="mdui-menu" id="menu">
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('chinese_simplified');" class="mdui-ripple">简体中文</a>
+                    <a href="javascript:void(0);" onclick="translate.changeLanguage('chinese_simplified')" class="mdui-ripple">简体中文</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('chinese_traditional');">繁體中文</a>
+                    <a href="javascript:void(0);" onclick="translate.changeLanguage('chinese_traditional')">繁體中文</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('english');">English</a>
+                    <a href="javascript:void(0);" onclick="translate.changeLanguage('english')">English</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('korean');" class="mdui-ripple">한국어</a>
+                    <a href="javascript:void(0);" onclick="translate.changeLanguage('korean')" class="mdui-ripple">한국어</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('japanese');">日本語</a>
+                    <a href="javascript:void(0);" onclick="translate.changeLanguage('japanese')">日本語</a>
                 </li>
             </ul>
         </div>
     </div>
-    <div class="mdui-container mdui-typo">
+    <div class="mdui-container mdui-typo mdui-container-with-appbar">
         {content}
     </div>
 </body>
-<script src="https://cdn.staticfile.net/translate.js/3.12.0/translate.js"></script>
+<script src="https://cdn.staticfile.net/translate.js/3.12.0/translate.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/translate.js/3.12.0/translate.min.js';"></script>
 <script>
-translate.language.setLocal('english');
-translate.selectLanguageTag.show = false; //不出现的select的选择语言
-translate.service.use('client.edge');
-translate.execute();//进行翻译 
+// 确保translate对象已加载
+setTimeout(function() {{
+    if (typeof translate !== 'undefined') {{
+        translate.language.setLocal('english');
+        translate.selectLanguageTag.show = false; //不出现的select的选择语言
+        try {{
+            translate.service.use('client.edge');
+            translate.execute();//进行翻译
+        }} catch(e) {{
+            console.error('Translate err:', e);
+        }}
+    }}
+}}, 500);
 </script>
 </html>
 """

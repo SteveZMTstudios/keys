@@ -19,12 +19,14 @@ According to industry practice, the OpenPGP public key will also be exposed in t
 |Key list|Summary(ID)|Status|
 |----|----|----|
 |[Main](#public-key-info-main)|3745 872A 9531 98FE|🟢Active|
-|[Main (Revoked)](#public-key-info-main-Revoked)|c6fe ba3f 7d12 b3a3|🔴**Revoked**|
+|[Main (Revoked)](#public-key-info-main-Revoked)|<span style="text-decoration: line-through;">c6fe ba3f 7d12 b3a3</span>|🔴**<span style="color: red;">Revoked</span>**|
 |[Git Action](#public-key-info-git-action)|98fa 1900 a35b f9bb|🟡Inactive|
 | \- | \- |❔Unknown|
 
 
-<iframe src="tools/encrypt_sample.html" width="100%" height="500px" style="color: inherit;"></iframe>
+<iframe src="tools/encrypt_sample.html#inputSection" width="100%" height="300px" style="color: inherit; resize: both; overflow: auto;"></iframe>
+<button class="mdui-btn mdui-btn-raised mdui-color-theme-accent mdui-ripple" onclick="window.open('tools/encrypt_sample.html#inputSection', '_blank');"><i class="mdui-icon material-icons">&#xe89e;</i>Open In New Tab</button>
+
 
 ---
 
