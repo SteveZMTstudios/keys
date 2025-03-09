@@ -117,21 +117,76 @@
                 margin: 5px 0;
             }
         }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: var(--mdui-color-surface);
+                color: var(--mdui-color-on-surface);
+            }
+            
+            textarea, #dropArea {
+                background-color: var(--mdui-color-surface-container);
+                color: var(--mdui-color-on-surface);
+                border-color: rgba(255,255,255,0.12);
+            }
+            
+            #result {
+                background-color: var(--mdui-color-surface-container);
+                color: var(--mdui-color-on-surface);
+                border-color: rgba(255,255,255,0.12);
+            }
+            
+            #dropArea.highlight {
+                border-color: var(--mdui-color-primary);
+                background-color: var(--mdui-color-primary-container);
+                color: var(--mdui-color-on-primary-container);
+            }
+        }
+        
+        /* 明确定义深色主题样式类，用于手动切换 */
+        .dark-theme {
+            background-color: var(--mdui-color-surface);
+            color: var(--mdui-color-on-surface);
+        }
+        
+        .dark-theme textarea, 
+        .dark-theme #dropArea {
+            background-color: var(--mdui-color-surface-container);
+            color: var(--mdui-color-on-surface);
+            border-color: rgba(255,255,255,0.12);
+        }
+        
+        .dark-theme #result {
+            background-color: var(--mdui-color-surface-container);
+            color: var(--mdui-color-on-surface);
+            border-color: rgba(255,255,255,0.12);
+        }
+        
+        /* 为iframe模式添加特殊样式 */
+        .in-iframe {
+            max-width: 100%;
+            margin: 0;
+            padding: 10px;
+        }
     </style>
 </head>
-<body class="mdui-theme-primary-blue mdui-theme-accent-blue">
-    <h2 class="mdui-typo-headline" style="text-align: center;">PGP Encryption Tool</h2>
+<body class="mdui-theme-primary-indigo mdui-theme-accent-blue">
+    <div class="section mdui-typo" id="footerSection">
+        <h2 class="mdui-typo-headline" style="text-align: center;">PGP Encryption Tool</h2>
+        <p>We use <a href="https://github.com/stevezmtstudios.gpg" target="_blank" class="mdui-text-color-primary">Steve ZMT's Public key</a> to encrypt your data safely in your browser</p>
+        <p>All data would not save or send to anyone.</p>
+    </div>
     <div class="section" id="inputSection">
         <div class="mode-buttons mdui-btn-group">
-            <button id="textModeBtn" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-primary"><i class="mdui-icon material-icons">&#xe0d8;</i>Text</button>
-            <button id="fileModeBtn" class="mdui-btn mdui-ripple"><i class="mdui-icon material-icons">&#xe24d;</i>File</button>
+            <button id="textModeBtn" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue-a400"><i class="mdui-icon material-icons">&#xe0d8;</i> Text</button>
+            <button id="fileModeBtn" class="mdui-btn mdui-color-white mdui-shadow-1 mdui-ripple"><i class="mdui-icon material-icons">&#xe24d;</i> File</button>
         </div>
         
         <div class="input-container mdui-textfield mdui-textfield-floating-label">
             
-            <textarea id="plaintext" class="mdui-textfield-input" placeholder="Type or paste your message here" rows="5"></textarea>
+            <textarea id="plaintext" class="mdui-textfield-input mdui-ripple mdui-shadow-1 mdui-color-grey-200" placeholder="Type or paste your message here" rows="2"></textarea>
             
-            <div id="dropArea" class="hidden mdui-shadow-1">
+            <div id="dropArea" class="hidden mdui-shadow-1 mdui-color-white">
                 Drag file here or click here to upload.
                 <input type="file" id="fileInput" style="display:none;" />
             </div>
@@ -139,10 +194,10 @@
         </div>
         <p id="errorMessage" class="error-message">Oops, the file or messages are too big! it may crash your browser! Instead please use local encryption tool like Gpg4Win.</p>
         <div class="mdui-btn-group">
-            <button id="encryptBtn" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-primary">
+            <button id="encryptBtn" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-white">
                 <i class="mdui-icon material-icons">&#xe897;</i> Encrypt
             </button>
-            <button id="clearBtn" class="mdui-btn mdui-ripple">
+            <button id="clearBtn" class="mdui-btn mdui-ripple mdui-color-white">
                 <i class="mdui-icon material-icons">&#xe14c;</i> Clear
             </button>
         </div>
@@ -155,29 +210,28 @@
     </div>
     
     <div id="resultSection" class="section hidden">
-        <h2 class="mdui-typo-headline">Encrypt result</h2>
+        <p class="mdui-typo">Encrypt result</p>
         <div class="mdui-btn-group">
-            <button id="copyResult" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-primary">
+            <button id="copyResult" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-white">
                 <i class="mdui-icon material-icons">&#xe14d;</i> Copy to Clipboard
             </button>
-            <button id="downloadResult" class="mdui-btn mdui-btn-raised mdui-ripple hidden">
+            <button id="downloadResult" class="mdui-btn mdui-btn-raised mdui-ripple hidden mdui-color-white">
                 <i class="mdui-icon material-icons">&#xe2c4;</i> Download GPG
             </button>
         </div>
-        <div id="result" class="mdui-shadow-1"></div>
+        <div id="result" class="mdui-shadow-1 mdui-color-white"></div>
     </div>
-    
-    <div class="section mdui-typo">
-        <p>We use <a href="https://github.com/stevezmtstudios.gpg" target="_blank" class="mdui-text-color-primary">Steve ZMT's Public key</a> to encrypt your data safely in your browser</p>
-        <p>All data would not save or send to anyone.</p>
-    </div>
+    <!-- 当在iframe中显示时不显示此div -->
+    <!-- <div class="section mdui-typo" id="footerSection">
+        
+    </div> -->
     
     <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
     
     <!-- OpenPGP.js  -->
     <!--[if lte IE 9]>
-    <script src="https://cdn.jsdelivr.net/npm/es5-shim@4.5.10/es5-shim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/es5-shim@4.5.10/es5-sham.min.js"></script>
+    <script src="https://gcore.jsdelivr.net/npm/es5-shim@4.5.10/es5-shim.min.js"></script>
+    <script src="https://gcore.jsdelivr.net/npm/es5-shim@4.5.10/es5-sham.min.js"></script>
     <![endif]-->
     <script src="https://gcore.jsdelivr.net/npm/openpgp@5.0.0/dist/openpgp.min.js"></script>
     
@@ -668,8 +722,8 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
         var selectedFile = null;
         var encryptedData = null;
         var currentMode = 'text';
+        var inIframe = window.self !== window.top; // 检测是否在iframe中
         
-
         var plaintext = document.getElementById('plaintext');
         var textModeBtn = document.getElementById('textModeBtn');
         var fileModeBtn = document.getElementById('fileModeBtn');
@@ -686,23 +740,70 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
         var result = document.getElementById('result');
         var copyResultBtn = document.getElementById('copyResult');
         var downloadResultBtn = document.getElementById('downloadResult');
+        var footerSection = document.getElementById('footerSection');
         
+        // 检测是否在iframe中并设置相应样式
+        function setupIframeMode() {
+            if (inIframe) {
+                document.body.classList.add('in-iframe');
+                footerSection.style.display = 'none'; // 在iframe中不显示页脚
+                
+                // 检测父页面是否为深色模式
+                try {
+                    // 向父页面发送消息获取当前主题
+                    window.parent.postMessage({ type: 'requestTheme' }, '*');
+                } catch (e) {
+                    console.log('无法与父页面通信:', e);
+                }
+                
+                // 监听来自父页面的消息
+                window.addEventListener('message', function(event) {
+                    if (event.data && event.data.type === 'themeInfo') {
+                        if (event.data.isDarkMode) {
+                            document.body.classList.add('dark-theme');
+                        } else {
+                            document.body.classList.remove('dark-theme');
+                        }
+                    }
+                });
+            }
+        }
         
+        // 向父页面发送高度信息
+        function updateParentIframeHeight() {
+            if (inIframe) {
+                const height = document.body.scrollHeight;
+                try {
+                    window.parent.postMessage({ 
+                        type: 'resize', 
+                        height: height 
+                    }, '*');
+                } catch (e) {
+                    console.error('无法向父页面发送消息:', e);
+                }
+            }
+        }
 
         function initialize() {
             console.log("Using hardcoded public key");
+            setupIframeMode();
             addEventListeners();
             // 初始化MDUI组件
             mdui.mutation();
+            
+            // 初始调整一次高度
+            setTimeout(updateParentIframeHeight, 100);
         }
         
         function addEventListeners() {
             textModeBtn.addEventListener('click', function() {
                 switchMode('text');
+                setTimeout(updateParentIframeHeight, 100);
             });
             
             fileModeBtn.addEventListener('click', function() {
                 switchMode('file');
+                setTimeout(updateParentIframeHeight, 100);
             });
             
             encryptBtn.addEventListener('click', function() {
@@ -722,6 +823,7 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
                 hideResult();
                 errorMessage.style.display = 'none';
                 encryptBtn.removeAttribute('disabled');
+                setTimeout(updateParentIframeHeight, 100);
             });
             
             dropArea.addEventListener('dragover', function(e) {
@@ -749,14 +851,32 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
             
             copyResultBtn.addEventListener('click', copyToClipboard);
             downloadResultBtn.addEventListener('click', downloadEncrypted);
+            
+            // 监听窗口大小变化
+            window.addEventListener('resize', function() {
+                setTimeout(updateParentIframeHeight, 100);
+            });
+            
+            // 监听内容变化以更新iframe高度
+            const observer = new MutationObserver(function(mutations) {
+                setTimeout(updateParentIframeHeight, 100);
+            });
+            
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true,
+                attributes: true
+            });
         }
         
         function switchMode(mode) {
             currentMode = mode;
             
             if (mode === 'text') {
-                textModeBtn.classList.add('mdui-color-primary');
-                fileModeBtn.classList.remove('mdui-color-primary');
+                textModeBtn.classList.add('mdui-color-blue-a400');
+                fileModeBtn.classList.remove('mdui-color-blue-a400');
+                textModeBtn.classList.remove('mdui-color-white');
+                fileModeBtn.classList.add('mdui-color-white');
                 textModeBtn.classList.add('mdui-btn-raised');
                 fileModeBtn.classList.remove('mdui-btn-raised');
                 plaintext.classList.remove('hidden');
@@ -764,8 +884,10 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
                 
                 fileInfo.textContent = '';
             } else {
-                textModeBtn.classList.remove('mdui-color-primary');
-                fileModeBtn.classList.add('mdui-color-primary');
+                textModeBtn.classList.remove('mdui-color-blue-a400');
+                fileModeBtn.classList.add('mdui-color-blue-a400');
+                textModeBtn.classList.add('mdui-color-white');
+                fileModeBtn.classList.remove('mdui-color-white');
                 textModeBtn.classList.remove('mdui-btn-raised');
                 fileModeBtn.classList.add('mdui-btn-raised');
                 plaintext.classList.add('hidden');
@@ -820,7 +942,11 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
         
         function encryptFileHandler() {
             if (!selectedFile) {
-                alert('Please select a file first.');
+                mdui.snackbar({
+                    message: 'Please select a file first.',
+                    position: 'bottom',
+                    timeout: 2000
+                });
                 return;
             }
             
@@ -952,20 +1078,28 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
             resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             
             mdui.mutation();
+            
+            // 更新父页面的iframe高度
+            setTimeout(updateParentIframeHeight, 100);
         }
         
         function hideResult() {
             resultSection.classList.add('hidden');
             result.style.display = 'none';
             encryptedData = null;
+            
+            // 更新父页面的iframe高度
+            setTimeout(updateParentIframeHeight, 100);
         }
         
         function showLoading() {
             loading.style.display = 'block';
+            updateParentIframeHeight();
         }
         
         function hideLoading() {
             loading.style.display = 'none';
+            updateParentIframeHeight();
         }
         
         function showProgress() {
@@ -1051,6 +1185,27 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
         function isIE() {
             var ua = window.navigator.userAgent;
             return ua.indexOf('MSIE ') > -1 || ua.indexOf('Trident/') > -1;
+        }
+        
+        // 检测系统颜色主题变化
+        if (window.matchMedia) {
+            const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            
+            // 初始检测
+            if (colorSchemeQuery.matches) {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+            }
+            
+            // 监听变化
+            colorSchemeQuery.addEventListener('change', (e) => {
+                if (e.matches) {
+                    document.body.classList.add('dark-theme');
+                } else {
+                    document.body.classList.remove('dark-theme');
+                }
+            });
         }
         
         if (document.readyState === 'loading') {

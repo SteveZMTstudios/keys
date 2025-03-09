@@ -55,20 +55,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             border: none;
         }}
         
-        @media (hover: hover) {{
+        @media (hover: hover) and (pointer: fine) {{
             pre:hover .copy-btn {{ 
                 display: block; 
                 animation: fadeIn 0.3s; 
             }}
         }}
         
-        @keyframes fadeIn {{
-            from {{ opacity: 0; transform: translateY(-5px); }}
-            to {{ opacity: 1; transform: translateY(0); }}
-        }}
-        
-        @media (max-width: 768px) {{
-            .copy-btn {{ display: block; opacity: 0.9; }}
+        .touch-device .copy-btn {{ 
+            display: block; 
+            opacity: 0.9; 
         }}
         
         .mdui-table {{ 
@@ -141,6 +137,74 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             h1, h2 {{ font-size: 1.2rem; }}
             pre {{ padding: 8px; font-size: 0.8rem; }}
         }}
+        
+        .mdui-drawer .mdui-card {{
+            margin: 16px;
+            overflow: hidden; 
+        }}
+        
+        .mdui-drawer .mdui-card-primary {{
+            padding: 16px;
+        }}
+        
+        .mdui-drawer .mdui-card-primary-title {{
+            font-size: 20px;
+            line-height: 1.4;
+            word-break: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
+            max-width: 100%;
+        }}
+        
+        .mdui-drawer .mdui-card-primary-subtitle {{
+            font-size: 14px;
+            line-height: 1.4;
+            word-break: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
+            cursor: pointer;
+            max-width: 100%;
+        }}
+        
+        .mdui-drawer {{
+            background-color: #fff;
+            transition: top 0.3s, height 0.3s;
+        }}
+        
+        .mdui-theme-layout-dark .mdui-drawer {{
+            background-color: #303030;
+        }}
+        
+        @media (min-width: 1024px) {{
+            .mdui-drawer-open {{
+                padding-top: 12px;
+            }}
+            
+            body.has-appbar .mdui-drawer {{
+                height: calc(100% - var(--appbar-height, 64px));
+                top: var(--appbar-height, 64px);
+            }}
+            
+            body.appbar-hidden .mdui-drawer {{
+                height: 100%;
+                top: 0;
+            }}
+        }}
+        
+        .mdui-drawer .mdui-list-item {{
+            min-height: 36px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }}
+        
+        .mdui-drawer .mdui-list-item-content {{
+            line-height: 20px;
+        }}
+        
+        .mdui-toolbar .toc-btn {{
+            height: 48px;
+            width: 48px;
+        }}
     </style>
     <!-- 添加polyfill以支持IE11 -->
     <!--[if IE]>
@@ -175,6 +239,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                        isFirefox ? 'Firefox' : 
                        'Unknown Browser'
         }};
+    }}
+    
+    function isTouchDevice() {{
+        return ('ontouchstart' in window) || 
+               (navigator.maxTouchPoints > 0) || 
+               (navigator.msMaxTouchPoints > 0);
     }}
     
     // 显示浏览器不兼容提示
@@ -252,10 +322,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         
         if (hasClass) {{
             body.className = body.className.replace(/mdui-theme-layout-dark/g, '').trim();
-            localStorage.setItem('theme', 'light');
+            // 移除localStorage存储
         }} else {{
             body.className = body.className + ' mdui-theme-layout-dark';
-            localStorage.setItem('theme', 'dark');
+            // 移除localStorage存储
         }}
     }}
     
@@ -271,10 +341,60 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }}
     }}
     
+    // 初始化应用栏高度变量
+    function updateAppbarHeight() {{
+        var appbar = document.querySelector('.mdui-appbar');
+        if (appbar) {{
+            var height = appbar.offsetHeight;
+            document.documentElement.style.setProperty('--appbar-height', height + 'px');
+        }}
+    }}
+    
+    // 监听应用栏显示隐藏状态
+    function setupAppbarObserver() {{
+        var appbar = document.querySelector('.mdui-appbar');
+        if (!appbar) return;
+        
+        // 初始化
+        updateAppbarHeight();
+        
+        // 使用Intersection Observer监听应用栏是否可见
+        if ('IntersectionObserver' in window) {{
+            var observer = new IntersectionObserver(function(entries) {{
+                if (entries[0].isIntersecting) {{
+                    document.body.classList.remove('appbar-hidden');
+                    document.body.classList.add('appbar-visible');
+                }} else {{
+                    document.body.classList.remove('appbar-visible');
+                    document.body.classList.add('appbar-hidden');
+                }}
+            }}, {{ threshold: 0.1 }});
+            
+            observer.observe(appbar);
+        }}
+        
+        // 监听大小变化
+        if ('ResizeObserver' in window) {{
+            var resizeObserver = new ResizeObserver(function() {{
+                updateAppbarHeight();
+            }});
+            
+            resizeObserver.observe(appbar);
+        }}
+    }}
+    
     ready(function() {{
-        var savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {{
+        // 移除从localStorage读取主题的逻辑
+        // 改为默认跟随系统
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {{
             document.body.className += ' mdui-theme-layout-dark';
+        }}
+        
+        document.body.className += ' has-appbar';
+        
+        // 检测是否为触摸设备并添加相应的类
+        if (isTouchDevice()) {{
+            document.body.className += ' touch-device';
         }}
         
         showBrowserNotice();
@@ -334,6 +454,47 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 appbar.style.zIndex = '1000';
             }}
         }}
+        
+        // 设置应用栏观察器
+        setupAppbarObserver();
+        
+        // 获取当前页面URL显示在侧边栏
+        var urlElement = document.getElementById('current-url');
+        if (urlElement) {{
+            urlElement.innerText = window.location.href;
+        }}
+
+        // 生成目录
+        var titles = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        var tocList = document.getElementById('toc-list');
+        
+        if (tocList && titles.length > 0) {{
+            titles.forEach(function(title) {{
+                var level = parseInt(title.tagName.charAt(1));
+                var item = document.createElement('a');
+                item.className = 'mdui-list-item mdui-ripple';
+                item.style.paddingLeft = (level * 16) + 'px';
+                item.innerHTML = '<div class="mdui-list-item-content">' + title.textContent + '</div>';
+                
+                // 如果标题没有ID，为其生成一个
+                if (!title.id) {{
+                    title.id = 'toc-' + title.textContent.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+                }}
+                item.href = '#' + title.id;
+                
+                item.onclick = function() {{
+                    if (window.innerWidth <= 1024) {{
+                        toggleToc();
+                    }}
+                }};
+                tocList.appendChild(item);
+            }});
+        }}
+    }});
+    
+    // 监听窗口大小变化，更新appbar高度
+    window.addEventListener('resize', function() {{
+        updateAppbarHeight();
     }});
     
     if (window.matchMedia) {{
@@ -356,19 +517,53 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             console.error('media query err:', e);
         }}
     }}
+    
+    function copyUrl() {{
+        var url = window.location.href;
+        if (window.clipboardData && window.clipboardData.setData) {{
+            clipboardData.setData("Text", url);
+            showSnackbar('Copied!');
+            return;
+        }}
+        
+        var textArea = document.createElement("textarea");
+        textArea.value = url;
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.select();
+        
+        try {{
+            document.execCommand('copy');
+            showSnackbar('Copied!');
+        }} catch (err) {{
+            console.error('Copy failed:', err);
+            showSnackbar('Failed to copy, please copy manually.');
+        }}
+        
+        document.body.removeChild(textArea);
+    }}
+    
+    function toggleToc() {{
+        var drawer = new mdui.Drawer('#toc-drawer');
+        drawer.toggle();
+    }}
     </script>
 </head>
-<body class="mdui-theme-primary-indigo mdui-theme-accent-ppink">
+<body class="mdui-theme-primary-indigo mdui-theme-accent-blue">
     <div class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide">
         <div class="mdui-toolbar mdui-color-theme">
+            <button class="mdui-btn mdui-btn-icon toc-btn" onclick="toggleToc()">
+                <i class="mdui-icon material-icons">&#xe5d2;</i>
+            </button>
             <a href="javascript:;" class="mdui-typo-headline">{title}</a>
             <div class="mdui-toolbar-spacer"></div>
-            <button class="mdui-btn mdui-btn-icon" mdui-menu="{{target: '#menu'}}">
+            <button class="mdui-btn mdui-btn-icon" mdui-menu="{{target: '#langMenu'}}">
                 <i class="mdui-icon material-icons">&#xe8e2;</i>
             </button>
-            <ul class="mdui-menu" id="menu">
+            <ul class="mdui-menu" id="langMenu">
                 <li class="mdui-menu-item">
-                    <a href="javascript:void(0);" onclick="translate.changeLanguage('chinese_simplified')" class="mdui-ripple">简体中文</a>
+                    <a href="javascript:void(0);" onclick="translate.changeLanguage('chinese_simplified')" >简体中文</a>
                 </li>
                 <li class="mdui-menu-item">
                     <a href="javascript:void(0);" onclick="translate.changeLanguage('chinese_traditional')">繁體中文</a>
@@ -382,14 +577,34 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 <li class="mdui-menu-item">
                     <a href="javascript:void(0);" onclick="translate.changeLanguage('japanese')">日本語</a>
                 </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:void(0);" onclick="translate.changeLanguage('italian')">italiano</a>
+                </li>
+                </li><li class="mdui-menu-item">
+                    <a href="javascript:void(0);" onclick="translate.changeLanguage('deutsch')">Deutsch</a>
+                </li>
+                </li><li class="mdui-menu-item">
+                    <a href="javascript:void(0);" onclick="translate.changeLanguage('russian')">Русский язык</a>
+                </li>
             </ul>
         </div>
     </div>
+
+    <div class="mdui-drawer mdui-drawer-close" id="toc-drawer">
+        <div class="mdui-card">
+            <div class="mdui-card-primary">
+                <div class="mdui-card-primary-title">{title}</div>
+                <div class="mdui-card-primary-subtitle" onclick="copyUrl()" id="current-url"></div>
+            </div>
+        </div>
+        <div class="mdui-list" id="toc-list">
+        </div>
+    </div>
+    
     <div class="mdui-container mdui-typo mdui-container-with-appbar">
         {content}
     </div>
-</body>
-<script src="https://cdn.staticfile.net/translate.js/3.12.0/translate.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/translate.js/3.12.0/translate.min.js';"></script>
+<script src="https://cdn.staticfile.net/translate.js/3.12.0/translate.js" onerror="this.onerror=null;this.src='https://sharepoint.cf.stevezmt.top/js/3rd-party/translate.min.js';"></script>
 <script>
 // 确保translate对象已加载
 setTimeout(function() {{
@@ -397,6 +612,7 @@ setTimeout(function() {{
         translate.language.setLocal('english');
         translate.selectLanguageTag.show = false; //不出现的select的选择语言
         try {{
+            translate.ignore.id.push('langMenu');  
             translate.service.use('client.edge');
             translate.execute();//进行翻译
         }} catch(e) {{

@@ -1,18 +1,17 @@
 # Steve ZMT's PGP keys
-Please [View in Github](https://github.com/stevezmtstudios/pgpkey#steve-zmts-pgp-keys)
 
 **English (US)** | <a href="javascript:translate.changeLanguage('chinese_simplified');" class="mdui-ripple">简体中文</a>
 
-This page is used to store messages about the PGP key from Steve ZMT and its current status.
+This page contains information about PGP keys used by Steve ZMT and their current status.
 
-According to industry practice, the OpenPGP public key will also be exposed in the keyserver. However, you should pay attention to this page (https://si1vr.github.io/key) in real time because it may be revoked or cancelled in a timely manner.
+Following industry best practices, the OpenPGP public keys are also published on keyservers. However, please regularly check this page (https://si1vr.github.io/key) for the most up-to-date information, as keys may be revoked or withdrawn when necessary.
 
 > 
 > **<span style="color: lightblue;">Last updated at 2025-03-08.</span>**
 
 >
 > **<span style="color: red;">The key c6fe ba3f 7d12 b3a3 has been revoked. Please DO NOT USE IT ANYMORE.</span>**
-> If you need to contact me to check this gpg key, you can use my telegram account: <https://t.me/stevezmtstudios> Then you can confirm further.
+> If you need to verify this revocation, you can contact me through my Telegram account: <https://t.me/stevezmtstudios> for confirmation.
 
 ## Dashboard
 
@@ -24,9 +23,27 @@ According to industry practice, the OpenPGP public key will also be exposed in t
 | \- | \- |❔Unknown|
 
 
-<iframe src="tools/encrypt_sample.html#inputSection" width="100%" height="300px" style="color: inherit; resize: both; overflow: auto;"></iframe>
-<button class="mdui-btn mdui-btn-raised mdui-color-theme-accent mdui-ripple" onclick="window.open('tools/encrypt_sample.html#inputSection', '_blank');"><i class="mdui-icon material-icons">&#xe89e;</i>Open In New Tab</button>
+<iframe id="encryptFrame" src="tools/encrypt_sample.html" width="100%" height="200px" style="color: inherit; min-height: 200px; max-height: 1000px; min-width: 100%; max-width: 100%; resize: both; overflow: auto; background:#e0e0e0;"></iframe>
+<button class="mdui-btn mdui-btn-raised mdui-color-theme-accent mdui-ripple" onclick="window.open('tools/encrypt_sample.html', '_blank');"><i class="mdui-icon material-icons">&#xe89e;</i> Open In New Tab</button>
 
+<script>
+// iframe高度自适应处理
+window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'resize') {
+        const iframe = document.getElementById('encryptFrame');
+        if (iframe) {
+            // 设置最小高度为200px和最大高度为1000px
+            const newHeight = Math.max(150, Math.min(1000, event.data.height + 10.5));
+            // 添加平滑过渡动画
+            iframe.style.transition = 'height 0.3s ease';
+            iframe.style.height = newHeight + 'px';
+        }
+    } 
+});
+
+// 监听系统深色模式变化，并通知iframe
+
+</script>
 
 ---
 
