@@ -206,14 +206,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             width: 48px;
         }}
     </style>
-    <!-- 添加polyfill以支持IE11 -->
     <!--[if IE]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.2.8/es6-promise.auto.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://gcore.jsdelivr.net/npm/classlist-polyfill@1.2.0/src/index.min.js"></script>
     <script src="https://gcore.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js"></script>
     <![endif]-->
-    <!-- MDUI JavaScript -->
     <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/mdui/1.0.2/js/mdui.min.js';"></script>
     <script>
     // fxxk ie
@@ -247,7 +245,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                (navigator.msMaxTouchPoints > 0);
     }}
     
-    // 显示浏览器不兼容提示
     function showBrowserNotice() {{
         var browserInfo = detectBrowser();
         if (browserInfo.isOldBrowser) {{
@@ -261,7 +258,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                         closeOnOutsideClick: true
                     }});
                 }} else {{
-                    // 如果mdui未加载，创建简单提示
                     alert('You are using an unsupported ' + browserInfo.browserName + ', some features may not work properly.');
                 }}
             }} catch (e) {{
@@ -322,10 +318,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         
         if (hasClass) {{
             body.className = body.className.replace(/mdui-theme-layout-dark/g, '').trim();
-            // 移除localStorage存储
         }} else {{
             body.className = body.className + ' mdui-theme-layout-dark';
-            // 移除localStorage存储
         }}
     }}
     
@@ -341,7 +335,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }}
     }}
     
-    // 初始化应用栏高度变量
     function updateAppbarHeight() {{
         var appbar = document.querySelector('.mdui-appbar');
         if (appbar) {{
@@ -350,15 +343,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }}
     }}
     
-    // 监听应用栏显示隐藏状态
     function setupAppbarObserver() {{
         var appbar = document.querySelector('.mdui-appbar');
         if (!appbar) return;
         
-        // 初始化
         updateAppbarHeight();
         
-        // 使用Intersection Observer监听应用栏是否可见
         if ('IntersectionObserver' in window) {{
             var observer = new IntersectionObserver(function(entries) {{
                 if (entries[0].isIntersecting) {{
@@ -373,7 +363,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             observer.observe(appbar);
         }}
         
-        // 监听大小变化
         if ('ResizeObserver' in window) {{
             var resizeObserver = new ResizeObserver(function() {{
                 updateAppbarHeight();
@@ -384,15 +373,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }}
     
     ready(function() {{
-        // 移除从localStorage读取主题的逻辑
-        // 改为默认跟随系统
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {{
             document.body.className += ' mdui-theme-layout-dark';
         }}
         
         document.body.className += ' has-appbar';
         
-        // 检测是否为触摸设备并添加相应的类
         if (isTouchDevice()) {{
             document.body.className += ' touch-device';
         }}
@@ -428,7 +414,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         document.body.appendChild(btn);
         
         try {{
-            // 确保MDUI组件被正确初始化
             if (typeof mdui !== 'undefined') {{
                 mdui.mutation();
                 
@@ -455,16 +440,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             }}
         }}
         
-        // 设置应用栏观察器
         setupAppbarObserver();
         
-        // 获取当前页面URL显示在侧边栏
         var urlElement = document.getElementById('current-url');
         if (urlElement) {{
             urlElement.innerText = window.location.href;
         }}
 
-        // 生成目录
         var titles = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
         var tocList = document.getElementById('toc-list');
         
@@ -476,7 +458,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 item.style.paddingLeft = (level * 16) + 'px';
                 item.innerHTML = '<div class="mdui-list-item-content">' + title.textContent + '</div>';
                 
-                // 如果标题没有ID，为其生成一个
                 if (!title.id) {{
                     title.id = 'toc-' + title.textContent.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
                 }}
@@ -492,7 +473,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }}
     }});
     
-    // 监听窗口大小变化，更新appbar高度
     window.addEventListener('resize', function() {{
         updateAppbarHeight();
     }});
@@ -563,28 +543,28 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             </button>
             <ul class="mdui-menu" id="langMenu">
                 <li class="mdui-menu-item">
-                    <a href="javascript:void(0);" onclick="translate.changeLanguage('chinese_simplified')" >简体中文</a>
+                    <a href="javascript:translate.changeLanguage('chinese_simplified');">简体中文</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:void(0);" onclick="translate.changeLanguage('chinese_traditional')">繁體中文</a>
+                    <a href="javascript:translate.changeLanguage('chinese_traditional');" >繁體中文</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:void(0);" onclick="translate.changeLanguage('english')">English</a>
+                    <a href="javascript:translate.changeLanguage('english');">English</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:void(0);" onclick="translate.changeLanguage('korean')" class="mdui-ripple">한국어</a>
+                    <a href="javascript:translate.changeLanguage('korean');">한국어</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:void(0);" onclick="translate.changeLanguage('japanese')">日本語</a>
+                    <a href="javascript:translate.changeLanguage('japanese');">日本語</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:void(0);" onclick="translate.changeLanguage('italian')">italiano</a>
+                    <a href="javascript:translate.changeLanguage('italian');">italiano</a>
                 </li>
                 </li><li class="mdui-menu-item">
-                    <a href="javascript:void(0);" onclick="translate.changeLanguage('deutsch')">Deutsch</a>
+                    <a href="javascript:translate.changeLanguage('deutsch');">Deutsch</a>
                 </li>
                 </li><li class="mdui-menu-item">
-                    <a href="javascript:void(0);" onclick="translate.changeLanguage('russian')">Русский язык</a>
+                    <a href="javascript:translate.changeLanguage('russian');">Русский язык</a>
                 </li>
             </ul>
         </div>
@@ -606,15 +586,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </div>
 <script src="https://cdn.staticfile.net/translate.js/3.12.0/translate.js" onerror="this.onerror=null;this.src='https://sharepoint.cf.stevezmt.top/js/3rd-party/translate.min.js';"></script>
 <script>
-// 确保translate对象已加载
 setTimeout(function() {{
     if (typeof translate !== 'undefined') {{
         translate.language.setLocal('english');
-        translate.selectLanguageTag.show = false; //不出现的select的选择语言
+        translate.selectLanguageTag.show = false;
         try {{
             translate.ignore.id.push('langMenu');  
             translate.service.use('client.edge');
-            translate.execute();//进行翻译
+            translate.execute();
         }} catch(e) {{
             console.error('Translate err:', e);
         }}

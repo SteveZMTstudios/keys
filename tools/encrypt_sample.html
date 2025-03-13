@@ -152,13 +152,13 @@
         .dark-theme textarea, 
         .dark-theme #dropArea {
             background-color: var(--mdui-color-surface-container);
-            color: var(--mdui-color-on-surface);
+            color: var (--mdui-color-on-surface);
             border-color: rgba(255,255,255,0.12);
         }
         
         .dark-theme #result {
             background-color: var(--mdui-color-surface-container);
-            color: var(--mdui-color-on-surface);
+            color: var (--mdui-color-on-surface);
             border-color: rgba(255,255,255,0.12);
         }
         
@@ -212,19 +212,19 @@
     <div id="resultSection" class="section hidden">
         <p class="mdui-typo">Encrypt result</p>
         <div class="mdui-btn-group">
-            <button id="copyResult" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-white">
+            <button id="copyResult" class="mdui-btn mdui-btn-raised mdui-ripple mdui-ripple-green mdui-color-white">
                 <i class="mdui-icon material-icons">&#xe14d;</i> Copy to Clipboard
             </button>
             <button id="downloadResult" class="mdui-btn mdui-btn-raised mdui-ripple hidden mdui-color-white">
                 <i class="mdui-icon material-icons">&#xe2c4;</i> Download GPG
             </button>
+            <button id="emailResult" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-white">
+                <i class="mdui-icon material-icons">&#xe0e1;</i> Send Email
+            </button>
         </div>
         <div id="result" class="mdui-shadow-1 mdui-color-white"></div>
     </div>
-    <!-- 当在iframe中显示时不显示此div -->
-    <!-- <div class="section mdui-typo" id="footerSection">
-        
-    </div> -->
+
     
     <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
     
@@ -851,6 +851,7 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
             
             copyResultBtn.addEventListener('click', copyToClipboard);
             downloadResultBtn.addEventListener('click', downloadEncrypted);
+            document.getElementById('emailResult').addEventListener('click', showEmailConfirmDialog);
             
             // 监听窗口大小变化
             window.addEventListener('resize', function() {
@@ -1122,24 +1123,49 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
             try {
                 var successful = document.execCommand('copy');
                 if (successful) {
-                    mdui.snackbar({
-                        message: 'Copied to clipboard!',
-                        position: 'bottom',
-                        timeout: 2000
-                    });
+                    // 保存原始内容
+                    const originalHTML = copyResultBtn.innerHTML;
+                    const originalClasses = copyResultBtn.className;
+                    
+                    // 更改按钮样式为成功状态
+                    copyResultBtn.innerHTML = '<i class="mdui-icon material-icons">&#xe876;</i> Copied!';
+                    copyResultBtn.className = originalClasses.replace('mdui-color-white', 'mdui-color-green');
+                    
+                    // 3秒后恢复
+                    setTimeout(function() {
+                        copyResultBtn.innerHTML = originalHTML;
+                        copyResultBtn.className = originalClasses;
+                    }, 3000);
                 } else {
-                    mdui.snackbar({
-                        message: 'Failed to copy to clipboard, please try manually.',
-                        position: 'bottom',
-                        timeout: 2000
-                    });
+                    // 保存原始内容
+                    const originalHTML = copyResultBtn.innerHTML;
+                    const originalClasses = copyResultBtn.className;
+                    
+                    // 更改按钮样式为失败状态
+                    copyResultBtn.innerHTML = '<i class="mdui-icon material-icons">&#xe002;</i> Failed to copy';
+                    copyResultBtn.className = originalClasses.replace('mdui-color-white', 'mdui-color-red');
+                    
+                    // 3秒后恢复
+                    setTimeout(function() {
+                        copyResultBtn.innerHTML = originalHTML;
+                        copyResultBtn.className = originalClasses;
+                    }, 3000);
                 }
             } catch (err) {
-                mdui.snackbar({
-                    message: 'cp: ' + err.message,
-                    position: 'bottom',
-                    timeout: 2000
-                });
+                // 保存原始内容
+                const originalHTML = copyResultBtn.innerHTML;
+                const originalClasses = copyResultBtn.className;
+                
+                // 更改按钮样式为失败状态
+                copyResultBtn.innerHTML = '<i class="mdui-icon material-icons">&#xe002;</i> Failed to copy';
+                copyResultBtn.className = originalClasses.replace('mdui-color-white', 'mdui-color-red');
+                
+                // 3秒后恢复
+                setTimeout(function() {
+                    copyResultBtn.innerHTML = originalHTML;
+                    copyResultBtn.className = originalClasses;
+                }, 3000);
+                
                 console.error('Error during copy:', err);
             }
             
@@ -1156,7 +1182,12 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
                 return;
             }
             
+            // 保存原始内容
+            const originalHTML = downloadResultBtn.innerHTML;
             
+            // 替换为加载图标
+            downloadResultBtn.innerHTML = '<div class="mdui-valign"><i class="mdui-spinner"></i></div>';
+            mdui.mutation(); // 初始化spinner组件
             
             try {
                 var blob = new Blob([encryptedData], { type: 'application/octet-stream' });
@@ -1172,15 +1203,101 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
                     setTimeout(function() {
                         document.body.removeChild(downloadLink);
                         window.URL.revokeObjectURL(downloadLink.href);
-                    }, 100);
+                        
+                        // 延迟一会儿再恢复原始图标，让用户看到下载动作
+                        setTimeout(function() {
+                            downloadResultBtn.innerHTML = originalHTML;
+                        }, 800);
+                    }, 300);
                 } else {
                     alert('Your browser does not support direct downloads. Please try a more recent browser.');
+                    // 恢复原始图标
+                    downloadResultBtn.innerHTML = originalHTML;
                 }
             } catch (e) {
                 console.error('Download error:', e);
                 alert('Error creating download: ' + e.message);
+                // 错误时恢复原始图标
+                downloadResultBtn.innerHTML = originalHTML;
             }
         }
+        
+        // 显示邮件发送确认对话框
+        function showEmailConfirmDialog() {
+            mdui.dialog({
+                title: 'Confirm Send via email',
+                content: `You will open a draft email with the encrypted content and the recipient's email address is <a class="mdui-typo" href="mailto:admin@stevezmt.top">admin@stevezmt.top</a>.<br/>
+                Web GPG encryption cannot verify the sender, continue?`,
+                buttons: [
+                    {
+                        text: 'Cancel'
+                    },
+                    {
+                        text: 'Continue',
+                        onClick: function() {
+                            sendEncryptedEmail();
+                        }
+                    }
+                ]
+            });
+        }
+        
+        // 发送加密内容到指定邮箱
+        function sendEncryptedEmail() {
+            const emailAddress = 'admin@stevezmt.top';
+            const subject = 'Encrypted message via key.stevezmt.top';
+            let body = '';
+            let attachment = null;
+            
+            if (currentMode === 'text') {
+                // 对于文本模式，直接在邮件正文中包含加密内容
+                body = encodeURIComponent(result.textContent || '');
+                
+                // 尝试使用mailto协议
+                window.location.href = `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${body}`;
+            } else {
+                // 对于文件模式，需要先下载文件，然后提示用户手动附加
+                try {
+                    // 先下载文件
+                    var blob = new Blob([encryptedData], { type: 'application/octet-stream' });
+                    var filename = (selectedFile ? selectedFile.name : 'encrypted-file') + '.gpg';
+                    
+                    // 显示说明
+                    mdui.snackbar({
+                        message: 'Please download the encrypted file and attach it to your email client.',
+                        position: 'top',
+                        timeout: 5000
+
+                    });
+                    
+                    // 下载文件
+                    var downloadLink = document.createElement('a');
+                    if (window.URL && window.URL.createObjectURL) {
+                        downloadLink.href = window.URL.createObjectURL(blob);
+                        downloadLink.download = filename;
+                        downloadLink.style.display = 'none';
+                        document.body.appendChild(downloadLink);
+                        downloadLink.click();
+                        
+                        setTimeout(function() {
+                            document.body.removeChild(downloadLink);
+                            window.URL.revokeObjectURL(downloadLink.href);
+                            
+                            // 下载后打开邮件客户端
+                            setTimeout(function() {
+                                window.location.href = `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent('This draft is Empty!\nPlease add the encrypted file in email as attachment.\n请查看附件中的加密文件。')}`;
+                            }, 1000);
+                        }, 100);
+                    } else {
+                        alert('Your browser does not support direct downloads. Please try a more recent browser.');
+                    }
+                } catch (e) {
+                    console.error('sending mail err:', e);
+                    alert('Error occured then creating mail:' + e.message);
+                }
+            }
+        }
+        
         // fuck ie
         function isIE() {
             var ua = window.navigator.userAgent;
