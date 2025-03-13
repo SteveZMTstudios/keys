@@ -49,6 +49,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             box-shadow: none;
         }}
         
+        .copy-btn.copy-success {{
+            color: #4CAF50 !important;
+        }}
+        
         .mdui-theme-layout-dark .copy-btn {{ 
             background-color: rgba(30, 30, 30, 0.7);
             color: #9e9e9e;
@@ -274,6 +278,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         if (window.clipboardData && window.clipboardData.setData) {{
             window.clipboardData.setData("Text", text);
             showSnackbar('Copied to clipboard!');
+            showCopySuccess(btn);
             return;
         }}
         
@@ -288,6 +293,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             var successful = document.execCommand('copy');
             if (successful) {{
                 showSnackbar('Copied to clipboard!');
+                showCopySuccess(btn);
             }} else {{
                 showSnackbar('Failed to copy, please copy manually');
             }}
@@ -297,6 +303,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }}
         
         document.body.removeChild(textArea);
+    }}
+    
+    function showCopySuccess(btn) {{
+        showSnackbar('Copied to clipboard!');
+        var icon = btn.querySelector('i');
+        var oldHtml = icon.innerHTML;
+        icon.innerHTML = '&#xe877;';
+        btn.classList.add('copy-success');
+        
+        setTimeout(function() {{
+            icon.innerHTML = oldHtml;
+            btn.classList.remove('copy-success');
+        }}, 2000);
     }}
     
     function showSnackbar(message) {{
