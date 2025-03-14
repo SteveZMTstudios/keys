@@ -306,7 +306,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }}
     
     function showCopySuccess(btn) {{
-        showSnackbar('Copied to clipboard!');
         var icon = btn.querySelector('i');
         var oldHtml = icon.innerHTML;
         icon.innerHTML = '&#xe877;';
@@ -550,7 +549,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </script>
 </head>
 <body class="mdui-theme-primary-indigo mdui-theme-accent-blue">
-    <div class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide">
+    <div class="mdui-appbar mdui-appbar-fixed">
         <div class="mdui-toolbar mdui-color-theme">
             <button class="mdui-btn mdui-btn-icon toc-btn" onclick="toggleToc()">
                 <i class="mdui-icon material-icons">&#xe5d2;</i>
