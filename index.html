@@ -315,7 +315,39 @@
             alert(message);
         }
     }
-
+    function showTranslateComplete(targetlangttl) {
+        var languageMap = {
+            'chinese_simplified': '已翻译为简体中文',
+            'chinese_traditional': '已翻譯為繁體中文',
+            'english': 'Translated to English',
+            'spanish': 'Traducido al español',
+            'french': 'Traduit en français',
+            'deutsch': 'Übersetzt auf Deutsch',
+            'italian': 'Tradotto in italiano',
+            'russian': 'Переведено на русский язык',
+            'japanese': '日本語に翻訳',
+            'korean': '한국어로 번역됨',
+            'vietnamese': 'Đã dịch sang tiếng Việt',
+            'arabic': 'ترجم إلى العربية'
+        };
+        var translatedMessage = languageMap[targetlangttl] || 'Page translated.';
+        
+        if (typeof showTranslateComplete.lastMessage === 'undefined' || showTranslateComplete.lastMessage !== translatedMessage) {
+            showTranslateComplete.lastMessage = translatedMessage;
+            if (typeof mdui !== 'undefined' && mdui.snackbar) {
+                mdui.snackbar({
+                    message: translatedMessage,
+                    position: 'top',
+                    buttonText: 'OK',
+                    timeout: 2000,
+                    closeOnOutsideClick: true
+                });
+            } else {
+                console.log(translatedMessage);
+            }
+        }
+    }
+    
     function toggleTheme() {
         var body = document.body;
         var hasClass = body.className.indexOf('mdui-theme-layout-dark') > -1;
@@ -556,19 +588,31 @@
                     <a href="javascript:translate.changeLanguage('english');">English</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('korean');">한국어</a>
+                    <a href="javascript:translate.changeLanguage('spanish');">Español</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('french');">Français</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('deutsch');">Deutsch</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('italian');">italiano</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('russian');">Русский язык</a>
                 </li>
                 <li class="mdui-menu-item">
                     <a href="javascript:translate.changeLanguage('japanese');">日本語</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('italian');">italiano</a>
+                    <a href="javascript:translate.changeLanguage('korean');">한국어</a>
                 </li>
-                </li><li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('deutsch');">Deutsch</a>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('vietnamese');">Tiếng Việt</a>
                 </li>
-                </li><li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('russian');">Русский язык</a>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('arabic');">بالعربية</a>
                 </li>
             </ul>
         </div>
@@ -1293,17 +1337,24 @@ DO NOT USE IT TO ENCRYPT ANY MESSAGE ALTHOUGH IT IS STILL VALID.</p>
 <script src="https://cdn.staticfile.net/translate.js/3.12.0/translate.js" onerror="this.onerror=null;this.src='https://sharepoint.cf.stevezmt.top/js/3rd-party/translate.min.js';"></script>
 <script>
 setTimeout(function() {
+    var isTranslated = 0;
     if (typeof translate !== 'undefined') {
-        translate.language.setLocal('english');
-        translate.selectLanguageTag.show = false;
         try {
+            translate.language.setLocal('english');
+            translate.selectLanguageTag.show = false;
+            translate.ignore.tag.push('tbody');
+            translate.ignore.tag.push('code');
             translate.ignore.id.push('langMenu');  
             translate.service.use('client.edge');
+            showTranslateComplete(translate.language.getCurrent());
             translate.execute();
         } catch(e) {
             console.error('Translate err:', e);
         }
     }
 }, 500);
+translate.listener.renderTaskFinish = function(task){
+    showTranslateComplete(translate.language.getCurrent());
+}
 </script>
 </html>
