@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate" />
     <title>Steve ZMT's PGP keys</title>
     <!-- MDUI CSS -->
     <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/mdui/1.0.2/css/mdui.min.css';">
@@ -294,7 +295,7 @@
     function showCopySuccess(btn) {
         var icon = btn.querySelector('i');
         var oldHtml = icon.innerHTML;
-        icon.innerHTML = '&#xe877;';
+        icon.innerHTML = '&#xe876;';
         btn.classList.add('copy-success');
         
         setTimeout(function() {
@@ -315,22 +316,30 @@
             alert(message);
         }
     }
+    
     function showTranslateComplete(targetlangttl) {
         var languageMap = {
-            'chinese_simplified': '已翻译为简体中文',
-            'chinese_traditional': '已翻譯為繁體中文',
-            'english': 'Translated to English',
-            'spanish': 'Traducido al español',
-            'french': 'Traduit en français',
-            'deutsch': 'Übersetzt auf Deutsch',
-            'italian': 'Tradotto in italiano',
-            'russian': 'Переведено на русский язык',
-            'japanese': '日本語に翻訳',
-            'korean': '한국어로 번역됨',
-            'vietnamese': 'Đã dịch sang tiếng Việt',
-            'arabic': 'ترجم إلى العربية'
+            'chinese_simplified': '<i class="mdui-icon material-icons">&#xe8e2;</i> 已翻译为简体中文',
+            'chinese_traditional': '<i class="mdui-icon material-icons">&#xe8e2;</i> 已翻譯為繁體中文',
+            'english': '<i class="mdui-icon material-icons">&#xe8e2;</i> Translated to English',
+            'spanish': '<i class="mdui-icon material-icons">&#xe8e2;</i> Traducido al español',
+            'french': '<i class="mdui-icon material-icons">&#xe8e2;</i> Traduit en français',
+            'deutsch': '<i class="mdui-icon material-icons">&#xe8e2;</i> Übersetzt auf Deutsch',
+            'italian': '<i class="mdui-icon material-icons">&#xe8e2;</i> Tradotto in italiano',
+            'russian': '<i class="mdui-icon material-icons">&#xe8e2;</i> Переведено на русский язык',
+            'japanese': '<i class="mdui-icon material-icons">&#xe8e2;</i> 日本語に翻訳',
+            'korean': '<i class="mdui-icon material-icons">&#xe8e2;</i> 한국어로 번역됨',
+            'vietnamese': '<i class="mdui-icon material-icons">&#xe8e2;</i> Đã dịch sang tiếng Việt',
+            'arabic': '<i class="mdui-icon material-icons">&#xe8e2;</i> ترجم إلى العربية'
         };
-        var translatedMessage = languageMap[targetlangttl] || 'Page translated.';
+        var translatedMessage = languageMap[targetlangttl] || '<i class="mdui-icon material-icons">&#xe8e2;</i> Page translated.';
+                if (targetlangttl === 'arabic') {
+            document.documentElement.setAttribute('dir', 'rtl');
+            document.body.classList.add('mdui-rtl');
+        } else {
+            document.documentElement.setAttribute('dir', 'ltr');
+            document.body.classList.remove('mdui-rtl');
+        }
         
         if (typeof showTranslateComplete.lastMessage === 'undefined' || showTranslateComplete.lastMessage !== translatedMessage) {
             showTranslateComplete.lastMessage = translatedMessage;
@@ -339,7 +348,7 @@
                     message: translatedMessage,
                     position: 'top',
                     buttonText: 'OK',
-                    timeout: 2000,
+                    timeout: 5000,
                     closeOnOutsideClick: true
                 });
             } else {
@@ -579,40 +588,40 @@
             </button>
             <ul class="mdui-menu" id="langMenu">
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('chinese_simplified');">简体中文</a>
+                    <a href="javascript:translate.changeLanguage('chinese_simplified');">🇨🇳 简体中文</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('chinese_traditional');" >繁體中文</a>
+                    <a href="javascript:translate.changeLanguage('chinese_traditional');">🇨🇳 繁體中文</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('english');">English</a>
+                    <a href="javascript:translate.changeLanguage('english');">🇺🇸 English</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('spanish');">Español</a>
+                    <a href="javascript:translate.changeLanguage('spanish');">🇪🇸 Español</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('french');">Français</a>
+                    <a href="javascript:translate.changeLanguage('french');">🇫🇷 Français</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('deutsch');">Deutsch</a>
+                    <a href="javascript:translate.changeLanguage('deutsch');">🇩🇪 Deutsch</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('italian');">italiano</a>
+                    <a href="javascript:translate.changeLanguage('italian');">🇮🇹 italiano</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('russian');">Русский язык</a>
+                    <a href="javascript:translate.changeLanguage('russian');">🇷🇺 Русский язык</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('japanese');">日本語</a>
+                    <a href="javascript:translate.changeLanguage('japanese');">🇯🇵 日本語</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('korean');">한국어</a>
+                    <a href="javascript:translate.changeLanguage('korean');">🇰🇷 한국어</a>
                 </li>
                 <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('vietnamese');">Tiếng Việt</a>
+                    <a href="javascript:translate.changeLanguage('vietnamese');">🇻🇳 Tiếng Việt</a>
                 </li>
-                <li class="mdui-menu-item">
-                    <a href="javascript:translate.changeLanguage('arabic');">بالعربية</a>
+                <li class="mdui-menu-item mdui-rtl mdui-text-right" dir="rtl">
+                    <a href="javascript:translate.changeLanguage('arabic');">🇸🇦 بالعربية</a>
                 </li>
             </ul>
         </div>
