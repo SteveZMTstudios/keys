@@ -190,6 +190,23 @@
         (function() {
             // 常量定义
             const YUBIKEY_VENDOR_ID = 0x1050;
+            // 添加所有已知的Yubikey产品ID
+            const YUBIKEY_PRODUCT_IDS = [
+                0x0113, // Yubikey NEO
+                0x0114, // Yubikey NEO OTP+U2F
+                0x0115, // Yubikey NEO OTP+U2F+CCID
+                0x0116, // Yubikey NEO CCID
+                0x0120, // Yubikey 4 OTP
+                0x0121, // Yubikey 4 U2F
+                0x0401, // Yubikey 4 OTP+U2F
+                0x0402, // Yubikey 4 OTP+U2F+CCID
+                0x0403, // Yubikey 4 CCID
+                0x0404, // Yubikey 4 OTP+CCID
+                0x0405, // Security Key by Yubico
+                0x0406, // Yubikey 4 U2F+CCID
+                0x0407, // Yubikey 5 (all versions)
+                0x0410  // Yubikey 5 FIPS (all versions)
+            ];
             const OpenPGP_AID = new Uint8Array([0xD2, 0x76, 0x00, 0x01, 0x24, 0x01]);
             const INS = {
                 VERIFY: 0x20,
@@ -198,7 +215,10 @@
                 GENERATE: 0x47,
                 AUTHENTICATE: 0x87
             };
-
+            
+            // 添加命令和响应调试
+            const DEBUG = false; // 设置为true启用调试日志
+            
             // 全局变量
             let yubikey = null;
             let currentMode = 'text';
@@ -228,6 +248,19 @@
                         updateYubikeyStatus('error', 'WebUSB not supported in this browser. Please use Chrome or Edge.');
                     }
                     return false;
+                } else {
+                    // 检查浏览器是否支持WebUSB功能
+                    try {
+                        const testSupport = navigator.usb.getDevices();
+                        if (!testSupport || typeof testSupport.then !== 'function') {
+                            updateYubikeyStatus('error', 'WebUSB API不完全支持。请使用最新版Chrome或Edge浏览器。');
+                            return false;
+                        }
+                    } catch (e) {
+                        console.error('WebUSB API测试失败:', e);
+                        updateYubikeyStatus('error', 'WebUSB API不可用：' + e.message);
+                        return false;
+                    }
                 }
                 return true;
             }
@@ -260,49 +293,109 @@
             class YubikeyPGP {
                 constructor(device) {
                     this.device = device;
-                    this.iface = null;  // Changed from interface to iface
+                    this.iface = null;
                     this.endpoint = null;
+                    this.responseMax = 64; // 默认响应缓冲区大小
                 }
 
                 async connect() {
                     try {
+                        if (DEBUG) console.log('正在连接设备:', this.device);
+                        
+                        // 如果设备已打开，先关闭
+                        if (this.device.opened) {
+                            try {
+                                await this.device.close();
+                                if (DEBUG) console.log('关闭了已打开的设备');
+                            } catch (e) {
+                                console.warn('关闭已打开设备时出错:', e);
+                                // 继续尝试打开设备
+                            }
+                        }
+                        
                         await this.device.open();
                         
-                        // 添加更多的错误处理和状态反馈
                         if (!this.device.opened) {
-                            throw new Error('Failed to open device');
+                            throw new Error('无法打开设备');
                         }
                         
+                        if (DEBUG) console.log('设备已打开，选择配置');
+                        
+                        // 选择配置
                         if (this.device.configuration === null) {
                             await this.device.selectConfiguration(1);
+                            if (DEBUG) console.log('已选择配置 1');
+                        } else {
+                            if (DEBUG) console.log('使用现有配置:', this.device.configuration);
                         }
 
-                        // 获取接口更安全的方法
-                        if (!this.device.configuration || !this.device.configuration.interfaces || this.device.configuration.interfaces.length === 0) {
-                            throw new Error('Device has no available interfaces');
+                        // 获取接口
+                        if (!this.device.configuration || !this.device.configuration.interfaces) {
+                            throw new Error('设备没有可用接口');
                         }
-
-                        const iface = this.device.configuration.interfaces[0];
+                        
+                        // 尝试找到CCID接口
+                        let ccidInterface = null;
+                        for (const iface of this.device.configuration.interfaces) {
+                            if (iface.alternates && iface.alternates.length > 0) {
+                                const alt = iface.alternates[0];
+                                if (alt.interfaceClass === 0x0B) { // CCID类
+                                    ccidInterface = iface;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        // 如果找不到CCID接口，使用第一个可用接口
+                        const iface = ccidInterface || this.device.configuration.interfaces[0];
+                        
+                        if (DEBUG) console.log('使用接口:', iface);
                         
                         try {
                             await this.device.claimInterface(iface.interfaceNumber);
+                            if (DEBUG) console.log('已申请接口:', iface.interfaceNumber);
                         } catch (e) {
-                            throw new Error(`Failed to claim interface: ${e.message}`);
+                            throw new Error(`无法申请接口 ${iface.interfaceNumber}: ${e.message}`);
                         }
                         
-                        // 检查端点
+                        // 查找并使用适当的端点
                         if (!iface.alternate || !iface.alternate.endpoints || iface.alternate.endpoints.length === 0) {
-                            throw new Error('Interface has no endpoints');
+                            throw new Error('接口没有端点');
+                        }
+                        
+                        // 查找批量输入和输出端点
+                        let inEndpoint = null;
+                        let outEndpoint = null;
+                        
+                        for (const endpoint of iface.alternate.endpoints) {
+                            if (endpoint.direction === 'in' && endpoint.type === 'bulk') {
+                                inEndpoint = endpoint;
+                            } else if (endpoint.direction === 'out' && endpoint.type === 'bulk') {
+                                outEndpoint = endpoint;
+                            }
+                        }
+                        
+                        // 如果找不到专用端点，使用第一个可用端点
+                        this.inEndpoint = inEndpoint || iface.alternate.endpoints[0];
+                        this.outEndpoint = outEndpoint || iface.alternate.endpoints[0];
+                        
+                        if (DEBUG) {
+                            console.log('输入端点:', this.inEndpoint);
+                            console.log('输出端点:', this.outEndpoint);
                         }
                         
                         this.iface = iface;
-                        this.endpoint = iface.alternate.endpoints[0];
-
+                        this.responseMax = this.inEndpoint.packetSize || 64;
+                        
+                        // 选择OpenPGP应用
                         await this.selectApplication(OpenPGP_AID);
+                        if (DEBUG) console.log('已选择OpenPGP应用');
+                        
                         return true;
                     } catch (error) {
-                        console.error('Yubikey connection detail error:', error);
-                        // 如果设备已经打开，尝试释放接口并关闭
+                        console.error('Yubikey连接详细错误:', error);
+                        
+                        // 清理资源
                         if (this.device.opened) {
                             try {
                                 if (this.iface) {
@@ -310,7 +403,7 @@
                                 }
                                 await this.device.close();
                             } catch (closeError) {
-                                console.error('Error closing device:', closeError);
+                                console.error('关闭设备时出错:', closeError);
                             }
                         }
                         throw error;
@@ -318,56 +411,130 @@
                 }
 
                 async selectApplication(aid) {
+                    if (DEBUG) console.log('选择应用:', Array.from(aid).map(b => b.toString(16).padStart(2, '0')).join(' '));
                     const result = await this.transmit(0x00, 0xA4, 0x04, 0x00, aid);
                     if (!this.isSuccessResponse(result)) {
-                        throw new Error('Failed to select OpenPGP application');
+                        throw new Error('无法选择OpenPGP应用');
                     }
+                    return result;
                 }
 
                 async verifyPin(pin) {
                     const pinBuffer = new TextEncoder().encode(pin);
+                    if (DEBUG) console.log('验证PIN');
                     const result = await this.transmit(0x00, INS.VERIFY, 0x00, 0x82, pinBuffer);
                     return this.isSuccessResponse(result);
                 }
 
                 async getPublicKey() {
+                    if (DEBUG) console.log('获取公钥');
                     const result = await this.transmit(0x00, INS.GET_DATA, 0x00, 0x82, null);
                     if (!this.isSuccessResponse(result)) {
-                        throw new Error('Failed to get public key');
+                        throw new Error('无法获取公钥');
                     }
                     return result.slice(0, -2);
                 }
 
                 async decrypt(encryptedData) {
-                    // 实现解密操作
-                    const result = await this.transmit(0x00, INS.AUTHENTICATE, 0x07, 0x00, encryptedData);
-                    if (!this.isSuccessResponse(result)) {
-                        throw new Error('Decryption failed');
+                    if (DEBUG) console.log('解密数据');
+                    try {
+                        const result = await this.transmit(0x00, INS.AUTHENTICATE, 0x07, 0x00, encryptedData);
+                        if (!this.isSuccessResponse(result)) {
+                            throw new Error('解密失败');
+                        }
+                        return result.slice(0, -2);
+                    } catch (error) {
+                        console.error('解密过程中出错:', error);
+                        throw new Error('解密失败: ' + error.message);
                     }
-                    return result.slice(0, -2);
                 }
 
                 async transmit(cla, ins, p1, p2, data) {
                     const command = this.buildApdu(cla, ins, p1, p2, data);
-                    const response = await this.device.transferOut(this.endpoint.endpointNumber, command);
-                    const result = await this.device.transferIn(this.endpoint.endpointNumber, 64);
-                    return new Uint8Array(result.data.buffer);
+                    
+                    if (DEBUG) {
+                        console.log('发送APDU命令:', 
+                            Array.from(command).map(b => b.toString(16).padStart(2, '0')).join(' '));
+                    }
+                    
+                    // 发送命令到设备
+                    try {
+                        await this.device.transferOut(
+                            this.outEndpoint.endpointNumber, 
+                            command.buffer
+                        );
+                    } catch (e) {
+                        console.error('发送命令失败:', e);
+                        throw new Error('通信错误: ' + e.message);
+                    }
+                    
+                    // 从设备读取响应
+                    let response;
+                    try {
+                        response = await this.device.transferIn(
+                            this.inEndpoint.endpointNumber, 
+                            this.responseMax
+                        );
+                    } catch (e) {
+                        console.error('接收响应失败:', e);
+                        throw new Error('读取响应错误: ' + e.message);
+                    }
+                    
+                    const result = new Uint8Array(response.data.buffer);
+                    
+                    if (DEBUG) {
+                        console.log('收到响应:', 
+                            Array.from(result).map(b => b.toString(16).padStart(2, '0')).join(' '));
+                    }
+                    
+                    return result;
                 }
 
                 buildApdu(cla, ins, p1, p2, data) {
-                    const header = new Uint8Array([cla, ins, p1, p2]);
                     if (!data) {
-                        return new Uint8Array([...header, 0x00]);
+                        // Case 1: 无数据发送、无数据接收
+                        return new Uint8Array([cla, ins, p1, p2, 0x00]);
                     }
-                    if (data.length > 255) {
-                        throw new Error('Data too long');
+                    
+                    if (data.length <= 255) {
+                        // Case 3S: 短数据发送
+                        const header = new Uint8Array([cla, ins, p1, p2, data.length]);
+                        return new Uint8Array([...header, ...data]);
+                    } else {
+                        // Case 3E: 扩展数据发送
+                        const header = new Uint8Array([cla, ins, p1, p2, 0x00, 
+                            (data.length >> 8) & 0xFF, data.length & 0xFF]);
+                        return new Uint8Array([...header, ...data]);
                     }
-                    return new Uint8Array([...header, data.length, ...data]);
                 }
 
                 isSuccessResponse(response) {
+                    if (response.length < 2) {
+                        return false;
+                    }
                     return response[response.length - 2] === 0x90 && 
                            response[response.length - 1] === 0x00;
+                }
+                
+                // 获取状态码说明
+                getStatusMessage(sw1, sw2) {
+                    const status = (sw1 << 8) | sw2;
+                    switch(status) {
+                        case 0x9000: return "成功";
+                        case 0x6982: return "安全状态不满足 - PIN验证失败";
+                        case 0x6983: return "验证方法被锁定 - PIN已被锁定";
+                        case 0x6985: return "使用条件不满足";
+                        case 0x6A80: return "参数错误 - 数据格式错误";
+                        case 0x6A81: return "功能不支持";
+                        case 0x6A82: return "文件未找到 - 应用未找到";
+                        case 0x6A83: return "记录未找到";
+                        case 0x6A86: return "P1/P2参数错误";
+                        case 0x6A87: return "Lc与数据长度不一致";
+                        case 0x6D00: return "指令不支持";
+                        case 0x6E00: return "类不支持";
+                        case 0x6F00: return "未知错误";
+                        default: return `未知状态码: ${sw1.toString(16).padStart(2, '0')}${sw2.toString(16).padStart(2, '0')}`;
+                    }
                 }
             }
 
@@ -394,9 +561,22 @@
                     // 显示连接中状态
                     updateYubikeyStatus('connecting', 'Connecting to Yubikey...');
                     
+                    // 创建所有Yubikey产品ID的过滤器数组
+                    const filters = YUBIKEY_PRODUCT_IDS.map(productId => ({
+                        vendorId: YUBIKEY_VENDOR_ID,
+                        productId: productId
+                    }));
+                    
+                    // 添加一个仅有vendorId的过滤器，以匹配可能的其他产品
+                    filters.push({ vendorId: YUBIKEY_VENDOR_ID });
+                    
+                    if (DEBUG) console.log('使用USB设备过滤器:', filters);
+                    
                     const device = await navigator.usb.requestDevice({
-                        filters: [{ vendorId: YUBIKEY_VENDOR_ID }]
+                        filters: filters
                     });
+                    
+                    if (DEBUG) console.log('找到设备:', device);
                     
                     yubikey = new YubikeyPGP(device);
                     await yubikey.connect();
@@ -404,21 +584,31 @@
                     validateInput();
                     
                 } catch (error) {
-                    console.error('Yubikey connection error:', error);
+                    console.error('Yubikey连接错误:', error);
                     
                     // 提供更具体的错误信息
                     if (error.name === 'NotFoundError') {
-                        updateYubikeyStatus('error', 'No compatible device found. Make sure your Yubikey is plugged in.');
+                        updateYubikeyStatus('error', '找不到兼容设备。请确保您的Yubikey已插入。');
                     } else if (error.name === 'SecurityError') {
                         // Linux 特有问题
                         if (navigator.platform.includes('Linux')) {
-                            updateYubikeyStatus('error', 'Permission denied. On Linux, you may need to add udev rules.');
+                            updateYubikeyStatus('error', '权限被拒绝。在Linux上，您可能需要添加udev规则。');
                             showLinuxHelp();
                         } else {
-                            updateYubikeyStatus('error', 'Access denied. Try a different USB port.');
+                            updateYubikeyStatus('error', '访问被拒绝。尝试使用不同的USB端口，或重新插入设备。');
                         }
                     } else {
-                        updateYubikeyStatus('error', 'Failed to connect: ' + error.message);
+                        // 提供更详细的错误信息
+                        let errorMsg = '连接失败: ' + error.message;
+                        
+                        // 检查是否为常见的错误
+                        if (error.message.includes('Failed to claim interface')) {
+                            errorMsg = '接口冲突: Yubikey可能被其他程序占用。请关闭可能使用Yubikey的其他应用。';
+                        } else if (error.message.includes('Failed to select OpenPGP application')) {
+                            errorMsg = '无法访问OpenPGP应用: 您的Yubikey可能未配置OpenPGP功能。';
+                        }
+                        
+                        updateYubikeyStatus('error', errorMsg);
                     }
                     
                     throw error;
@@ -428,20 +618,43 @@
             // 显示Linux帮助对话框
             function showLinuxHelp() {
                 mdui.dialog({
-                    title: 'Linux USB Permissions',
+                    title: 'Linux USB 权限设置',
                     content: `
-                        <p>On Linux, you need to add udev rules to access USB devices:</p>
+                        <p>在Linux上，您需要添加udev规则来访问USB设备：</p>
                         <pre class="mdui-typo-pre">
-# Create this file: /etc/udev/rules.d/70-yubikey.rules
+# 创建此文件: /etc/udev/rules.d/70-yubikey.rules
+# Yubikey 4/5
 SUBSYSTEM=="usb", ATTRS{idVendor}=="1050", ATTRS{idProduct}=="0407", MODE="0666"
+# Yubikey NEO
 SUBSYSTEM=="usb", ATTRS{idVendor}=="1050", ATTRS{idProduct}=="0113", MODE="0666"
+# 其他Yubikey设备
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1050", MODE="0666"
 
-# Then run
+# 然后运行
 sudo udevadm control --reload-rules && sudo udevadm trigger</pre>
+                        <p>完成后，拔出并重新插入您的Yubikey，然后刷新页面重试。</p>
                     `,
                     buttons: [
                         {
-                            text: 'OK'
+                            text: '复制规则',
+                            onClick: function() {
+                                const rules = `# Yubikey 4/5
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1050", ATTRS{idProduct}=="0407", MODE="0666"
+# Yubikey NEO
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1050", ATTRS{idProduct}=="0113", MODE="0666"
+# 其他Yubikey设备
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1050", MODE="0666"`;
+                                
+                                navigator.clipboard.writeText(rules).then(() => {
+                                    mdui.snackbar({
+                                        message: '已复制到剪贴板',
+                                        timeout: 2000
+                                    });
+                                });
+                            }
+                        },
+                        {
+                            text: '确定'
                         }
                     ]
                 });
@@ -812,22 +1025,46 @@ sudo udevadm control --reload-rules && sudo udevadm trigger</pre>
                 // 尝试自动连接之前已配对的Yubikey
                 try {
                     const devices = await navigator.usb.getDevices();
+                    if (DEBUG) console.log('找到已授权设备:', devices);
+                    
                     if (devices.length > 0) {
-                        yubikey = new YubikeyPGP(devices[0]);
-                        await yubikey.connect();
-                        updateYubikeyStatus('ready', 'Yubikey connected');
+                        // 尝试找到Yubikey设备
+                        const yubikeys = devices.filter(dev => dev.vendorId === YUBIKEY_VENDOR_ID);
+                        
+                        if (yubikeys.length > 0) {
+                            yubikey = new YubikeyPGP(yubikeys[0]);
+                            await yubikey.connect();
+                            updateYubikeyStatus('ready', 'Yubikey connected');
+                        } else {
+                            updateYubikeyStatus('connecting', 'Click to connect Yubikey');
+                            mdui.snackbar({
+                                message: '找不到Yubikey设备。点击状态指示器连接您的Yubikey。',
+                                timeout: 3000
+                            });
+                        }
                     } else {
                         updateYubikeyStatus('connecting', 'Click to connect Yubikey');
-                        // 添加工具提示，指导用户
                         mdui.snackbar({
-                            message: 'Click on the status indicator to connect your Yubikey',
+                            message: '点击状态指示器连接您的Yubikey',
                             timeout: 3000
                         });
                     }
                 } catch (error) {
-                    console.error('Auto-connect error:', error);
-                    updateYubikeyStatus('error', 'Failed to auto-connect. Click to try again.');
+                    console.error('自动连接错误:', error);
+                    updateYubikeyStatus('error', '自动连接失败。点击重试。');
                 }
+                
+                // 添加调试切换功能
+                document.addEventListener('keydown', function(e) {
+                    // Ctrl+Shift+D启用调试
+                    if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+                        DEBUG = !DEBUG;
+                        mdui.snackbar({
+                            message: DEBUG ? '调试模式已启用' : '调试模式已禁用',
+                            timeout: 2000
+                        });
+                    }
+                });
                 
                 // 添加Yubikey状态点击事件
                 yubikeyStatus.addEventListener('click', async () => {
