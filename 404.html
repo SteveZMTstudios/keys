@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate" />
+    <title>Page Not Found</title>
+    <!-- MDUI CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/mdui/1.0.2/css/mdui.min.css';">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; }
+        
+        .mdui-container { max-width: 900px; padding: 2rem; }
+        .mdui-container-with-appbar { padding-top: 4rem; }
+        pre { background: #f6f8fa; padding: 16px; border-radius: 6px; position: relative; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; transition: all 0.3s; }
+        
+        .mdui-theme-layout-dark pre { background: #1e1e1e; color: #f0f0f0; }
+        
+        code { word-wrap: break-word; }
+        .copy-btn { 
+            position: absolute; 
+            right: 4px; 
+            top: 4px; 
+            padding: 4px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            display: none; 
+            z-index: 100; 
+            transition: all 0.2s ease-in-out; 
+            background-color: rgba(246, 248, 250, 0.7);
+            color: #57606a;
+            min-width: 32px;
+            min-height: 32px;
+            box-shadow: none;
+        }
+        
+        .copy-btn.copy-success {
+            color: #4CAF50 !important;
+        }
+        
+        .mdui-theme-layout-dark .copy-btn { 
+            background-color: rgba(30, 30, 30, 0.7);
+            color: #9e9e9e;
+            border: none;
+        }
+        
+        @media (hover: hover) and (pointer: fine) {
+            pre:hover .copy-btn { 
+                display: block; 
+                animation: fadeIn 0.3s; 
+            }
+        }
+        
+        .touch-device .copy-btn { 
+            display: block; 
+            opacity: 0.9; 
+        }
+        
+        .mdui-table { 
+            width: 100%; 
+            margin: 1em 0; 
+            border-collapse: collapse; 
+            transition: all 0.3s; 
+        }
+        
+        .mdui-table-responsive { 
+            overflow-x: auto; 
+            margin-bottom: 1em; 
+        }
+        
+        img { max-width: 100%; height: auto; transition: all 0.3s; }
+        
+        blockquote { 
+            margin: 1em 0; 
+            padding: 0 1em; 
+            border-left: 0.25em solid; 
+            transition: all 0.3s; 
+        }
+        
+        .mdui-theme-layout-dark blockquote { 
+            color: #9e9e9e; 
+            border-left-color: #555; 
+        }
+        
+        .theme-switch { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            z-index: 9999; 
+        }
+        
+        * html .copy-btn { 
+            position: static; 
+            margin-top: -30px; 
+            margin-right: 5px; 
+            float: right; 
+        }
+        
+        * html .theme-switch { 
+            position: absolute; 
+            bottom: auto; 
+            top: expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-60)); 
+        }
+        
+        .mdui-container { 
+            animation: slideIn 0.5s ease; 
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1, h2, h3, h4, h5, h6 { 
+            animation: slideInFromLeft 0.5s ease; 
+            transition: all 0.3s; 
+        }
+        
+        @keyframes slideInFromLeft {
+            from { opacity: 0; transform: translateX(-15px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @media (max-width: 320px) {
+            .mdui-container { padding: 0.8rem; }
+            h1, h2 { font-size: 1.2rem; }
+            pre { padding: 8px; font-size: 0.8rem; }
+        }
+        
+        .mdui-drawer .mdui-card {
+            margin: 16px;
+            overflow: hidden; 
+        }
+        
+        .mdui-drawer .mdui-card-primary {
+            padding: 16px;
+        }
+        
+        .mdui-drawer .mdui-card-primary-title {
+            font-size: 20px;
+            line-height: 1.4;
+            word-break: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
+            max-width: 100%;
+        }
+        
+        .mdui-drawer .mdui-card-primary-subtitle {
+            font-size: 14px;
+            line-height: 1.4;
+            word-break: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
+            cursor: pointer;
+            max-width: 100%;
+        }
+        
+        .mdui-drawer {
+            background-color: #fff;
+            transition: top 0.3s, height 0.3s;
+        }
+        
+        .mdui-theme-layout-dark .mdui-drawer {
+            background-color: #303030;
+        }
+        
+        @media (min-width: 1024px) {
+            .mdui-drawer-open {
+                padding-top: 12px;
+            }
+            
+            body.has-appbar .mdui-drawer {
+                height: calc(100% - var(--appbar-height, 64px));
+                top: var(--appbar-height, 64px);
+            }
+            
+            body.appbar-hidden .mdui-drawer {
+                height: 100%;
+                top: 0;
+            }
+        }
+        
+        .mdui-drawer .mdui-list-item {
+            min-height: 36px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+        
+        .mdui-drawer .mdui-list-item-content {
+            line-height: 20px;
+        }
+        
+        .mdui-toolbar .toc-btn {
+            height: 48px;
+            width: 48px;
+        }
+    </style>
+    <!--[if IE]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.2.8/es6-promise.auto.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://gcore.jsdelivr.net/npm/classlist-polyfill@1.2.0/src/index.min.js"></script>
+    <script src="https://gcore.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js"></script>
+    <![endif]-->
+    <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/mdui/1.0.2/js/mdui.min.js';"></script>
+    <script>
+    // fxxk ie
+    function isIE() {
+        return window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
+    }
+    
+    function detectBrowser() {
+        var ua = window.navigator.userAgent;
+        var isIE = ua.indexOf('MSIE ') > -1 || ua.indexOf('Trident/') > -1;
+        var isOldEdge = ua.indexOf('Edge/') > -1;
+        var isChrome = ua.indexOf('Chrome/') > -1 && !isOldEdge;
+        var isFirefox = ua.indexOf('Firefox/') > -1;
+        
+        var isOldBrowser = isIE || (isOldEdge && ua.indexOf('Edge/') > 0 && parseInt(ua.split('Edge/')[1]) < 18);
+        
+        return {
+            isOldBrowser: isOldBrowser,
+            isIE: isIE,
+            browserName: isIE ? 'Internet Explorer' : 
+                       isOldEdge ? 'Microsoft Edge Legacy' :
+                       isChrome ? 'Chrome' : 
+                       isFirefox ? 'Firefox' : 
+                       'Unknown Browser'
+        };
+    }
+    
+    function isTouchDevice() {
+        return ('ontouchstart' in window) || 
+               (navigator.maxTouchPoints > 0) || 
+               (navigator.msMaxTouchPoints > 0);
+    }
+    
+    function showBrowserNotice() {
+        var browserInfo = detectBrowser();
+        if (browserInfo.isOldBrowser) {
+            try {
+                if (typeof mdui !== 'undefined' && mdui.snackbar) {
+                    mdui.snackbar({
+                        message: 'Seems you are using unsupported ' + browserInfo.browserName + ', some features may not work properly.',
+                        buttonText: 'OK',
+                        position: 'bottom',
+                        timeout: 50000,
+                        closeOnOutsideClick: true
+                    });
+                } else {
+                    alert('You are using an unsupported ' + browserInfo.browserName + ', some features may not work properly.');
+                }
+            } catch (e) {
+                console.error('show browser err :', e);
+            }
+        }
+    }
+    
+    function copyText(btn) {
+        var pre = btn.parentNode;
+        var code = pre.querySelector('code');
+        var text = code ? (code.innerText || code.textContent) : '';
+        
+        if (window.clipboardData && window.clipboardData.setData) {
+            window.clipboardData.setData("Text", text);
+            showSnackbar('Copied to clipboard!');
+            showCopySuccess(btn);
+            return;
+        }
+        
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed"; 
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.select();
+        
+        try {
+            var successful = document.execCommand('copy');
+            if (successful) {
+                showSnackbar('Copied to clipboard!');
+                showCopySuccess(btn);
+            } else {
+                showSnackbar('Failed to copy, please copy manually');
+            }
+        } catch (err) {
+            console.error('Failed copy:', err);
+            showSnackbar('Failed to copy, please copy manually');
+        }
+        
+        document.body.removeChild(textArea);
+    }
+    
+    function showCopySuccess(btn) {
+        var icon = btn.querySelector('i');
+        var oldHtml = icon.innerHTML;
+        icon.innerHTML = '&#xe876;';
+        btn.classList.add('copy-success');
+        
+        setTimeout(function() {
+            icon.innerHTML = oldHtml;
+            btn.classList.remove('copy-success');
+        }, 2000);
+    }
+    
+    function showSnackbar(message) {
+        if (typeof mdui !== 'undefined' && mdui.snackbar) {
+            mdui.snackbar({
+                message: message,
+                position: 'bottom',
+                timeout: 2000,
+                closeOnOutsideClick: true
+            });
+        } else {
+            alert(message);
+        }
+    }
+    
+    function showTranslateComplete(targetlangttl) {
+        var languageMap = {
+            'chinese_simplified': '<i class="mdui-icon material-icons">&#xe8e2;</i> 已翻译为简体中文',
+            'chinese_traditional': '<i class="mdui-icon material-icons">&#xe8e2;</i> 已翻譯為繁體中文',
+            'english': '<i class="mdui-icon material-icons">&#xe8e2;</i> Translated to English',
+            'spanish': '<i class="mdui-icon material-icons">&#xe8e2;</i> Traducido al español',
+            'french': '<i class="mdui-icon material-icons">&#xe8e2;</i> Traduit en français',
+            'deutsch': '<i class="mdui-icon material-icons">&#xe8e2;</i> Übersetzt auf Deutsch',
+            'italian': '<i class="mdui-icon material-icons">&#xe8e2;</i> Tradotto in italiano',
+            'russian': '<i class="mdui-icon material-icons">&#xe8e2;</i> Переведено на русский язык',
+            'japanese': '<i class="mdui-icon material-icons">&#xe8e2;</i> 日本語に翻訳',
+            'korean': '<i class="mdui-icon material-icons">&#xe8e2;</i> 한국어로 번역됨',
+            'vietnamese': '<i class="mdui-icon material-icons">&#xe8e2;</i> Đã dịch sang tiếng Việt',
+            'arabic': '<i class="mdui-icon material-icons">&#xe8e2;</i> ترجم إلى العربية'
+        };
+        var translatedMessage = languageMap[targetlangttl] || '<i class="mdui-icon material-icons">&#xe8e2;</i> Page translated.';
+                if (targetlangttl === 'arabic') {
+            document.documentElement.setAttribute('dir', 'rtl');
+            document.body.classList.add('mdui-rtl');
+        } else {
+            document.documentElement.setAttribute('dir', 'ltr');
+            document.body.classList.remove('mdui-rtl');
+        }
+        
+        if (typeof showTranslateComplete.lastMessage === 'undefined' || showTranslateComplete.lastMessage !== translatedMessage) {
+            showTranslateComplete.lastMessage = translatedMessage;
+            if (typeof mdui !== 'undefined' && mdui.snackbar) {
+                mdui.snackbar({
+                    message: translatedMessage,
+                    position: 'top',
+                    buttonText: 'OK',
+                    timeout: 5000,
+                    closeOnOutsideClick: true
+                });
+            } else {
+                console.log(translatedMessage);
+            }
+        }
+    }
+    
+    function toggleTheme() {
+        var body = document.body;
+        var hasClass = body.className.indexOf('mdui-theme-layout-dark') > -1;
+        
+        if (hasClass) {
+            body.className = body.className.replace(/mdui-theme-layout-dark/g, '').trim();
+        } else {
+            body.className = body.className + ' mdui-theme-layout-dark';
+        }
+    }
+    
+    function ready(fn) {
+        if (document.readyState !== 'loading') {
+            fn();
+        } else if (document.addEventListener) {
+            document.addEventListener('DOMContentLoaded', fn);
+        } else {
+            document.attachEvent('onreadystatechange', function() {
+                if (document.readyState !== 'loading') fn();
+            });
+        }
+    }
+    
+    function updateAppbarHeight() {
+        var appbar = document.querySelector('.mdui-appbar');
+        if (appbar) {
+            var height = appbar.offsetHeight;
+            document.documentElement.style.setProperty('--appbar-height', height + 'px');
+        }
+    }
+    
+    function setupAppbarObserver() {
+        var appbar = document.querySelector('.mdui-appbar');
+        if (!appbar) return;
+        
+        updateAppbarHeight();
+        
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                if (entries[0].isIntersecting) {
+                    document.body.classList.remove('appbar-hidden');
+                    document.body.classList.add('appbar-visible');
+                } else {
+                    document.body.classList.remove('appbar-visible');
+                    document.body.classList.add('appbar-hidden');
+                }
+            }, { threshold: 0.1 });
+            
+            observer.observe(appbar);
+        }
+        
+        if ('ResizeObserver' in window) {
+            var resizeObserver = new ResizeObserver(function() {
+                updateAppbarHeight();
+            });
+            
+            resizeObserver.observe(appbar);
+        }
+    }
+    
+    ready(function() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.className += ' mdui-theme-layout-dark';
+        }
+        
+        document.body.className += ' has-appbar';
+        
+        if (isTouchDevice()) {
+            document.body.className += ' touch-device';
+        }
+        
+        showBrowserNotice();
+        
+        var tables = document.querySelectorAll('table');
+        for (var i = 0; i < tables.length; i++) {
+            var table = tables[i];
+            if (table.className.indexOf('mdui-table') === -1) {
+                table.className += ' mdui-table';
+                var wrapper = document.createElement('div');
+                wrapper.className = 'mdui-table-responsive';
+                if (table.parentNode) {
+                    table.parentNode.insertBefore(wrapper, table);
+                    wrapper.appendChild(table);
+                }
+            }
+        }
+        
+        var pres = document.querySelectorAll('pre');
+        for (var i = 0; i < pres.length; i++) {
+            var pre = pres[i];
+            if (pre.className.indexOf('mdui-shadow-1') === -1) {
+                pre.className += ' mdui-shadow-1';
+            }
+        }
+        
+        var btn = document.createElement('button');
+        btn.className = 'mdui-fab mdui-color-theme-accent mdui-ripple theme-switch';
+        btn.innerHTML = '<i class="mdui-icon material-icons">&#xe3a9;</i>';
+        btn.onclick = toggleTheme;
+        document.body.appendChild(btn);
+        
+        try {
+            if (typeof mdui !== 'undefined') {
+                mdui.mutation();
+                
+                if (mdui.Appbar) {
+                    new mdui.Appbar('.mdui-appbar');
+                }
+            }
+        } catch(e) {
+            console.error('MDUI init err:', e);
+        }
+
+        if (isIE()) {
+            var copyBtns = document.querySelectorAll('.copy-btn');
+            for (var i = 0; i < copyBtns.length; i++) {
+                copyBtns[i].style.display = 'block';
+            }
+            
+            var appbar = document.querySelector('.mdui-appbar');
+            if (appbar) {
+                appbar.style.position = 'fixed';
+                appbar.style.top = '0';
+                appbar.style.width = '100%';
+                appbar.style.zIndex = '1000';
+            }
+        }
+        
+        setupAppbarObserver();
+        
+        var urlElement = document.getElementById('current-url');
+        if (urlElement) {
+            urlElement.innerText = window.location.href;
+        }
+
+        var titles = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        var tocList = document.getElementById('toc-list');
+        
+        if (tocList && titles.length > 0) {
+            titles.forEach(function(title) {
+                var level = parseInt(title.tagName.charAt(1));
+                var item = document.createElement('a');
+                item.className = 'mdui-list-item mdui-ripple';
+                item.style.paddingLeft = (level * 16) + 'px';
+                item.innerHTML = '<div class="mdui-list-item-content">' + title.textContent + '</div>';
+                
+                if (!title.id) {
+                    title.id = 'toc-' + title.textContent.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+                }
+                item.href = '#' + title.id;
+                
+                item.onclick = function() {
+                    if (window.innerWidth <= 1024) {
+                        toggleToc();
+                    }
+                };
+                tocList.appendChild(item);
+            });
+        }
+    });
+    
+    window.addEventListener('resize', function() {
+        updateAppbarHeight();
+    });
+    
+    if (window.matchMedia) {
+        try {
+            var darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            var darkModeHandler = function(e) {
+                if (e.matches) {
+                    document.body.className += ' mdui-theme-layout-dark';
+                } else {
+                    document.body.className = document.body.className.replace(/mdui-theme-layout-dark/g, '').trim();
+                }
+            };
+            
+            if (darkModeQuery.addListener) {
+                darkModeQuery.addListener(darkModeHandler);
+            } else if (darkModeQuery.addEventListener) {
+                darkModeQuery.addEventListener('change', darkModeHandler);
+            }
+        } catch(e) {
+            console.error('media query err:', e);
+        }
+    }
+    
+    function copyUrl() {
+        var url = window.location.href;
+        if (window.clipboardData && window.clipboardData.setData) {
+            clipboardData.setData("Text", url);
+            showSnackbar('Copied!');
+            return;
+        }
+        
+        var textArea = document.createElement("textarea");
+        textArea.value = url;
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.select();
+        
+        try {
+            document.execCommand('copy');
+            showSnackbar('Copied!');
+        } catch (err) {
+            console.error('Copy failed:', err);
+            showSnackbar('Failed to copy, please copy manually.');
+        }
+        
+        document.body.removeChild(textArea);
+    }
+    
+    function toggleToc() {
+        var drawer = new mdui.Drawer('#toc-drawer');
+        drawer.toggle();
+    }
+    </script>
+</head>
+<body class="mdui-theme-primary-indigo mdui-theme-accent-blue">
+    <div class="mdui-appbar mdui-appbar-fixed">
+        <div class="mdui-toolbar mdui-color-theme">
+            <button class="mdui-btn mdui-btn-icon toc-btn" onclick="toggleToc()">
+                <i class="mdui-icon material-icons">&#xe5d2;</i>
+            </button>
+            <a href="javascript:;" class="mdui-typo-headline">Page Not Found</a>
+            <div class="mdui-toolbar-spacer"></div>
+            <button class="mdui-btn mdui-btn-icon" mdui-menu="{target: '#langMenu'}">
+                <i class="mdui-icon material-icons">&#xe8e2;</i>
+            </button>
+            <ul class="mdui-menu" id="langMenu">
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('chinese_simplified');">🇨🇳 简体中文</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('chinese_traditional');">🇨🇳 繁體中文</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('english');">🇺🇸 English</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('spanish');">🇪🇸 Español</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('french');">🇫🇷 Français</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('deutsch');">🇩🇪 Deutsch</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('italian');">🇮🇹 italiano</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('russian');">🇷🇺 Русский язык</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('japanese');">🇯🇵 日本語</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('korean');">🇰🇷 한국어</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:translate.changeLanguage('vietnamese');">🇻🇳 Tiếng Việt</a>
+                </li>
+                <li class="mdui-menu-item mdui-rtl mdui-text-right" dir="rtl">
+                    <a href="javascript:translate.changeLanguage('arabic');">🇸🇦 بالعربية</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="mdui-drawer mdui-drawer-close" id="toc-drawer">
+        <div class="mdui-card">
+            <div class="mdui-card-primary">
+                <div class="mdui-card-primary-title">Page Not Found</div>
+                <div class="mdui-card-primary-subtitle" onclick="copyUrl()" id="current-url"></div>
+            </div>
+        </div>
+        <div class="mdui-list" id="toc-list">
+        </div>
+    </div>
+    
+    <div class="mdui-container mdui-typo mdui-container-with-appbar">
+        <div style="padding-top:2em"><i class="mdui-icon material-icons" style="font-size: 3em;"></i></div>
+<h1 mdui-tooltip="{content: '404 The specified document could not be found on the requested page.', position: 'top'}">Page Not Found</h1>
+<script>  function getRandomText() {
+        const texts = [
+                    "Why are you clicking me???",
+                    "You're really bored....",
+                    "Don't you have anything more valuable to do?",
+                    "You must think this is fun.",
+                    "I'm so done with you.",
+                    "Click again and You'll become a cat girl (",
+                    "Click again and I'll make you fly (",
+                    "Click again and I'll dox you, I know your IP is 127.0.0.1",
+                    "Speechless, can't communicate with you, typical bored mindset",
+                    "Clicking this won't help you find where you want to go.",
+                    "I don't have time to design easter eggs...",
+                    "The site owner is too free, you should chat with him...",
+                    "Are you looking for some fun?",
+                    "Donate to unlock the original content (running away",
+                    "Seems like you don't know what that means.",
+                    "<-_<-",
+                    "->_->",
+                    "Whatever makes you happy.",
+                    "Kernel panic - not syncing: Attempted to kill init!",
+                    "Something Wrong (999)",
+                    "Just do it(R).  ",
+                    "I use Arch BTW...",
+                    "Do you really read these...",
+                    "java.lang.NullPointerException",
+                    "Traceback (most recent call last):",
+                    "(／‵Д′)／~ ╧╧",
+                    "(╯‵□′)╯︵┴─┴",
+                    "(´_ゝ`)",
+                    "¯\\_(ツ)_/¯",
+                    "Illegal instruction (core dumped)",
+                    "Bash: No such file or directory.",
+                    "Segmentation fault (core dumped)",
+                    "java.lang.OutOfMemoryError",
+                    "java.lang.FileNotFoundException",
+                    "Error: ENOENT: no such file or directory",
+                    "Warning: file_get_contents(): failed to open stream: No such file or directory.",
+                    "open: No such file or directory",
+                    "std::ifstream::failure: No such file or directory",
+                    "open: no such file or directory at /?",
+                    "thread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: No such file or directory }'",
+                    "FileNotFoundError: [Errno 2] No such file or directory.",
+                    "Well, I haven't thought about what to say yet..."
+                ];
+                return texts[Math.floor(Math.random() * texts.length)];  }
+
+    function replaceText() {
+        let easter_str = getRandomText();
+        window.navigator.vibrate(200);
+        document.getElementById("random-text").innerText = easter_str;
+    }
+
+</script>
+<div class="mdui-hoverable" style="display: inline-block;">
+<span id="random-text" mdui-tooltip="{content: 'Click Me!'}" onclick="replaceText()" style="color: inherit; cursor: pointer;">Surely you know what that means.</span>
+</div>
+<p><br/></p>
+<p>Please try the following solutions:</p>
+<ul>
+<li>Reload this page later.</li>
+<li>Find an archived copy of this page at <a href="http://web.archive.org/web/20250000000000*/key.stevezmt.top">web.archive.org</a>.</li>
+<li>Check with the person who brought you here that the address on this page is correct.</li>
+<li>Use a search engine to search for the keywords you are looking for.</li>
+</ul>
+<div class="mdui-textfield mdui-textfield-expandable">
+<div class="mdui-textfield mdui-textfield-expandable">
+<button class="mdui-textfield-icon mdui-btn mdui-btn-icon mdui-btn-small" onclick="searchGoogle()">
+<i class="mdui-icon material-icons"></i>
+</button>
+<input class="mdui-textfield-input mdui-textfield-input-small" id="google-search" onblur="this.parentElement.classList.remove('mdui-hoverable')" onfocus="this.parentElement.classList.add('mdui-hoverable')" onkeydown="if(event.key === 'Enter') searchGoogle()" placeholder="Google Search..." type="text"/>
+<button class="mdui-textfield-close mdui-btn mdui-btn-icon mdui-btn-small">
+<i class="mdui-icon material-icons"></i>
+</button>
+</div>
+</div>
+<script>
+    function searchGoogle() {
+        const query = document.getElementById('google-search').value;
+        if (query) {
+            window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+        }
+    }
+</script>
+<hr/>
+<p>If you are sure this is a bug, please <a href="https://github.com/stevezmtstudios/keys/issues/new/choose"><i class="mdui-icon material-icons"></i> Give feedback</a>.</p>
+<p><a href="/">Return to Mainpage</a><br>
+<a href="javascript:history.back()">Back to previous page</a></br></p>
+    </div>
+<script src="https://cdn.staticfile.net/translate.js/3.12.0/translate.js" onerror="this.onerror=null;this.src='https://sharepoint.cf.stevezmt.top/js/3rd-party/translate.min.js';"></script>
+<script>
+setTimeout(function() {
+    var isTranslated = 0;
+    if (typeof translate !== 'undefined') {
+        try {
+            translate.language.setLocal('english');
+            translate.selectLanguageTag.show = false;
+            translate.ignore.tag.push('tbody');
+            translate.ignore.tag.push('code');
+            translate.ignore.id.push('langMenu');  
+            translate.service.use('client.edge');
+            showTranslateComplete(translate.language.getCurrent());
+            translate.execute();
+        } catch(e) {
+            console.error('Translate err:', e);
+        }
+    }
+}, 500);
+translate.listener.renderTaskFinish = function(task){
+    showTranslateComplete(translate.language.getCurrent());
+}
+</script>
+</html>
