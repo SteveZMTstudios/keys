@@ -1,7 +1,6 @@
 # GnuPG/PGP Multi-platform Download
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/css/mdui.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=terminal" />
 <style>
   .container {
     max-width: 900px;
@@ -38,10 +37,23 @@
     transition: all 0.3s ease;
     cursor: pointer;
     margin-bottom: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
-  .os-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  .os-card .mdui-card-primary {
+    flex-shrink: 0;
+  }
+  .os-card .mdui-card-content {
+    flex-grow: 1;
+    height: 4.5em; /* 固定高度为3行文本 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .os-card .mdui-card-actions {
+    flex-shrink: 0;
   }
   .os-icon {
     font-size: 48px;
@@ -92,7 +104,7 @@
           <div class="mdui-card-primary-title">Windows</div>
         </div>
         <div class="mdui-card-content mdui-text-center">
-          GnuPG Portable version recommended
+          Gpg4win and portable versions for desktop user
         </div>
         <div class="mdui-card-actions mdui-text-center">
           <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue" onclick="expandOptions('windows')">View Options</button>
@@ -102,7 +114,7 @@
     
     <div class="mdui-col">
       <div class="mdui-card os-card" id="linuxCard">
-        <div class="mdui-card-primary mdui-text-center">
+        <div class="mdui-card-primary mdui-text-center igTrans">
           <div class="os-icon mdui-icon material-icons mdui-text-color-green">&#xe86f;</div>
           <div class="mdui-card-primary-title">Linux</div>
         </div>
@@ -151,7 +163,7 @@
     <div class="mdui-panel-item mdui-panel-item-open">
       <div class="mdui-panel-item-header">
         <div class="mdui-panel-item-title">Windows Download Options</div>
-        <i class="mdui-panel-item-arrow mdui-icon material-icons">&#xe313;</i>
+       <!-- <i class="mdui-panel-item-arrow mdui-icon material-icons">&#xe313;</i>-->
       </div>
       <div class="mdui-panel-item-body">
         <div class="mdui-row-md-2 mdui-row-sm-1">
@@ -204,7 +216,7 @@
     <div class="mdui-panel-item mdui-panel-item-open">
       <div class="mdui-panel-item-header">
         <div class="mdui-panel-item-title">Linux Installation Options</div>
-        <i class="mdui-panel-item-arrow mdui-icon material-icons">&#xe313;</i>
+       <!-- <i class="mdui-panel-item-arrow mdui-icon material-icons">&#xe313;</i>-->
       </div>
       <div class="mdui-panel-item-body">
         <div class="mdui-row-md-2 mdui-row-sm-1">
@@ -226,13 +238,15 @@
               </div>
               <div class="mdui-card-actions">
                 <a href="https://apps.kde.org/zh-cn/kleopatra/" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-green-700" target="_blank">Visit Kleopatra</a>
+                <a href="appstream://org.kde.kleopatra" class="mdui-btn mdui-ripple" target="_blank">AppStream Market</a>
+                <a href="https://flathub.org/apps/org.kde.kleopatra" class="mdui-btn mdui-ripple igTrans" target="_blank">Flathub</a>
               </div>
             </div>
           </div>
           <div class="mdui-col">
             <div class="mdui-card">
               <div class="mdui-card-header">
-                <div class="mdui-card-header-avatar material-symbols-outlined mdui-icon">&#xeb8e;</div>
+                <div class="mdui-card-header-avatar mdui-icon material-icons">&#xe86f;</div>                
                 <div class="mdui-card-header-title">Command Line Version</div>
                 <div class="mdui-card-header-subtitle">For all Linux distributions</div>
               </div>
@@ -262,7 +276,7 @@
     <div class="mdui-panel-item mdui-panel-item-open">
       <div class="mdui-panel-item-header">
         <div class="mdui-panel-item-title">macOS Installation Options</div>
-        <i class="mdui-panel-item-arrow mdui-icon material-icons">&#xe313;</i>
+       <!-- <i class="mdui-panel-item-arrow mdui-icon material-icons">&#xe313;</i>-->
       </div>
       <div class="mdui-panel-item-body">
         <div class="mdui-row-md-2 mdui-row-sm-1">
@@ -311,7 +325,7 @@
     <div class="mdui-panel-item mdui-panel-item-open">
       <div class="mdui-panel-item-header">
         <div class="mdui-panel-item-title">Android Installation Options</div>
-        <i class="mdui-panel-item-arrow mdui-icon material-icons">&#xe313;</i>
+       <!-- <i class="mdui-panel-item-arrow mdui-icon material-icons">&#xe313;</i>-->
       </div>
       <div class="mdui-panel-item-body">
         <div class="mdui-row-md-2 mdui-row-sm-1">
@@ -327,28 +341,30 @@
                 <ul class="features-list">
                   <li>Manage PGP keys</li>
                   <li>Encrypt/decrypt files and messages</li>
+                  <li>Support Smart card</li>
                   <li>Support for key servers</li>
                 </ul>
               </div>
               <div class="mdui-card-actions">
                 <a href="https://www.openkeychain.org/" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-light-green-700" target="_blank">Official Website</a>
-                <a href="https://play.google.com/store/apps/details?id=org.sufficientlysecure.keychain" class="mdui-btn mdui-ripple" target="_blank">Google Play</a>
+                <a href="https://play.google.com/store/apps/details?id=org.sufficientlysecure.keychain" class="mdui-btn mdui-ripple igTrans" target="_blank">Google Play</a>
+                <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain/" class="mdui-btn mdui-ripple igTrans" target="_blank">F-Droid</a>
               </div>
             </div>
           </div>
           <div class="mdui-col">
             <div class="mdui-card">
               <div class="mdui-card-header">
-                <div class="mdui-card-header-avatar mdui-icon material-icons">&#xe80c;</div>
-                <div class="mdui-card-header-title">Encryption Examples</div>
-                <div class="mdui-card-header-subtitle">Learn OpenPGP usage methods</div>
+                <div class="mdui-card-header-avatar mdui-icon material-icons">&#xe051;</div>
+                <div class="mdui-card-header-title">Encryption Online</div>
+                <div class="mdui-card-header-subtitle">Use browser to encrypt data easily</div>
               </div>
               <div class="mdui-card-content">
-                <p>We provide detailed OpenPGP encryption tutorials and examples for Android to help you quickly master the usage methods</p>
+                <p>Encrypt your data online using the browser, no installation required</p>
               </div>
               <div class="mdui-card-actions">
-                <a href="./encrypt-sample" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-light-green-900" target="_blank">View Encryption Examples</a>
-                <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain/" class="mdui-btn mdui-ripple" target="_blank">F-Droid Download</a>
+                <a href="./encrypt_sample.html" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-light-green-900" target="_blank">View Encryption Page</a>
+                
               </div>
             </div>
           </div>
@@ -361,7 +377,7 @@
     <div class="mdui-panel-item mdui-panel-item-open">
       <div class="mdui-panel-item-header">
         <div class="mdui-panel-item-title">All Download Links Summary</div>
-        <i class="mdui-panel-item-arrow mdui-icon material-icons">&#xe313;</i>
+       <!-- <i class="mdui-panel-item-arrow mdui-icon material-icons">&#xe313;</i>-->
       </div>
       <div class="mdui-panel-item-body">
         <div class="mdui-table-fluid">

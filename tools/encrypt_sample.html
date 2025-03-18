@@ -128,13 +128,13 @@
             
             textarea, #dropArea {
                 background-color: var(--mdui-color-surface-container);
-                color: var(--mdui-color-on-surface);
+                color: var (--mdui-color-on-surface);
                 border-color: rgba(255,255,255,0.12);
             }
             
             #result {
                 background-color: var(--mdui-color-surface-container);
-                color: var(--mdui-color-on-surface);
+                color: var (--mdui-color-on-surface);
                 border-color: rgba(255,255,255,0.12);
             }
             
@@ -159,7 +159,7 @@
         }
         
         .dark-theme #result {
-            background-color: var(--mdui-color-surface-container);
+            background-color: var (--mdui-color-surface-container);
             color: var (--mdui-color-on-surface);
             border-color: rgba(255,255,255,0.12);
         }
@@ -177,6 +177,8 @@
         <h2 class="mdui-typo-headline" style="text-align: center;">PGP Encryption Tool</h2>
         <p>We use <a href="https://github.com/stevezmtstudios.gpg" target="_blank" class="mdui-text-color-primary">Steve ZMT's Public key</a> to encrypt your data safely in your browser</p>
         <p>All data would not save or send to anyone.</p>
+        <hr />
+        <p>In any case, if you would like better support, to use GPG with other applications, or to handle your keys in a more secure way, please <a href="./index.html?auto=false" target="_blank">Get GnuPG</a> on your device.
     </div>
     <div class="section" id="inputSection">
         <div class="mode-buttons mdui-btn-group">
@@ -194,7 +196,122 @@
             </div>
             <div id="fileInfo" class="mdui-typo-caption-opacity"></div>
         </div>
-        <p id="errorMessage" class="error-message">Oops, the file or messages are too big! it may crash your browser! Instead please use local encryption tool like Gpg4Win.</p>
+        <p id="errorMessage" class="error-message">Youza, the file or messages are too big. Use <a href="./index.html" target="_blank">local encryption tool</a> instead.</p>
+        
+        <!-- 高级选项折叠栏 -->
+        <div class="mdui-panel" mdui-panel>
+            <div class="mdui-panel-item">
+                <div class="mdui-panel-item-header mdui-clearfix">
+                    <div class="mdui-panel-item-title">
+                        <i class="mdui-icon material-icons">&#xe8b8;</i> Advanced Options
+                    </div>
+                    <i class="mdui-icon material-icons mdui-float-right">&#xe313;</i>
+                </div>
+                
+                <div class="mdui-panel-item-body">
+                    <!-- 自定义公钥部分 -->
+                    <div class="mdui-typo-title">
+                        <i class="mdui-icon material-icons">&#xe0da;</i> Recipient's Public Key
+                    </div>
+                    <div class="mdui-row">
+                        <div class="mdui-col-xs-12">
+                            <label class="mdui-checkbox">
+                                <input type="checkbox" id="useCustomPublicKey"/>
+                                <i class="mdui-checkbox-icon"></i>
+                                Use custom public key instead of default
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="customPublicKeyOptions" style="display:none; margin-top:10px;">
+                        <div class="mdui-tab" id="publicKeyTab" mdui-tab>
+                            <a href="#pubkey-text" class="mdui-ripple">
+                                <i class="mdui-icon material-icons">&#xe14d;&#xe3c9;</i>
+                            </a>
+                            <a href="#pubkey-file" class="mdui-ripple">
+                                <i class="mdui-icon material-icons">&#xe24d;&#xe2c6;</i>
+                            </a>
+                        </div>
+                        <div id="pubkey-text" class="mdui-p-a-2">
+                            <div class="mdui-textfield">
+                                <label class="mdui-textfield-label">Paste PGP public key here</label>
+                                <textarea class="mdui-textfield-input" id="customPublicKeyText" rows="3" placeholder="-----BEGIN PGP PUBLIC KEY BLOCK-----"></textarea>
+                                <div class="mdui-textfield-error" id="customPublicKeyTextError"></div>
+                                <div class="mdui-textfield-helper" id="customPublicKeyTextHelper"></div>
+                            </div>
+                            <button id="pastePublicKey" class="mdui-btn mdui-ripple mdui-color-theme-accent">
+                                <i class="mdui-icon material-icons" id="pastePublicKeyIcon">&#xe14f;</i> 
+                                <span id="pastePublicKeyText">Paste from Clipboard</span>
+                            </button>
+                        </div>
+                        <div id="pubkey-file" class="mdui-p-a-2">
+                            <div class="mdui-textfield">
+                                <input type="file" id="customPublicKeyFile" class="mdui-btn"/>
+                                <div class="mdui-textfield-error" id="publicKeyFileError"></div>
+                                <div class="mdui-textfield-helper" id="publicKeyFileInfo"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mdui-divider" style="margin: 16px 0;"></div>
+                    
+                    <!-- 签名部分 -->
+                    <div class="mdui-typo-title">
+                        <i class="mdui-icon material-icons">&#xe155;</i> Sign Message
+                    </div>
+                    <div class="mdui-row">
+                        <div class="mdui-col-xs-12">
+                            <label class="mdui-checkbox">
+                                <input type="checkbox" id="signMessage"/>
+                                <i class="mdui-checkbox-icon"></i>
+                                Sign message with your private key
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="signOptions" style="display:none; margin-top:10px;">
+                        <div class="mdui-tab" id="privateKeyTab" mdui-tab>
+                            <a href="#privkey-text" class="mdui-ripple">
+                                <i class="mdui-icon material-icons">&#xe14d;&#xe3c9;</i>
+                            </a>
+                            <a href="#privkey-file" class="mdui-ripple">
+                                <i class="mdui-icon material-icons">&#xe24d;&#xe2c6;</i>
+                            </a>
+                        </div>
+                        <div id="privkey-text" class="mdui-p-a-2">
+                            <div class="mdui-textfield">
+                                <label class="mdui-textfield-label">Paste PGP private key here, your key won't save</label>
+                                <textarea class="mdui-textfield-input" id="privateKeyText" rows="3" placeholder="-----BEGIN PGP PRIVATE KEY BLOCK-----"></textarea>
+                                <div class="mdui-textfield-error" id="privateKeyTextError"></div>
+                                <div class="mdui-textfield-helper" id="privateKeyTextHelper"></div>
+                            </div>
+                            <button id="pastePrivateKey" class="mdui-btn mdui-ripple mdui-color-theme-accent">
+                                <i class="mdui-icon material-icons" id="pastePrivateKeyIcon">&#xe14f;</i> 
+                                <span id="pastePrivateKeyText">Paste from Clipboard</span>
+                            </button>
+                        </div>
+                        <div id="privkey-file" class="mdui-p-a-2">
+                            <div class="mdui-textfield">
+                                <input type="file" id="privateKeyFile" class="mdui-btn">
+                                <div class="mdui-textfield-error" id="privateKeyFileError"></div>
+                                <div class="mdui-textfield-helper" id="privateKeyFileInfo"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mdui-textfield mdui-textfield-floating-label">
+                            <i class="mdui-icon material-icons">&#xe897;</i>
+                            <label class="mdui-textfield-label"> 
+                                Private key passphrase (if encrypted)
+                            </label>
+                            <input class="mdui-textfield-input" type="password" id="privateKeyPassphrase"/>
+                            <div class="mdui-textfield-error" id="privateKeyPassphraseError"></div>
+                            <div class="mdui-textfield-helper">Leave empty if your key is not password protected</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
         <div class="mdui-btn-group">
             <button id="encryptBtn" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-white">
                 <i class="mdui-icon material-icons">&#xe897;</i> Encrypt
@@ -718,13 +835,14 @@ vFVaoXIc2gJTkOj5t3JjFrllcCrGFXcKPXHtNJ/c00pHODWEZ4aeAuxGiT2sAZ7i
 DNTFMAB+vouSw0d+yAKJdzmTas6XItDK+kLf5j6T0h0BMdnV2vdF83Pe7Uj9U0Bk
 HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
 =3X8B
------END PGP PUBLIC KEY BLOCK-----
-`;
+-----END PGP PUBLIC KEY BLOCK-----`;
         
         var selectedFile = null;
         var encryptedData = null;
         var currentMode = 'text';
         var inIframe = window.self !== window.top; // 检测是否在iframe中
+        var customPublicKeyObj = null; // 自定义公钥对象
+        var privateKeyObj = null; // 私钥对象
         
         var plaintext = document.getElementById('plaintext');
         var textModeBtn = document.getElementById('textModeBtn');
@@ -743,6 +861,33 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
         var copyResultBtn = document.getElementById('copyResult');
         var downloadResultBtn = document.getElementById('downloadResult');
         var footerSection = document.getElementById('footerSection');
+        
+        // 高级选项相关元素
+        var useCustomPublicKey = document.getElementById('useCustomPublicKey');
+        var customPublicKeyOptions = document.getElementById('customPublicKeyOptions');
+        var customPublicKeyText = document.getElementById('customPublicKeyText');
+        var customPublicKeyTextError = document.getElementById('customPublicKeyTextError');
+        var customPublicKeyTextHelper = document.getElementById('customPublicKeyTextHelper');
+        var customPublicKeyFile = document.getElementById('customPublicKeyFile');
+        var publicKeyFileInfo = document.getElementById('publicKeyFileInfo');
+        var publicKeyFileError = document.getElementById('publicKeyFileError');
+        var pastePublicKey = document.getElementById('pastePublicKey');
+        var pastePublicKeyIcon = document.getElementById('pastePublicKeyIcon');
+        var pastePublicKeyText = document.getElementById('pastePublicKeyText');
+        
+        var signMessage = document.getElementById('signMessage');
+        var signOptions = document.getElementById('signOptions');
+        var privateKeyText = document.getElementById('privateKeyText');
+        var privateKeyTextError = document.getElementById('privateKeyTextError');
+        var privateKeyTextHelper = document.getElementById('privateKeyTextHelper');
+        var privateKeyFile = document.getElementById('privateKeyFile');
+        var privateKeyFileInfo = document.getElementById('privateKeyFileInfo');
+        var privateKeyFileError = document.getElementById('privateKeyFileError');
+        var privateKeyPassphrase = document.getElementById('privateKeyPassphrase');
+        var privateKeyPassphraseError = document.getElementById('privateKeyPassphraseError');
+        var pastePrivateKey = document.getElementById('pastePrivateKey');
+        var pastePrivateKeyIcon = document.getElementById('pastePrivateKeyIcon');
+        var pastePrivateKeyText = document.getElementById('pastePrivateKeyText');
         
         // 检测是否在iframe中并设置相应样式
         function setupIframeMode() {
@@ -870,6 +1015,141 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
                 subtree: true,
                 attributes: true
             });
+
+            // 高级选项事件处理
+            useCustomPublicKey.addEventListener('change', function() {
+                customPublicKeyOptions.style.display = this.checked ? 'block' : 'none';
+                customPublicKeyObj = null; // 重置公钥对象
+                resetPublicKeyFeedback();
+                setTimeout(updateParentIframeHeight, 100);
+            });
+            
+            signMessage.addEventListener('change', function() {
+                signOptions.style.display = this.checked ? 'block' : 'none';
+                privateKeyObj = null; // 重置私钥对象
+                resetPrivateKeyFeedback();
+                setTimeout(updateParentIframeHeight, 100);
+            });
+            
+            // 处理自定义公钥文本变化
+            customPublicKeyText.addEventListener('input', function() {
+                customPublicKeyObj = null; // 重置公钥对象
+                validatePublicKey();
+            });
+            
+            // 处理自定义公钥文件上传
+            customPublicKeyFile.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    publicKeyFileInfo.textContent = 'Selected key: ' + file.name;
+                    publicKeyFileError.textContent = '';
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            // 设置文本区域的内容
+                            customPublicKeyText.value = e.target.result;
+                            // 验证公钥
+                            validatePublicKey();
+                            
+                            // 修复: 正确切换到文本标签页
+                            document.querySelector('#publicKeyTab a[href="#pubkey-text"]').click();
+                            
+                            // 确保高级选项面板打开
+                            const advancedPanel = document.querySelector('.mdui-panel-item');
+                            if (!advancedPanel.classList.contains('mdui-panel-item-open')) {
+                                advancedPanel.classList.add('mdui-panel-item-open');
+                            }
+                        } catch(err) {
+                            console.error('Error reading public key file:', err);
+                            publicKeyFileInfo.textContent = '';
+                            publicKeyFileError.textContent = 'Error: ' + err.message;
+                        }
+                    };
+                    reader.onerror = function() {
+                        console.error('Error reading public key file');
+                        publicKeyFileInfo.textContent = '';
+                        publicKeyFileError.textContent = 'Cannot read file';
+                    };
+                    reader.readAsText(file);
+                }
+                setTimeout(updateParentIframeHeight, 100);
+            });
+            
+            // 处理私钥文件上传
+            privateKeyFile.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    privateKeyFileInfo.textContent = 'Selected key: ' + file.name;
+                    privateKeyFileError.textContent = '';
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            // 设置文本区域的内容
+                            privateKeyText.value = e.target.result;
+                            // 验证私钥
+                            validatePrivateKey();
+                            
+                            // 修复: 正确切换到文本标签页
+                            document.querySelector('#privateKeyTab a[href="#privkey-text"]').click();
+                            
+                            // 确保高级选项面板打开
+                            const advancedPanel = document.querySelector('.mdui-panel-item');
+                            if (!advancedPanel.classList.contains('mdui-panel-item-open')) {
+                                advancedPanel.classList.add('mdui-panel-item-open');
+                            }
+                        } catch(err) {
+                            console.error('Error reading private key file:', err);
+                            privateKeyFileInfo.textContent = '';
+                            privateKeyFileError.textContent = 'Error: ' + err.message;
+                        }
+                    };
+                    reader.onerror = function() {
+                        console.error('Error reading private key file');
+                        privateKeyFileInfo.textContent = '';
+                        privateKeyFileError.textContent = 'Cannot read file';
+                    };
+                    reader.readAsText(file);
+                }
+                setTimeout(updateParentIframeHeight, 100);
+            });
+            
+            // 添加粘贴公钥按钮功能
+            pastePublicKey.addEventListener('click', function() {
+                navigator.clipboard.readText()
+                    .then(text => {
+                        customPublicKeyText.value = text;
+                        validatePublicKey();
+                        
+                        // 显示成功提示
+                        updateButtonStatus(pastePublicKey, pastePublicKeyIcon, pastePublicKeyText, true, 'Pasted!');
+                    })
+                    .catch(err => {
+                        console.error('Cannot access clipboard:', err);
+                        
+                        // 显示错误提示
+                        updateButtonStatus(pastePublicKey, pastePublicKeyIcon, pastePublicKeyText, false, 'Cannot access clipboard');
+                    });
+            });
+            
+            // 添加粘贴私钥按钮功能
+            pastePrivateKey.addEventListener('click', function() {
+                navigator.clipboard.readText()
+                    .then(text => {
+                        privateKeyText.value = text;
+                        validatePrivateKey();
+                        
+                        // 显示成功提示
+                        updateButtonStatus(pastePrivateKey, pastePrivateKeyIcon, pastePrivateKeyText, true, 'Pasted!');
+                    })
+                    .catch(err => {
+                        console.error('Cannot access clipboard:', err);
+                        
+                        // 显示错误提示
+                        updateButtonStatus(pastePrivateKey, pastePrivateKeyIcon, pastePrivateKeyText, false, 'Cannot access clipboard');
+                    });
+            });
         }
         
         function switchMode(mode) {
@@ -927,9 +1207,18 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
             }
             
             showLoading();
+            progressText.textContent = '';
             
             setTimeout(function() {
-                encryptText(text)
+                prepareKeysForEncryption()
+                    .then(function(keysReady) {
+                        if(keysReady) {
+                            progressText.textContent = '';
+                            return encryptText(text);
+                        } else {
+                            throw new Error('Key preparation failed');
+                        }
+                    })
                     .then(function(encrypted) {
                         encryptedData = encrypted;
                         showResult(encrypted, false);
@@ -937,8 +1226,8 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
                     })
                     .catch(function(error) {
                         console.error('Encryption failed:', error);
-                        alert('Encryption failed: ' + error.message);
                         hideLoading();
+                        mdui.alert('Encryption failed: ' + error.message, 'Error');
                     });
             }, 100);
         }
@@ -955,13 +1244,22 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
             
             showLoading();
             showProgress();
+            progressText.textContent = '';
             
             var reader = new FileReader();
             reader.onload = function(e) {
                 var arrayBuffer = e.target.result;
                 
                 setTimeout(function() {
-                    encryptBinaryData(arrayBuffer, selectedFile.name)
+                    prepareKeysForEncryption()
+                        .then(function(keysReady) {
+                            if(keysReady) {
+                                progressText.textContent = '';
+                                return encryptBinaryData(arrayBuffer, selectedFile.name);
+                            } else {
+                                throw new Error('Key preparation failed');
+                            }
+                        })
                         .then(function(encrypted) {
                             encryptedData = encrypted.binary; 
                             showResult(encrypted.armored, true); 
@@ -970,14 +1268,14 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
                         })
                         .catch(function(error) {
                             console.error('File encryption failed:', error);
-                            alert('File encryption failed: ' + error.message);
                             hideLoading();
                             hideProgress();
+                            mdui.alert('File encryption failed: ' + error.message, 'Error');
                         });
                 }, 100);
             };
             reader.onerror = function() {
-                alert('Error reading file.');
+                mdui.alert('Error reading file.', 'Error');
                 hideLoading();
                 hideProgress();
             };
@@ -1017,14 +1315,104 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
             checkFileSize(byteLength);
         });
         
+        async function validatePublicKey() {
+            const keyText = customPublicKeyText.value.trim();
+            if (!keyText) {
+                customPublicKeyTextError.textContent = '';
+                customPublicKeyTextHelper.textContent = '';
+                return;
+            }
+            
+            try {
+                customPublicKeyTextHelper.textContent = 'Validating public key...';
+                customPublicKeyTextError.textContent = '';
+                
+                const keyObj = await openpgp.readKey({ armoredKey: keyText });
+                if (keyObj) {
+                    customPublicKeyObj = keyObj;
+                    customPublicKeyTextError.textContent = '';
+                    customPublicKeyTextHelper.textContent = '✓ Valid public key';
+                    customPublicKeyTextHelper.style.color = 'green';
+                    
+                    // 确保面板是开着的
+                    const advancedPanel = document.querySelector('.mdui-panel-item');
+                    if (!advancedPanel.classList.contains('mdui-panel-item-open')) {
+                        advancedPanel.classList.add('mdui-panel-item-open');
+                    }
+                } else {
+                    customPublicKeyTextHelper.textContent = '';
+                    customPublicKeyTextError.textContent = '✗ Invalid public key format';
+                }
+            } catch (e) {
+                console.error('Public key validation error:', e);
+                customPublicKeyTextHelper.textContent = '';
+                customPublicKeyTextError.textContent = '✗ Invalid public key: ' + e.message;
+                customPublicKeyObj = null;
+            }
+            
+            setTimeout(updateParentIframeHeight, 100);
+        }
+        
+        async function validatePrivateKey() {
+            const keyText = privateKeyText.value.trim();
+            if (!keyText) {
+                privateKeyTextError.textContent = '';
+                privateKeyTextHelper.textContent = '';
+                return;
+            }
+            
+            try {
+                privateKeyTextHelper.textContent = 'Validating private key...';
+                privateKeyTextError.textContent = '';
+                
+                const keyObj = await openpgp.readPrivateKey({ armoredKey: keyText });
+                if (keyObj) {
+                    privateKeyTextHelper.textContent = '✓ Valid private key' + (keyObj.isDecrypted() ? '' : ' (requires passphrase)');
+                    privateKeyTextHelper.style.color = 'green';
+                    privateKeyTextError.textContent = '';
+                    
+                    // 确保面板是开着的
+                    const advancedPanel = document.querySelector('.mdui-panel-item');
+                    if (!advancedPanel.classList.contains('mdui-panel-item-open')) {
+                        advancedPanel.classList.add('mdui-panel-item-open');
+                    }
+                } else {
+                    privateKeyTextHelper.textContent = '';
+                    privateKeyTextError.textContent = '✗ Invalid private key format';
+                }
+            } catch (e) {
+                console.error('Private key validation error:', e);
+                privateKeyTextHelper.textContent = '';
+                privateKeyTextError.textContent = '✗ Invalid private key: ' + e.message;
+                privateKeyObj = null;
+            }
+            
+            setTimeout(updateParentIframeHeight, 100);
+        }
+        
         async function encryptText(text) {
             try {
-                const publicKeyObj = await openpgp.readKey({ armoredKey: publicKey });
+                // 决定使用哪个公钥
+                let encryptionKey;
+                if (useCustomPublicKey.checked && customPublicKeyObj) {
+                    encryptionKey = customPublicKeyObj;
+                } else {
+                    encryptionKey = await openpgp.readKey({ armoredKey: publicKey });
+                }
                 
-                const encrypted = await openpgp.encrypt({
+                // 加密选项
+                const encryptOptions = {
                     message: await openpgp.createMessage({ text: text }),
-                    encryptionKeys: publicKeyObj
-                });
+                    encryptionKeys: encryptionKey
+                };
+                
+                // 如果需要签名并且有私钥，添加签名
+                if (signMessage.checked && privateKeyObj) {
+                    encryptOptions.signingKeys = privateKeyObj;
+                }
+                
+                // 执行加密
+                const encrypted = await openpgp.encrypt(encryptOptions);
                 
                 return encrypted;
             } catch (e) {
@@ -1035,24 +1423,43 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
         
         async function encryptBinaryData(data, filename) {
             try {
-                const publicKeyObj = await openpgp.readKey({ armoredKey: publicKey });
+                // 决定使用哪个公钥
+                let encryptionKey;
+                if (useCustomPublicKey.checked && customPublicKeyObj) {
+                    encryptionKey = customPublicKeyObj;
+                } else {
+                    encryptionKey = await openpgp.readKey({ armoredKey: publicKey });
+                }
                 
+                // 创建二进制消息
                 const binaryMessage = await openpgp.createMessage({ 
                     binary: new Uint8Array(data),
                     filename: filename 
                 });
                 
-                const binaryEncrypted = await openpgp.encrypt({
+                // 二进制加密选项
+                const binaryEncryptOptions = {
                     message: binaryMessage,
-                    encryptionKeys: publicKeyObj,
+                    encryptionKeys: encryptionKey,
                     format: 'binary'
-                });
+                };
                 
-                const armoredEncrypted = await openpgp.encrypt({
+                // 文本加密选项
+                const armoredEncryptOptions = {
                     message: binaryMessage,
-                    encryptionKeys: publicKeyObj,
+                    encryptionKeys: encryptionKey,
                     format: 'armored'
-                });
+                };
+                
+                // 如果需要签名并且有私钥，添加签名
+                if (signMessage.checked && privateKeyObj) {
+                    binaryEncryptOptions.signingKeys = privateKeyObj;
+                    armoredEncryptOptions.signingKeys = privateKeyObj;
+                }
+                
+                // 执行加密
+                const binaryEncrypted = await openpgp.encrypt(binaryEncryptOptions);
+                const armoredEncrypted = await openpgp.encrypt(armoredEncryptOptions);
                 
                 return {
                     binary: binaryEncrypted,  
@@ -1229,7 +1636,7 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
             mdui.dialog({
                 title: 'Confirm Send via email',
                 content: `You will open a draft email with the encrypted content and the recipient's email address is <a class="mdui-typo" href="mailto:admin@stevezmt.top">admin@stevezmt.top</a>.<br/>
-                Web GPG encryption cannot verify the sender, continue?`,
+                Web GPG encryption cannot verify the sender if no signature, continue?`,
                 buttons: [
                     {
                         text: 'Cancel'
@@ -1332,6 +1739,225 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
         } else {
             initialize();
         }
+        
+        // 准备加密所需的密钥
+        async function prepareKeysForEncryption() {
+            // 处理自定义公钥
+            if (useCustomPublicKey.checked) {
+                if (!customPublicKeyText.value.trim()) {
+                    customPublicKeyTextError.textContent = 'Please provide a valid public key to continue';
+                    return false;
+                }
+                
+                try {
+                    customPublicKeyObj = await openpgp.readKey({ armoredKey: customPublicKeyText.value.trim() });
+                    if (!customPublicKeyObj) {
+                        customPublicKeyTextError.textContent = 'The provided public key format is invalid';
+                        return false;
+                    }
+                } catch (err) {
+                    customPublicKeyTextError.textContent = 'Public key parsing failed: ' + err.message;
+                    return false;
+                }
+            }
+            
+            // 处理私钥（如果需要签名）
+            if (signMessage.checked) {
+                if (!privateKeyText.value.trim()) {
+                    mdui.dialog({
+                        title: 'Missing Private Key',
+                        content: 'You chose to sign the message but no private key was provided. Would you like to continue with encryption only (no signing)?',
+                        buttons: [
+                            {
+                                text: 'Cancel',
+                                onClick: function() {
+                                    // Nothing to do, dialog will close and return to the page
+                                }
+                            },
+                            {
+                                text: 'Encrypt Only',
+                                onClick: function() {
+                                    // Disable signing option
+                                    signMessage.checked = false;
+                                    signOptions.style.display = 'none';
+                                    
+                                    // Continue with encryption
+                                    if (currentMode === 'text') {
+                                        encryptTextHandler();
+                                    } else {
+                                        encryptFileHandler();
+                                    }
+                                }
+                            }
+                        ]
+                    });
+                    return false;
+                }
+                
+                try {
+                    // Read the private key
+                    const privKey = await openpgp.readPrivateKey({ armoredKey: privateKeyText.value.trim() });
+                    
+                    // Check if the private key needs to be decrypted
+                    if (privKey.isDecrypted()) {
+                        privateKeyObj = privKey;
+                    } else {
+                        // Needs passphrase
+                        const passphrase = privateKeyPassphrase.value;
+                        if (!passphrase) {
+                            privateKeyPassphraseError.textContent = 'Passphrase required';
+                            
+                            mdui.dialog({
+                                title: 'Passphrase Required',
+                                content: 'Your private key requires a passphrase. Please enter a passphrase or choose to encrypt only (no signing).',
+                                buttons: [
+                                    {
+                                        text: 'Cancel',
+                                        onClick: function() {
+                                            // Nothing to do
+                                        }
+                                    },
+                                    {
+                                        text: 'Encrypt Only',
+                                        onClick: function() {
+                                            // Disable signing option
+                                            signMessage.checked = false;
+                                            signOptions.style.display = 'none';
+                                            privateKeyPassphraseError.textContent = '';
+                                            
+                                            // Continue with encryption
+                                            if (currentMode === 'text') {
+                                                encryptTextHandler();
+                                            } else {
+                                                encryptFileHandler();
+                                            }
+                                        }
+                                    }
+                                ]
+                            });
+                            return false;
+                        }
+                        
+                        try {
+                            privateKeyObj = await openpgp.decryptKey({
+                                privateKey: privKey,
+                                passphrase: passphrase
+                            });
+                        } catch (decryptErr) {
+                            privateKeyPassphraseError.textContent = 'Incorrect passphrase';
+                            
+                            mdui.dialog({
+                                title: 'Private Key Decryption Failed',
+                                content: 'Failed to decrypt private key: ' + decryptErr.message + '. Would you like to continue with encryption only (no signing)?',
+                                buttons: [
+                                    {
+                                        text: 'Cancel',
+                                        onClick: function() {
+                                            // Nothing to do
+                                        }
+                                    },
+                                    {
+                                        text: 'Encrypt Only',
+                                        onClick: function() {
+                                            // Disable signing option
+                                            signMessage.checked = false;
+                                            signOptions.style.display = 'none';
+                                            privateKeyPassphraseError.textContent = '';
+                                            
+                                            // Continue with encryption
+                                            if (currentMode === 'text') {
+                                                encryptTextHandler();
+                                            } else {
+                                                encryptFileHandler();
+                                            }
+                                        }
+                                    }
+                                ]
+                            });
+                            return false;
+                        }
+                    }
+                } catch (err) {
+                    privateKeyTextError.textContent = 'Invalid private key: ' + err.message;
+                    
+                    mdui.dialog({
+                        title: 'Invalid Private Key',
+                        content: 'Invalid private key format: ' + err.message + '. Would you like to continue with encryption only (no signing)?',
+                        buttons: [
+                            {
+                                text: 'Cancel',
+                                onClick: function() {
+                                    // Nothing to do
+                                }
+                            },
+                            {
+                                text: 'Encrypt Only',
+                                onClick: function() {
+                                    // Disable signing option
+                                    signMessage.checked = false;
+                                    signOptions.style.display = 'none';
+                                    privateKeyTextError.textContent = '';
+                                    
+                                    // Continue with encryption
+                                    if (currentMode === 'text') {
+                                        encryptTextHandler();
+                                    } else {
+                                        encryptFileHandler();
+                                    }
+                                }
+                            }
+                        ]
+                    });
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        // 更新按钮状态（用于替代snackbar）
+        function updateButtonStatus(button, icon, text, success, message) {
+            const originalClasses = button.className;
+            const originalIconHTML = icon.innerHTML;
+            const originalText = text.textContent;
+            
+            if (success) {
+                // 成功状态
+                icon.innerHTML = '&#xe5ca;';
+                button.className = originalClasses.replace('mdui-color-theme-accent', 'mdui-color-green');
+            } else {
+                // 失败状态
+                icon.innerHTML = '&#xe000;';
+                button.className = originalClasses.replace('mdui-color-theme-accent', 'mdui-color-red');
+            }
+            
+            text.textContent = message;
+            
+            // 3秒后恢复
+            setTimeout(function() {
+                icon.innerHTML = originalIconHTML;
+                button.className = originalClasses;
+                text.textContent = originalText;
+            }, 3000);
+        }
+        
+        // 重置公钥相关的反馈信息
+        function resetPublicKeyFeedback() {
+            customPublicKeyTextError.textContent = '';
+            customPublicKeyTextHelper.textContent = '';
+            publicKeyFileInfo.textContent = '';
+            publicKeyFileError.textContent = '';
+        }
+        
+        // 重置私钥相关的反馈信息
+        function resetPrivateKeyFeedback() {
+            privateKeyTextError.textContent = '';
+            privateKeyTextHelper.textContent = '';
+            privateKeyFileInfo.textContent = '';
+            privateKeyFileError.textContent = '';
+            privateKeyPassphraseError.textContent = '';
+        }
+        
     })();
     </script>
 </body>

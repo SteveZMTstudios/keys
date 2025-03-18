@@ -742,7 +742,8 @@ setTimeout(function() {
             translate.ignore.tag.push('code');
             translate.ignore.id.push('langMenu');
             translate.ignore.id.push('igTrans');
-            translate.ignore.class.push('igTrans');   
+            translate.ignore.class.push('igTrans');
+            translate.ignore.class.push('code-block');   
             translate.service.use('client.edge');
             showTranslateComplete(translate.language.getCurrent());
             translate.execute();
