@@ -1,6 +1,5 @@
 # GnuPG/PGP Multi-platform Download
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.2/dist/css/mdui.min.css">
 <style>
   .container {
     max-width: 900px;
