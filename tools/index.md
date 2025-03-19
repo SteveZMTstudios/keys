@@ -362,7 +362,7 @@
                 <p>Encrypt your data online using the browser, no installation required</p>
               </div>
               <div class="mdui-card-actions">
-                <a href="./encrypt_sample.html" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-light-green-900" target="_blank">View Encryption Page</a>
+                <a href="./encrypt_tool.html" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-light-green-900" target="_blank">View Encryption Page</a>
                 
               </div>
             </div>

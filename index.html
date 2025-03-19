@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate" />
     <title>Steve ZMT's PGP keys</title>
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="/favicon.png" type="image/png">
     <!-- MDUI CSS -->
     <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/mdui/1.0.2/css/mdui.min.css';">
     <style>
@@ -295,7 +297,7 @@
     function showCopySuccess(btn) {
         var icon = btn.querySelector('i');
         var oldHtml = icon.innerHTML;
-        icon.innerHTML = '&#xe876;';
+        icon.innerHTML = '&#xe86c;';
         btn.classList.add('copy-success');
         
         setTimeout(function() {
@@ -680,16 +682,15 @@ If you need to verify this revocation, you can contact me through my Telegram ac
 </tr>
 </tbody>
 </table>
-<iframe height="200px" id="encryptFrame" src="tools/encrypt_sample.html" style="color: inherit; min-height: 200px; max-height: 1000px; min-width: 100%; max-width: 100%; resize: both; overflow: auto; background:#e0e0e0;" width="100%"></iframe>
-<p><button class="mdui-btn mdui-btn-raised mdui-color-theme-accent mdui-ripple" onclick="window.open('tools/encrypt_sample.html', '_blank');"><i class="mdui-icon material-icons"></i> Open In New Tab</button></p>
+<iframe height="200px" id="encryptFrame" sandbox="allow-scripts allow-same-origin allow-forms" src="tools/encrypt_tool.html" style="color: inherit; min-height: 352px; max-height: 1500px; min-width: 100%; max-width: 100%; resize: both; overflow: auto; background:#e0e0e0;" width="100%"></iframe>
+<p><button class="mdui-btn mdui-btn-raised mdui-color-theme-accent mdui-ripple" onclick="window.open('tools/encrypt_tool.html', '_blank');"><i class="mdui-icon material-icons"></i> Open In New Tab</button></p>
 <script>
-// iframe高度自适应处理
 window.addEventListener('message', function(event) {
     if (event.data && event.data.type === 'resize') {
         const iframe = document.getElementById('encryptFrame');
         if (iframe) {
-            // 设置最小高度为200px和最大高度为1000px
-            const newHeight = Math.max(150, Math.min(1000, event.data.height + 10.5));
+
+            const newHeight = Math.max(200, Math.min(1500, event.data.height + 10.5));
             // 添加平滑过渡动画
             iframe.style.transition = 'height 0.3s ease';
             iframe.style.height = newHeight + 'px';
@@ -706,10 +707,10 @@ window.addEventListener('message', function(event) {
 <p><strong>Steve ZMT</strong> &lt;admin@stevezmt.top&gt;</p>
 <p>...... 3 more</p>
 <h4>Summary Information (ID)</h4>
-<pre><button class="copy-btn mdui-btn mdui-btn-icon mdui-ripple" onclick="copyText(this)"><i class="mdui-icon material-icons">content_copy</i></button><code>3745872A953198FE
+<pre><button class="copy-btn mdui-btn mdui-btn-icon mdui-ripple" onclick="copyText(this)"><i class="mdui-icon material-icons">&amp;#xe14d;</i></button><code>3745872A953198FE
 </code></pre>
 <h4>Public Key Fingerprint</h4>
-<pre><button class="copy-btn mdui-btn mdui-btn-icon mdui-ripple" onclick="copyText(this)"><i class="mdui-icon material-icons">content_copy</i></button><code>C96BE2F8EDE82CF7214F62593745872A953198FE
+<pre><button class="copy-btn mdui-btn mdui-btn-icon mdui-ripple" onclick="copyText(this)"><i class="mdui-icon material-icons">&amp;#xe14d;</i></button><code>C96BE2F8EDE82CF7214F62593745872A953198FE
 </code></pre>
 <h4>Key Info</h4>
 <table>
@@ -745,7 +746,7 @@ window.addEventListener('message', function(event) {
 <h4>Public Keys</h4>
 <details>
 <summary>Full Public Keys Data</summary>
-<pre><button class="copy-btn mdui-btn mdui-btn-icon mdui-ripple" onclick="copyText(this)"><i class="mdui-icon material-icons">content_copy</i></button><code>-----BEGIN PGP PUBLIC KEY BLOCK-----
+<pre><button class="copy-btn mdui-btn mdui-btn-icon mdui-ripple" onclick="copyText(this)"><i class="mdui-icon material-icons">&amp;#xe14d;</i></button><code>-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mQINBGcd8kMBEADGKkUU5XbZjAQAgdhB3Z1Kn0YIFmTSX65WOY7DznHPzXitxI5C
 CsPj6Gobe9bwmHRHLE8qEHtKnUX1ZZzig7fYIS/YGmevY6LekpU3x1zfEN5AXrxM
@@ -1236,10 +1237,10 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
 <p><strong>Steve ZMT</strong> \&lt;zzhzcuid@outlook.com&gt;</p>
 <p>...... 3 more</p>
 <h4>Summary Information (ID)</h4>
-<pre><button class="copy-btn mdui-btn mdui-btn-icon mdui-ripple" onclick="copyText(this)"><i class="mdui-icon material-icons">content_copy</i></button><code>c6feba3f7d12b3a3
+<pre><button class="copy-btn mdui-btn mdui-btn-icon mdui-ripple" onclick="copyText(this)"><i class="mdui-icon material-icons">&amp;#xe14d;</i></button><code>c6feba3f7d12b3a3
 </code></pre>
 <h4>Public Key Fingerprint</h4>
-<pre><button class="copy-btn mdui-btn mdui-btn-icon mdui-ripple" onclick="copyText(this)"><i class="mdui-icon material-icons">content_copy</i></button><code>708396affbfbc317b8c51a9ec6feba3f7d12b3a3
+<pre><button class="copy-btn mdui-btn mdui-btn-icon mdui-ripple" onclick="copyText(this)"><i class="mdui-icon material-icons">&amp;#xe14d;</i></button><code>708396affbfbc317b8c51a9ec6feba3f7d12b3a3
 </code></pre>
 <h4>Key Info</h4>
 <table>
@@ -1291,10 +1292,10 @@ DO NOT USE IT TO ENCRYPT ANY MESSAGE ALTHOUGH IT IS STILL VALID.</p>
 <h4>User Info</h4>
 <p><strong>SteveZMTstudios</strong> \&lt;98326195+SteveZMTstudios@users.noreply.github.com&gt;</p>
 <h4>Summary Information (ID)</h4>
-<pre><button class="copy-btn mdui-btn mdui-btn-icon mdui-ripple" onclick="copyText(this)"><i class="mdui-icon material-icons">content_copy</i></button><code>98fa1900a35bf9bb
+<pre><button class="copy-btn mdui-btn mdui-btn-icon mdui-ripple" onclick="copyText(this)"><i class="mdui-icon material-icons">&amp;#xe14d;</i></button><code>98fa1900a35bf9bb
 </code></pre>
 <h4>Public Key Fingerprint</h4>
-<pre><button class="copy-btn mdui-btn mdui-btn-icon mdui-ripple" onclick="copyText(this)"><i class="mdui-icon material-icons">content_copy</i></button><code>7166561356c0565e03303c6c98fa1900a35bf9bb
+<pre><button class="copy-btn mdui-btn mdui-btn-icon mdui-ripple" onclick="copyText(this)"><i class="mdui-icon material-icons">&amp;#xe14d;</i></button><code>7166561356c0565e03303c6c98fa1900a35bf9bb
 </code></pre>
 <h4>Key Info</h4>
 <table>

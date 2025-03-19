@@ -22,18 +22,16 @@ Following industry best practices, the OpenPGP public keys are also published on
 |[Git Action](#public-key-info-git-action)|98fa 1900 a35b f9bb|🟡Inactive|
 | \- | \- |❔Unknown|
 
-
-<iframe id="encryptFrame" src="tools/encrypt_sample.html" width="100%" height="200px" style="color: inherit; min-height: 200px; max-height: 1000px; min-width: 100%; max-width: 100%; resize: both; overflow: auto; background:#e0e0e0;"></iframe>
-<button class="mdui-btn mdui-btn-raised mdui-color-theme-accent mdui-ripple" onclick="window.open('tools/encrypt_sample.html', '_blank');"><i class="mdui-icon material-icons">&#xe89e;</i> Open In New Tab</button>
+<iframe id="encryptFrame" src="tools/encrypt_tool.html" width="100%" height="200px" style="color: inherit; min-height: 352px; max-height: 1500px; min-width: 100%; max-width: 100%; resize: both; overflow: auto; background:#e0e0e0;" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+<button class="mdui-btn mdui-btn-raised mdui-color-theme-accent mdui-ripple" onclick="window.open('tools/encrypt_tool.html', '_blank');"><i class="mdui-icon material-icons">&#xe89e;</i> Open In New Tab</button>
 
 <script>
-// iframe高度自适应处理
 window.addEventListener('message', function(event) {
     if (event.data && event.data.type === 'resize') {
         const iframe = document.getElementById('encryptFrame');
         if (iframe) {
-            // 设置最小高度为200px和最大高度为1000px
-            const newHeight = Math.max(150, Math.min(1000, event.data.height + 10.5));
+            
+            const newHeight = Math.max(200, Math.min(1500, event.data.height + 10.5));
             // 添加平滑过渡动画
             iframe.style.transition = 'height 0.3s ease';
             iframe.style.height = newHeight + 'px';

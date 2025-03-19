@@ -8,6 +8,8 @@ so please check this site irregularly to check these key is still valid.
 
 If you have any question or just wanna check the signature, please contact me at https://t.me/stevezmtstudios.
 
+The markdown transform tool is at https://gist.github.com/SteveZMTstudios/11c348d4db33716cc78cf74329271b33.
+
 
 LICENSE
 ===========================

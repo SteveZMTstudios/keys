@@ -202,10 +202,9 @@
         <div class="mdui-panel" mdui-panel>
             <div class="mdui-panel-item">
                 <div class="mdui-panel-item-header mdui-clearfix">
-                    <div class="mdui-panel-item-title">
-                        <i class="mdui-icon material-icons">&#xe8b8;</i> Advanced Options
-                    </div>
-                    <i class="mdui-icon material-icons mdui-float-right">&#xe313;</i>
+                    <i class="mdui-icon material-icons">&#xe8b8;</i>
+                    <div class="mdui-panel-item-title">Advanced Options</div>
+                    <i class="mdui-icon material-icons mdui-panel-item-arrow">&#xe313;</i>
                 </div>
                 
                 <div class="mdui-panel-item-body">
@@ -1673,7 +1672,7 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
                     
                     // 显示说明
                     mdui.snackbar({
-                        message: 'Please download the encrypted file and attach it to your email client.',
+                        message: 'You will need to attach the encrypted file to your email client.',
                         position: 'top',
                         timeout: 5000
 
@@ -1694,7 +1693,7 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
                             
                             // 下载后打开邮件客户端
                             setTimeout(function() {
-                                window.location.href = `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent('This draft is Empty!\nPlease add the encrypted file in email as attachment.\n请查看附件中的加密文件。')}`;
+                                window.location.href = `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent('This draft is Empty!\nPlease add the encrypted file in email as attachment.\n请将下载的文件附加到邮件中。')}`;
                             }, 1000);
                         }, 100);
                     } else {
