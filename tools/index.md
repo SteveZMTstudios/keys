@@ -81,12 +81,15 @@
 <div class="container">
   <div class="header mdui-shadow-3">
     <h1>GnuPG/PGP Download List</h1>
-    <p>Free and Libre encryption and decryption tools based on OpenPGP. Anyone can use it.</p>
+    <p>A free and libre encryption and decryption tool. Anyone can use it.</p>
   </div>
 
   <div id="autoDetect" class="countdown-box mdui-shadow-2">
     <h2>Detected system: <span id="detectedOs" class="mdui-text-color-blue igTrans">Detecting...</span></h2>
     <div>Redirecting in <span class="countdown" id="countdown">5</span> seconds</div>
+    <div class="mdui-progress">
+  <div class="mdui-progress-indeterminate"></div>
+</div>
     <div class="mdui-btn-group mdui-m-t-3">
       <button id="cancelBtn" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-pink">Cancel Redirect</button>
       <button id="jumpNowBtn" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue">Redirect Now</button>
@@ -181,7 +184,7 @@
                 </ul>
               </div>
               <div class="mdui-card-actions">
-                <a href="https://github.com/portapps/gnupg-portable/releases/download/2.4.3-12/gnupg-portable-win32-2.4.3-12-setup.exe" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue-700" target="_blank">Download Portable Version</a>
+                <a href="https://github.com/portapps/gnupg-portable/releases/download/2.4.3-12/gnupg-portable-win32-2.4.3-12-setup.exe" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue-700" target="_blank"><i class="mdui-icon material-icons">&#xe2c4;</i>  Download Portable Version</a>
               </div>
             </div>
           </div>
@@ -200,8 +203,8 @@
                 </ul>
               </div>
               <div class="mdui-card-actions">
-                <a href="https://gnupg.org/download/index.html#binary" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-indigo" target="_blank">Download Full Version</a>
-                <a href="https://gnupg.org/" class="mdui-btn mdui-ripple" target="_blank">Visit Official Website</a>
+                <a href="https://gpg4win.org/thanks-for-download.html" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-indigo" target="_blank"><i class="mdui-icon material-icons">&#xe2c4;</i> Download Full Version</a>
+                <a href="https://gnupg.org/" class="mdui-btn mdui-ripple" target="_blank"><i class="mdui-icon material-icons">&#xe89e;</i> Visit Official Website</a>
               </div>
             </div>
           </div>
@@ -236,9 +239,9 @@
                 </div>
               </div>
               <div class="mdui-card-actions">
-                <a href="https://apps.kde.org/zh-cn/kleopatra/" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-green-700" target="_blank">Visit Kleopatra</a>
-                <a href="appstream://org.kde.kleopatra" class="mdui-btn mdui-ripple" target="_blank">AppStream Market</a>
-                <a href="https://flathub.org/apps/org.kde.kleopatra" class="mdui-btn mdui-ripple igTrans" target="_blank">Flathub</a>
+                <a href="https://apps.kde.org/zh-cn/kleopatra/" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-green-700" target="_blank"><i class="mdui-icon material-icons">&#xe89e;</i> Visit Kleopatra</a>
+                <a href="appstream://org.kde.kleopatra" class="mdui-btn mdui-ripple" target="_blank"><i class="mdui-icon material-icons">&#xe89e;</i> AppStream Market</a>
+                <a href="https://flathub.org/apps/org.kde.kleopatra" class="mdui-btn mdui-ripple igTrans" target="_blank"><i class="mdui-icon material-icons">&#xe89e;</i> Flathub</a>
               </div>
             </div>
           </div>
@@ -261,7 +264,7 @@
                 </div>
               </div>
               <div class="mdui-card-actions">
-                <a href="https://gnupg.org/download/index.html" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-green-900" target="_blank">Download Source Code</a>
+                <a href="https://gnupg.org/download/index.html" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-green-900" target="_blank"><i class="mdui-icon material-icons">&#xe89e;</i> Download Source Code</a>
               </div>
             </div>
           </div>
@@ -290,7 +293,7 @@
                 <p>GPG Suite provides a complete GnuPG toolkit for macOS, including a graphical interface</p>
               </div>
               <div class="mdui-card-actions">
-                <a href="https://gpgtools.org/" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-grey-700" target="_blank">Visit GPG Suite</a>
+                <a href="https://gpgtools.org/" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-grey-700" target="_blank"><i class="mdui-icon material-icons">&#xe89e;</i> Visit GPG Suite</a>
               </div>
             </div>
           </div>
@@ -310,7 +313,7 @@
                 </div>
               </div>
               <div class="mdui-card-actions">
-                <a href="https://formulae.brew.sh/formula/gnupg" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-grey-800" target="_blank">Homebrew Page</a>
+                <a href="https://formulae.brew.sh/formula/gnupg" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-grey-800" target="_blank"><i class="mdui-icon material-icons">&#xe89e;</i> Homebrew Page</a>
               </div>
             </div>
           </div>
@@ -345,9 +348,9 @@
                 </ul>
               </div>
               <div class="mdui-card-actions">
-                <a href="https://www.openkeychain.org/" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-light-green-700" target="_blank">Official Website</a>
-                <a href="https://play.google.com/store/apps/details?id=org.sufficientlysecure.keychain" class="mdui-btn mdui-ripple igTrans" target="_blank">Google Play</a>
-                <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain/" class="mdui-btn mdui-ripple igTrans" target="_blank">F-Droid</a>
+                <a href="https://www.openkeychain.org/" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-light-green-700" target="_blank"><i class="mdui-icon material-icons">&#xe89e;</i> Official Website</a>
+                <a href="https://play.google.com/store/apps/details?id=org.sufficientlysecure.keychain" class="mdui-btn mdui-ripple igTrans" target="_blank" mdui-tooltip="{content: '您所在的国家和地区可能无法访问此链接。'}"><i class="mdui-icon material-icons">&#xe2c4;</i> Google Play</a>
+                <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain/" class="mdui-btn mdui-ripple igTrans" target="_blank"><i class="mdui-icon material-icons">&#xe2c4;</i> F-Droid</a>
               </div>
             </div>
           </div>
@@ -362,7 +365,8 @@
                 <p>Encrypt your data online using the browser, no installation required</p>
               </div>
               <div class="mdui-card-actions">
-                <a href="./encrypt_tool.html" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-light-green-900" target="_blank">View Encryption Page</a>
+                <a href="./encrypt_tool.html" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-light-green-900" target="_blank"><i class="mdui-icon material-icons">&#xe2c4;</i> View Encryption Page</a>
+                
               </div>
             </div>
           </div>
@@ -392,38 +396,38 @@
               <tr>
                 <td class="igTrans"><i class="mdui-icon material-icons mdui-text-color-blue">&#xe30c;</i> Windows</td>
                 <td>GnuPG Portable</td>
-                <td><a href="https://github.com/portapps/gnupg-portable/releases/download/2.4.3-12/gnupg-portable-win32-2.4.3-12-setup.exe" target="_blank">Download</a></td>
+                <td><a href="https://github.com/portapps/gnupg-portable/releases/download/2.4.3-12/gnupg-portable-win32-2.4.3-12-setup.exe" target="_blank"><i class="mdui-icon material-icons">&#xe2c4;</i>Download</a></td>
                 <td>No installation needed, portable</td>
               </tr>
               <tr>
                 <td class="igTrans"><i class="mdui-icon material-icons mdui-text-color-blue">&#xe30c;</i> Windows</td>
                 <td>Gpg4win Full Version</td>
-                <td><a href="https://gnupg.org/download/index.html#binary" target="_blank">Download</a></td>
+                <td><a href="https://gpg4win.org/thanks-for-download.html" target="_blank"><i class="mdui-icon material-icons">&#xe2c4;</i>Download</a></td>
                 <td>Complete installation package with GUI</td>
               </tr>
               <tr>
                 <td class="igTrans"><i class="mdui-icon material-icons mdui-text-color-green">&#xe86f;</i> Linux</td>
                 <td>Kleopatra</td>
-                <td><a href="https://apps.kde.org/zh-cn/kleopatra/" target="_blank">Project Page</a></td>
+                <td><a href="https://apps.kde.org/zh-cn/kleopatra/" target="_blank"><i class="mdui-icon material-icons">&#xe89e;</i>Project Page</a></td>
                 <td>KDE graphical key management tool</td>
               </tr>
               <tr>
                 <td class="igTrans"><i class="mdui-icon material-icons mdui-text-color-grey">&#xe320;</i> macOS</td>
                 <td>GPG Suite</td>
-                <td><a href="https://gpgtools.org/" target="_blank">Download</a></td>
+                <td><a href="https://gpgtools.org/" target="_blank"><i class="mdui-icon material-icons">&#xe89e;</i>Download</a></td>
                 <td>Complete toolkit for macOS</td>
               </tr>
               <tr>
                 <td class="igTrans"><i class="mdui-icon material-icons mdui-text-color-light-green">&#xe859;</i> Android</td>
                 <td>OpenKeychain</td>
-                <td><a href="https://www.openkeychain.org/" target="_blank">Download</a></td>
+                <td><a href="https://www.openkeychain.org/" target="_blank"><i class="mdui-icon material-icons">&#xe89e;</i>Download</a></td>
                 <td>Android platform encryption tool</td>
               </tr>
               <tr>
-                <td class="igTrans"><i class="mdui-icon material-icons mdui-text-color-light-green">&#xe051;</i> Web</td>
-                <td>Encryption Tool</td>
-                <td><a href="./encrypt-sample" target="_blank">View</a></td>
-                <td>Online tools based on browser features</td>
+                <td class="igTrans"><i class="mdui-icon material-icons mdui-text-color-light-blue">&#xe051;</i> Web</td>
+                <td>Encryption online</td>
+                <td><a href="./encrypt_tool" target="_blank"><i class="mdui-icon material-icons">&#xe89e;</i>View</a></td>
+                <td>Online encryption and signing tools</td>
               </tr>
             </tbody>
           </table>
