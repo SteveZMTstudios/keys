@@ -81,7 +81,7 @@
 <div class="container">
   <div class="header mdui-shadow-3">
     <h1>GnuPG/PGP Download List</h1>
-    <p>We will automatically redirect you to the appropriate download page based on your device</p>
+    <p>Free and Libre encryption and decryption tools based on OpenPGP. Anyone can use it.</p>
   </div>
 
   <div id="autoDetect" class="countdown-box mdui-shadow-2">
@@ -363,7 +363,6 @@
               </div>
               <div class="mdui-card-actions">
                 <a href="./encrypt_tool.html" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-light-green-900" target="_blank">View Encryption Page</a>
-                
               </div>
             </div>
           </div>
@@ -421,10 +420,10 @@
                 <td>Android platform encryption tool</td>
               </tr>
               <tr>
-                <td class="igTrans"><i class="mdui-icon material-icons mdui-text-color-light-green">&#xe859;</i> Android</td>
-                <td>Encryption Examples</td>
+                <td class="igTrans"><i class="mdui-icon material-icons mdui-text-color-light-green">&#xe051;</i> Web</td>
+                <td>Encryption Tool</td>
                 <td><a href="./encrypt-sample" target="_blank">View</a></td>
-                <td>Tutorials and examples</td>
+                <td>Online tools based on browser features</td>
               </tr>
             </tbody>
           </table>

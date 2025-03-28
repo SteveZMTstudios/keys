@@ -574,7 +574,7 @@ HkT6TjT1rOTFOvpEZeu+gNrAGHP+5CktRqIaN0ysyAQ/4dYKl3JUhFgeSCaI
 > [!CAUTION] The key c6fe ba3f 7d12 b3a3 has been revoked. Please DO NOT USE IT ANYMORE.
 
 #### User Info
-**Steve ZMT** \<zzhzcuid@outlook.com\>
+**Steve ZMT** <zzhzcuid@outlook.com\>
 
 ...... 3 more
 
@@ -613,7 +613,7 @@ If you still kept this key, please remove it from your keyring.
 
 
 #### User Info
-**SteveZMTstudios** \<98326195+SteveZMTstudios@users.noreply.github.com\>
+**SteveZMTstudios** <98326195+SteveZMTstudios@users.noreply.github.com\>
 
 
 #### Summary Information (ID)
