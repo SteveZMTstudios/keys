@@ -1,3 +1,8 @@
+---
+layout: default
+title: GnuPG/PGP Multi-platform Download
+---
+
 # GnuPG/PGP Multi-platform Download
 
 <style>

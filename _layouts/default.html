@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate" />
-    <title>Page Not Found</title>
+    <title>{{ page.title }}</title>
     <link rel="icon" href="/favicon.png" type="image/png">
     <link rel="shortcut icon" href="/favicon.png" type="image/png">
     <!-- MDUI CSS -->
@@ -52,6 +52,13 @@
             pre:hover .copy-btn { 
                 display: block; 
                 animation: fadeIn 0.3s; 
+            }
+        }
+        
+        /* Fallback for devices that don't support hover media query (like IE11) */
+        @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+            pre:hover .copy-btn {
+                display: block;
             }
         }
         
@@ -174,7 +181,9 @@
             }
             
             body.has-appbar .mdui-drawer {
+                height: 100%; /* IE11 fallback */
                 height: calc(100% - var(--appbar-height, 64px));
+                top: 64px; /* IE11 fallback */
                 top: var(--appbar-height, 64px);
             }
             
@@ -420,6 +429,19 @@
     }
     
     ready(function() {
+        // Add copy buttons to pre blocks FIRST, so IE check can find them
+        var pres = document.querySelectorAll('pre');
+        for (var i = 0; i < pres.length; i++) {
+            var pre = pres[i];
+            if (pre.querySelector('.copy-btn')) continue;
+            
+            var button = document.createElement('button');
+            button.className = 'copy-btn mdui-btn mdui-btn-icon mdui-ripple';
+            button.onclick = function() { copyText(this); };
+            button.innerHTML = '<i class="mdui-icon material-icons">&#xe14d;</i>';
+            pre.insertBefore(button, pre.firstChild);
+        }
+
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.body.className += ' mdui-theme-layout-dark';
         }
@@ -583,7 +605,7 @@
             <button class="mdui-btn mdui-btn-icon toc-btn" onclick="toggleToc()">
                 <i class="mdui-icon material-icons">&#xe5d2;</i>
             </button>
-            <a href="javascript:;" class="mdui-typo-headline">Page Not Found</a>
+            <a href="javascript:;" class="mdui-typo-headline">{{ page.title }}</a>
             <div class="mdui-toolbar-spacer"></div>
             <button class="mdui-btn mdui-btn-icon" mdui-menu="{target: '#langMenu'}">
                 <i class="mdui-icon material-icons">&#xe8e2;</i>
@@ -632,7 +654,7 @@
     <div class="mdui-drawer mdui-drawer-close" id="toc-drawer">
         <div class="mdui-card">
             <div class="mdui-card-primary">
-                <div class="mdui-card-primary-title">Page Not Found</div>
+                <div class="mdui-card-primary-title">{{ page.title }}</div>
                 <div class="mdui-card-primary-subtitle" onclick="copyUrl()" id="current-url"></div>
             </div>
         </div>
@@ -641,99 +663,16 @@
     </div>
     
     <div class="mdui-container mdui-typo mdui-container-with-appbar">
-        <div style="padding-top:2em"><i class="mdui-icon material-icons" style="font-size: 3em;"></i></div>
-<h1 mdui-tooltip="{content: '404 The specified document could not be found on the requested page.', position: 'top'}">Page Not Found</h1>
-<script>  function getRandomText() {
-        const texts = [
-                    "Why are you clicking me???",
-                    "You're really bored....",
-                    "Don't you have anything more valuable to do?",
-                    "You must think this is fun.",
-                    "I'm so done with you.",
-                    "Click again and You'll become a cat girl (",
-                    "Click again and I'll make you fly (",
-                    "Click again and I'll dox you, I know your IP is 127.0.0.1",
-                    "Speechless, can't communicate with you, typical bored mindset",
-                    "Clicking this won't help you find where you want to go.",
-                    "I don't have time to design easter eggs...",
-                    "The site owner is too free, you should chat with him...",
-                    "Are you looking for some fun?",
-                    "Donate to unlock the original content (running away",
-                    "Seems like you don't know what that means.",
-                    "<-_<-",
-                    "->_->",
-                    "Whatever makes you happy.",
-                    "Kernel panic - not syncing: Attempted to kill init!",
-                    "Something Wrong (999)",
-                    "Just do it(R).  ",
-                    "I use Arch BTW...",
-                    "Do you really read these...",
-                    "java.lang.NullPointerException",
-                    "Traceback (most recent call last):",
-                    "(／‵Д′)／~ ╧╧",
-                    "(╯‵□′)╯︵┴─┴",
-                    "(´_ゝ`)",
-                    "¯\\_(ツ)_/¯",
-                    "Illegal instruction (core dumped)",
-                    "Bash: No such file or directory.",
-                    "Segmentation fault (core dumped)",
-                    "java.lang.OutOfMemoryError",
-                    "java.lang.FileNotFoundException",
-                    "Error: ENOENT: no such file or directory",
-                    "Warning: file_get_contents(): failed to open stream: No such file or directory.",
-                    "open: No such file or directory",
-                    "std::ifstream::failure: No such file or directory",
-                    "open: no such file or directory at /?",
-                    "thread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: No such file or directory }'",
-                    "FileNotFoundError: [Errno 2] No such file or directory.",
-                    "Well, I haven't thought about what to say yet..."
-                ];
-                return texts[Math.floor(Math.random() * texts.length)];  }
-
-    function replaceText() {
-        let easter_str = getRandomText();
-        window.navigator.vibrate(200);
-        document.getElementById("random-text").innerText = easter_str;
-    }
-
-</script>
-<div class="mdui-hoverable" style="display: inline-block;">
-<span id="random-text" mdui-tooltip="{content: 'Click Me!'}" onclick="replaceText()" style="color: inherit; cursor: pointer;">Surely you know what that means.</span>
-</div>
-<p><br/></p>
-<p>Please try the following solutions:</p>
-<ul>
-<li>Reload this page later.</li>
-<li>Find an archived copy of this page at <a href="http://web.archive.org/web/20250000000000*/key.stevezmt.top">web.archive.org</a>.</li>
-<li>Check with the person who brought you here that the address on this page is correct.</li>
-<li>Use a search engine to search for the keywords you are looking for.</li>
-</ul>
-<div class="mdui-textfield mdui-textfield-expandable">
-<div class="mdui-textfield mdui-textfield-expandable">
-<button class="mdui-textfield-icon mdui-btn mdui-btn-icon mdui-btn-small" onclick="searchGoogle()">
-<i class="mdui-icon material-icons"></i>
-</button>
-<input class="mdui-textfield-input mdui-textfield-input-small" id="google-search" onblur="this.parentElement.classList.remove('mdui-hoverable')" onfocus="this.parentElement.classList.add('mdui-hoverable')" onkeydown="if(event.key === 'Enter') searchGoogle()" placeholder="Google Search..." type="text"/>
-<button class="mdui-textfield-close mdui-btn mdui-btn-icon mdui-btn-small">
-<i class="mdui-icon material-icons"></i>
-</button>
-</div>
-</div>
-<script>
-    function searchGoogle() {
-        const query = document.getElementById('google-search').value;
-        if (query) {
-            window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
-        }
-    }
-</script>
-<hr/>
-<p>If you are sure this is a bug, please <a href="https://github.com/stevezmtstudios/keys/issues/new/choose"><i class="mdui-icon material-icons"></i> Give feedback</a>.</p>
-<div class="mdui-btn-group">
-<button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="window.history.back()"><i class="mdui-icon material-icons"></i> Back</button><button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="window.location.href='/'"><i class="mdui-icon material-icons"></i> Home</button>
-</div>
+        {{ content }}
     </div>
-<script src="https://cdn.staticfile.net/translate.js/3.12.0/translate.js" onerror="this.onerror=null;this.src='https://sharepoint.cf.stevezmt.top/js/3rd-party/translate.min.js';"></script>
+    <footer class="mdui-container mdui-typo mdui-text-center mdui-m-t-5 mdui-m-b-5">
+        <hr />
+        <p>&copy; 2024 Steve ZMT. All rights reserved.</p>
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" style="color: rgba(255, 255, 255, 0.4); text-decoration: none;">
+            {{ site.beian }}
+          </a>
+    </footer>
+<script src="https://cdn.staticfile.net/translate.js/3.2.1/translate.js" onerror="this.onerror=null;this.src='https://sharepoint.cf.stevezmt.top/js/3rd-party/translate.min.js';"></script>
 <script>
 setTimeout(function() {
     var isTranslated = 0;
@@ -743,6 +682,7 @@ setTimeout(function() {
             translate.selectLanguageTag.show = false;
             translate.ignore.tag.push('tbody');
             translate.ignore.tag.push('code');
+            translate.ignore.tag.push('pre');
             translate.ignore.id.push('langMenu');
             translate.ignore.id.push('igTrans');
             translate.ignore.class.push('igTrans');

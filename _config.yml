@@ -1,0 +1,17 @@
+title: Steve ZMT's PGP keys
+description: PGP keys used by Steve ZMT
+theme: null
+markdown: kramdown
+permalink: pretty
+beian: "浙ICP备2025213066号"
+
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter: rouge
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"

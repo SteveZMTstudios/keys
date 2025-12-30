@@ -1,3 +1,8 @@
+---
+layout: default
+title: Steve ZMT's PGP keys
+---
+
 # Steve ZMT's PGP keys
 
 **English (US)** | <a href="javascript:translate.changeLanguage('chinese_simplified');" class="mdui-ripple">简体中文</a>
@@ -44,15 +49,120 @@ window.addEventListener('message', function(event) {
 
 </script>
 
+<div class="mdui-card mdui-p-a-2 mdui-m-y-2">
+  <div class="mdui-typo-headline">Verify Fingerprint</div>
+  
+  <div class="mdui-row mdui-valign">
+      <div class="mdui-col-xs-10">
+          <div class="mdui-textfield">
+            <label class="mdui-textfield-label">Enter fingerprint</label>
+            <input class="mdui-textfield-input" type="text" id="fingerprint-input" autocomplete="off" style="font-family: 'Roboto Mono', monospace; letter-spacing: 1px;" />
+            <!-- <div class="mdui-textfield-helper">Auto-formatted (4 characters per group)</div> -->
+          </div>
+      </div>
+      <div class="mdui-col-xs-2">
+          <button class="mdui-btn mdui-btn-icon mdui-ripple" id="paste-btn" mdui-tooltip="{content: 'Paste from clipboard'}">
+              <i class="mdui-icon material-icons">content_paste</i>
+          </button>
+      </div>
+  </div>
+
+  <div id="fingerprint-result" class="mdui-m-t-2" style="min-height: 24px; font-weight: bold;"></div>
+</div>
+
+<script>
+(function() {
+    const fingerprintInput = document.getElementById('fingerprint-input');
+    const resultDiv = document.getElementById('fingerprint-result');
+    const pasteBtn = document.getElementById('paste-btn');
+    
+    const FULL_FINGERPRINT = "C96BE2F8EDE82CF7214F62593745872A953198FE";
+    const KEY_ID = FULL_FINGERPRINT.substring(FULL_FINGERPRINT.length - 16);
+    const REVOKED_KEY_ID = "C6FEBA3F7D12B3A3";
+
+    function formatAndValidate(value) {
+        let rawValue = value.replace(/[^a-fA-F0-9]/g, '').toUpperCase();
+        let formattedValue = rawValue.replace(/(.{4})/g, '$1 ').trim();
+        
+        if (fingerprintInput.value !== formattedValue) {
+             fingerprintInput.value = formattedValue;
+             if (typeof mdui !== 'undefined') mdui.updateTextFields();
+        }
+
+        if (rawValue === FULL_FINGERPRINT) {
+            resultDiv.innerHTML = '<span class="mdui-text-color-green"><i class="mdui-icon material-icons">check_circle</i> Yes, this is my key. <a href="javascript:void(0)" onclick="copyPublicKey()" style="cursor:pointer; text-decoration:underline;">[Copy Full Public Key]</a></span>';
+        } else if (rawValue === KEY_ID) {
+            resultDiv.innerHTML = '<span class="mdui-text-color-orange"><i class="mdui-icon material-icons">warning</i> This looks like my key ID, but for security, please verify with the full fingerprint.</span>';
+        } else if (rawValue.endsWith(REVOKED_KEY_ID)) {
+             resultDiv.innerHTML = '<span class="mdui-text-color-red"><i class="mdui-icon material-icons">block</i> <b>I Used to use this key, but it has been REVOKED. DO NOT USE IT ANYMORE.</b></span>';
+        } else if (rawValue.length === FULL_FINGERPRINT.length) {
+            resultDiv.innerHTML = '<span class="mdui-text-color-red"><i class="mdui-icon material-icons">error</i> This is NOT my key!</span>';
+        } else {
+            resultDiv.innerHTML = '';
+        }
+    }
+
+    fingerprintInput.addEventListener('input', function(e) {
+        formatAndValidate(e.target.value);
+    });
+
+    pasteBtn.addEventListener('click', function() {
+        navigator.clipboard.readText().then(text => {
+            formatAndValidate(text);
+        }).catch(err => {
+            console.error('Failed to read clipboard', err);
+            if (typeof mdui !== 'undefined') {
+                mdui.snackbar({message: 'Failed to read clipboard. Please paste manually.', position: 'top'});
+            }
+        });
+    });
+
+    window.copyPublicKey = function() {
+        fetch('public.txt')
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.text();
+            })
+            .then(text => {
+                navigator.clipboard.writeText(text).then(() => {
+                    if (typeof mdui !== 'undefined') {
+                        mdui.snackbar({message: 'Public key copied to clipboard', position: 'top'});
+                    } else {
+                        alert('Public key copied to clipboard');
+                    }
+                });
+            })
+            .catch(err => {
+                console.error('Failed to load public key', err);
+                if (typeof mdui !== 'undefined') {
+                    mdui.snackbar({message: 'Failed to fetch public key file', position: 'top'});
+                } else {
+                    alert('Failed to fetch public key file');
+                }
+            });
+    };
+})();
+</script>
+
+
+
+
 ---
 
 <h2 id="public-key-info-main">Public Key Info (Main)</h2>
 Updated at 2025-05-08
 
 #### User Info
-**Steve ZMT** <me@stevezmt.top\>
 
-...... 3 more
+|Name|Email|  
+|----|----|
+|**Steve ZMT**|**me@stevezmt.top**|
+|Steve ZMT|admin@stevezmt.top|
+|Steve ZMT|imap_mail@163.com|
+|Steve ZMT|stevezmt@foxmail.com|
+|Steve ZMT|zmt548270@gmail.com|
+|Steve ZMT|zzhzcuid@outlook.com|
+|stevezmtstudios|98326195+SteveZMTstudios@users.noreply.github.com|
 
 #### Summary Information (ID)
 ```
@@ -77,10 +187,13 @@ C96BE2F8EDE82CF7214F62593745872A953198FE
 
 #### Public Keys
 
-<details>
+<details markdown="1">
+
 <summary>Full Public Keys Data</summary>
 
+
 ```
+
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Comment: 用户标识:	Steve ZMT <me@stevezmt.top>
 Comment: 又名:	Steve ZMT <admin@stevezmt.top>
@@ -158,7 +271,11 @@ Er1Spy2RZhxELxsZfr5AiS1K/Yv6+QZHQ4sUmM+CBYOIU3gVMBuRtCMYzU3os6Fd
 brCSOGoQzXiYahmcXyk7H4h2nk8SMhiqKOfcc7lKiqL+kfX3KpVonFNlTLqtxUZ3
 4qpFShRYhnVZgiDTwWKMrg6yv8ibCUPYmhYI7o8MMmUyQ2912edfPNfi91YiBx9n
 u8JhIpJ0IJNUcCvMA9FiS/N3h8fkOsQwYwFmPlSVtOERq7svLOVUAcmTrOAHsur/
-t9il2rbvtVYM9+BxGIzvz9oyiZQj6ocQRAHGY9cuyCi0HVN0ZXZlIFpNVCA8aW1h
+t9il2rbvtVYM9+BxGIzvz9oyiZQj6ocQRAHGY9cuyCiIXgQQFggABgUCaVCxkAAK
+CRChI59H2yUQbllvAP44/CdxWqpCnYrsjtktwyMCcHA/2+c1MOCYeR8kY7pSgAEA
+ygdALTfsvvVMKveEGAKTwnBIFTbHfO7M0u3tdxKa6w+IXgQQFggABgUCaVDy+wAK
+CRBbZJm5SJUE84AXAP9e1cnM+zk31t+nxRCWO4Q1A2+Fl81XY3LJbp9ReH1rqwEA
+1FrMln0GQSCTUAfKTafDQZoOn6PdLma0Wj82Cx40JwC0HVN0ZXZlIFpNVCA8aW1h
 cF9tYWlsQDE2My5jb20+iQJXBBMBCABBFiEEyWvi+O3oLPchT2JZN0WHKpUxmP4F
 Amcd8noCGwMFCRqqP30FCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQN0WH
 KpUxmP50Ow/+N8iXFsA7H3qZq9JataT27GClunQRA4OUzUe+VDA1lyL871ec2YX5
@@ -201,7 +318,11 @@ otsGSmV64pgkIOSkF9hsX9/ovHeT3u2Rl12byKTM+jwyPk26G3JRuXqUnS7PM7Jf
 hBqYhMZJkPc2sXTLH02YTcWPh/iPqimK6QmB6HKW7bHKpKGJdLC831mtELmbnqGF
 oidrOOf7PDZ4qGj5d332MWvX0oYqSLyABHHM9PgURUg1lPVe2JPQH29rW5KvBPBu
 iAF8XM+a7GSuYQrh8b0a/VNn+TEr1C/W4pvp80bxmlvvSyoYpz/w2bZQ4Bb28JKX
-x7QgU3RldmUgWk1UIDxzdGV2ZXptdEBmb3htYWlsLmNvbT6JAlcEEwEIAEEWIQTJ
+x4heBBAWCAAGBQJpULGQAAoJEKEjn0fbJRBu9DYA/jGymnPSopBLhJMvVwe7Q5Pt
+OpV4BzUozMfGNy6ibtTxAP0YhTM2hF4Dkc73GYAzFtk0OwPmpKBCFbWQOrLTgnfW
+B4heBBAWCAAGBQJpUPL7AAoJEFtkmblIlQTzKiwA/RDb1QPnMuFxbeejksUbcq0z
+kBoncbFuBu5jaIBveWGNAP9TjR+dHzvLbXPwyxx756FcYZuRZfKMHkh+aSfZgrBN
+CLQgU3RldmUgWk1UIDxzdGV2ZXptdEBmb3htYWlsLmNvbT6JAlcEEwEIAEEWIQTJ
 a+L47egs9yFPYlk3RYcqlTGY/gUCZx3yjwIbAwUJGqo/fQULCQgHAgIiAgYVCgkI
 CwIEFgIDAQIeBwIXgAAKCRA3RYcqlTGY/gSKEACJmdj568FL8LquG09jMvY8sLVF
 M8U/fAXyCL3W3SNQLiDuMm9njdFHBcyKNAagF/pHCPNUNHXzD43QVLjcHYumJ1n3
@@ -243,7 +364,11 @@ bBYFueRPBVzLaa/lxNi/Ea91GcoKthm0KEdZrZCSlqMy0CGW+plWXC94Lz+UBA3j
 4a/V+wZuecrQZ4kH4s2OHz5Tf6Rj/Ua2o9VO8dh0RTty54ggNsB2oQYk/no4gcTj
 MaBUVw1o8c3utUS3TuQWdb1gqs7kDdI7P/IEisMdhboY7vBCjHnYXJ3pH7FaMQM8
 3hkU7027wCzBCld0aTcJgR1GT4nOvAIjOZzoB8hC87dOglXZkbAw8iQRYhQRs2jr
-G/OVrrbEFMEKLdB9kQtV3Fro0SSltB9TdGV2ZSBaTVQgPHptdDU0ODI3MEBnbWFp
+G/OVrrbEFMEKLdB9kQtV3Fro0SSliF4EEBYIAAYFAmlQsZAACgkQoSOfR9slEG65
+FgD/QW8iANVBaEsafL2E5CtpSMKbQxsaVzevBEtTjFw6v2IA/j/Fs0u+litGABGG
+krdRGWSrIsEOpXSyCIPBvdSHce4CiF4EEBYIAAYFAmlQ8vsACgkQW2SZuUiVBPNB
+1gD6ArPVdZWd31bkru1E/wXpUcEkA38xE9suFJT+fKI9PGUA+QGY7IQMPWuDxoQd
+BX6gOXp90PZkWEcltNYCvjCIyqAEtB9TdGV2ZSBaTVQgPHptdDU0ODI3MEBnbWFp
 bC5jb20+iQJXBBMBCABBFiEEyWvi+O3oLPchT2JZN0WHKpUxmP4FAmcd8nECGwMF
 CRqqP30FCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQN0WHKpUxmP5nbw/+
 JR+irzZMcXsR856wJiBkhocT86b8uWfL4U6FJEpBCAh5kc0x21ebemhe5Eby7dNy
@@ -285,7 +410,11 @@ HIudnpCwd4YNoNxLWxaquTI/ad+b80VMqPqqWjeCRbipKb/SkjQfUXPATAnXA9J2
 SXxrJkQ9XJTjcVbF7hvaSfCb/jCkElLNF64QerwfkhqC+TbTXhJsoH3pIb/fKXQB
 pUP35KeWn5KhdGN7ZVp7wUnCgK2QagOg0aziEcgzA3WkgF3dhVPw/u2Ao51Olf3Q
 h91Cj5whsOmL7MYNDqfUTkczo2zM2sYl/s9V0rBsP/XDj/4Rr1/dnJCcntu6EsEf
-w5CKtQPLylM0qZQ6aTf1nM2naBxUc+Bm00RYwPrySDXv6SM7MWndW7QgU3RldmUg
+w5CKtQPLylM0qZQ6aTf1nM2naBxUc+Bm00RYwPrySDXv6SM7MWndW4heBBAWCAAG
+BQJpULGQAAoJEKEjn0fbJRBuQv0A+gIETH7PGqvPGOvWbX/SN49WsokCYOIWg5rz
+tcSlNHCEAP9qI3ukLKNUJKlROCpBeSgIIxQ5klCgTnrHApemITgcBoheBBAWCAAG
+BQJpUPL7AAoJEFtkmblIlQTzjDAA/1RwIyFUUi55HPZJvm6sOBTfdvBPgl6ooHYN
+SUu9Xtz/AP4u8Bbmg/GUpMQ3wnVznEgAKbxs7HbsNU/bbYclZdUKDbQgU3RldmUg
 Wk1UIDx6emh6Y3VpZEBvdXRsb29rLmNvbT6JAlcEEwEIAEEWIQTJa+L47egs9yFP
 Ylk3RYcqlTGY/gUCZx3yQwIbAwUJGqo/fQULCQgHAgIiAgYVCgkICwIEFgIDAQIe
 BwIXgAAKCRA3RYcqlTGY/ssVD/4pSvNrrRGvFi9PUVLvN5ozBCoZPYTPI1UEG671
@@ -328,7 +457,11 @@ TY76rY3K8UmrFsLLLPoZ3w+RoSkJiSJD/bAJz1Z8GqLCLQAUdWQlYSR3fOO8vI3a
 w3cVGO8W+0NKZ+PEb2St+eGcCxFIYBxWpZbXq2Vyns/olr7jtz7PvRTo/9lVQE9K
 /zTkGaw2Y7JNkgMTViVULfOf0ML0vK3SfFLJNiQRYGPYo2UV4AxcVy6sjI9C4Zsh
 xUYTtR4YaZJnHcmajEMVOKMX9QEKde5zfz47+LJCaB9CrRvdmLe0vQ/6ZDCp6I4M
-6rM2kJ2vBFDwaYr3tENzdGV2ZXptdHN0dWRpb3MgPDk4MzI2MTk1K1N0ZXZlWk1U
+6rM2kJ2vBFDwaYr3iF4EEBYIAAYFAmlQsZAACgkQoSOfR9slEG5SKQD9HZAiXvhs
+OuE+ZX5K2j47ES6Mn+RUVKKCoBQn66jYx5gA/2Esv8vOmWTkn18+J/tAnkQN4ZSP
+lYTkn1hhoa/o9KgIiF4EEBYIAAYFAmlQ8vsACgkQW2SZuUiVBPMOSgEAy08FYzdV
+BoodbNDt6YETw3uoW43Baj8C25VrVTKCHQQA/0fnO8ZGgrkuEEvf8XLkXAWBSO9j
+wHGakr4Tmc+qCGwPtENzdGV2ZXptdHN0dWRpb3MgPDk4MzI2MTk1K1N0ZXZlWk1U
 c3R1ZGlvc0B1c2Vycy5ub3JlcGx5LmdpdGh1Yi5jb20+iQJRBBMBCAA7FiEEyWvi
 +O3oLPchT2JZN0WHKpUxmP4FAmcflZ0CGwMFCwkIBwICIgIGFQoJCAsCBBYCAwEC
 HgcCF4AACgkQN0WHKpUxmP7LXA/9HLvG+/zgzTB0P7JV4mPYiAHZexNjOLChSjj+
@@ -342,7 +475,9 @@ zPq/Z7Kb11hi/wBYQqzhfVjZj6CXRktxY6+NoLp7xnUW0R+Yn0GRsisl8hkUn19j
 1YfwUsFdj37ztW+BtYF693cWdNa9XWrDuYGX3gg8AR4MZVNbdcFGtvv0THm01ikm
 sXZnx8OAM6oLWs4dfRsPAOdNnHifzMm6mNQsiDnSkCyCcd7pJdADJYRn6SXqBZcX
 yh5YCavs2RtGloD3iAjKwJspiiViq56dhA0uXtyp2d7JxzSJD8PqNa3ZCEGC+llN
-r1BGHLXR3NHczwEQAAEBAAAAAAAAAAAAAAAA/9j/4AAQSkZJRgABAQAAAQABAAD/
+r1BGHLWIXgQQFggABgUCaVDy+wAKCRBbZJm5SJUE889gAP40qBsZs8oa7E+XKx5j
+FajdR2NYoG4RyspnShclnGfl6AD/YUDhCRK7OEtMiNFneSo3u0mib0hZ+lVWpI5n
+JqhCjwrR3NHczwEQAAEBAAAAAAAAAAAAAAAA/9j/4AAQSkZJRgABAQAAAQABAAD/
 2wCEAAcHBwcHBwgJCQgLDAsMCxAPDg4PEBkSExITEhklFxsXFxsXJSEoIR4hKCE7
 LykpLztFOjc6RVNKSlNpY2mJibgBBwcHBwcHCAkJCAsMCwwLEA8ODg8QGRITEhMS
 GSUXGxcXGxclISghHiEoITsvKSkvO0U6NzpFU0pKU2ljaYmJuP/CABEIAPAA8AMB
@@ -524,7 +659,11 @@ sF4sU2cSCM7Xxs81WbnwRsPC869+UPpnfoNl8piARWLZfxyg4qw/xd61f63BjCQe
 Sz0x3nMpIacJmkUWCW+X/sw1SclpFoiSFWm1kRlGIU3O3Qf8E0Tc/h1o/jnq3JPP
 cvxJXvegXLHfta6aTUJfvMGnvi641ajjvkSZ99YdVb+xR0G6wAJZmeZvHcJFrvdq
 wlfIV8Qpjh/23S8sa4HpDZxm5MhZU1kaiGAgii66zGYSmYCeR58bUNnADgvuuK4L
-kkcvRUHCL4r/6OXvv5zxejE8c22RxdQRs+GeDhWP7RmaDhW5AY0EZx3yrwEMAL4k
+kkcvRUHCL4r/6OXvv5zxejE8c22RxdQRs+GeDhWP7RmaDhWIXgQQFggABgUCaVCx
+kAAKCRChI59H2yUQbtwYAP4lspou3r2y5SxiGFUDAcEXyOgliU4q7gU1n5Kf4p3A
+BgD/bPS3rE3qps68AVf2ptao8bB59GcAyKgeTCFR3e7IuAeIXgQQFggABgUCaVDy
++wAKCRBbZJm5SJUE82XdAP0cumWOX9mYxW/B/33EeVK0F36K5k+2paevWzevOplT
+EgD/UXJts8ifcbnQuCvX0WyhZ1dVhWrQFlvvKrRtHOV71g65AY0EZx3yrwEMAL4k
 o1gGDYasQxqJ1YSNLaKLcuqek+7rH3MwauX8WfaPJOnAx0zqvnniHQSVSiD9Q/1A
 xp3KvdS5FNeudMmudcAOJvFLfHe79dw11suTMj7qK5NuQI7gbY3mFVUIcdDCrJT5
 3z4o44tQxpY44OWyXNeudhbRqssKKm8QQEdSF55tm73lK8DuFX7rL0SA2iKVTmiS
@@ -568,14 +707,14 @@ yLwSDINot/ut3AeLOKmAbd8vD+fCpYXUQ7EXm0v75AS76j2HFnPlNLxVWqFyHNoC
 U5Do+bdyYxa5ZXAqxhV3Cj1x7TSf3NNKRzg1hGeGngLsRok9rAGe4gzUxTAAfr6L
 ksNHfsgCiXc5k2rOlyLQyvpC3+Y+k9IdATHZ1dr3RfNz3u1I/VNAZB5E+k409azk
 xTr6RGXrvoDawBhz/uQpLUaiGjdMrMgEP+HWCpdyVIRYHkgmiA==
-=clHT
+=BQh8
 -----END PGP PUBLIC KEY BLOCK-----
-
 
 
 ```
 
 </details>
+
 
 [keys on key.stevezmt.top](public.gpg)
 [keys on Github.com](https://github.com/stevezmtstudios.gpg)<br>
